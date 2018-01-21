@@ -52,6 +52,7 @@ public class Acquisition {
 		
 		float[][][] R = new float[nFrequencies][nSamples][2];
 		
+		
 		return false;
 	}
 	
@@ -75,6 +76,46 @@ public class Acquisition {
 		float[] result = new float[2];
 		result[0] = cosAngle * vector[0] - sinAngle * vector[1]; //TODO vector[0] und [1] zwischenspeichern fuer weniger arrayzugriffe?
 		result[1] = sinAngle * vector[0] + cosAngle * vector[1];
+		return result;
+	}
+	
+	/**
+	 * Calculates the discrete fourier transform
+	 * @param x The input data.
+	 * @return The transformed data.
+	 */
+	public static float[][] complexDFT(float[][] x) {
+		int N = x.length;
+		float[][] result = new float[N][2];
+		for (int n = 0; n < N; ++n) {
+			for (int k = 0; k < N; ++k) {
+				float angle = (-2 * (float)Math.PI * n * k) / N; //TODO Division
+				float[] xRot = rotVector2d(x[k], angle);
+				result[n][0] += xRot[0];
+				result[n][1] += xRot[1];
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * Calculates the inverse discrete fourier transform
+	 * @param x The input data.
+	 * @return The (back)transformed data.
+	 */
+	public static float[][] invComplexDFT(float[][] x) {
+		int N = x.length;
+		float[][] result = new float[N][2];
+		for (int n = 0; n < N; ++n) {
+			for (int k = 0; k < N; ++k) {
+				float angle = (2 * (float)Math.PI * n * k) / N; //TODO Division 
+				float[] xRot = rotVector2d(x[k], angle);
+				result[n][0] += xRot[0];
+				result[n][1] += xRot[1];
+			}
+			result[n][0] /= N; //TODO Division
+			result[n][1] /= N;
+		}
 		return result;
 	}
 }
