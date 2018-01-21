@@ -46,10 +46,7 @@ public class Acquisition {
 		for (int d = 0; d < nFrequencies; ++d) {
 			for (int n = 0; n < nSamples; ++n) {
 				float angle = (-2 * (float)Math.PI * frequencies[d] * n) / samplingFrequency;
-				float cosAngle = (float)Math.cos(angle);
-				float sinAngle = (float)Math.sin(angle);
-				X[d][n][0] = cosAngle * samples[n][0] - sinAngle * samples[n][1]; //TODO samples[n][0] zwischenspeichern -> weniger arraydings?
-				X[d][n][1] = sinAngle * samples[n][0] + cosAngle * samples[n][1];
+				X[d][n] = rotVector2d(samples[n], angle);
 			}
 		}
 		
@@ -64,5 +61,20 @@ public class Acquisition {
 	
 	public int getCodeVerschiebung(){
 		return codeShift;
+	}
+	
+	/**
+	 * Rotates a 2d vector by a given angle
+	 * @param vector A 2d float vector.
+	 * @param angle The angle in rad.
+	 * @return The rotated vector.
+	 */
+	public static float[] rotVector2d(float[] vector, float angle) {
+		float cosAngle = (float)Math.cos(angle);
+		float sinAngle = (float)Math.sin(angle);
+		float[] result = new float[2];
+		result[0] = cosAngle * vector[0] - sinAngle * vector[1]; //TODO vector[0] und [1] zwischenspeichern fuer weniger arrayzugriffe?
+		result[1] = sinAngle * vector[0] + cosAngle * vector[1];
+		return result;
 	}
 }
