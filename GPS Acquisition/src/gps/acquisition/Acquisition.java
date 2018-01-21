@@ -51,9 +51,40 @@ public class Acquisition {
 		}
 		
 		float[][][] R = new float[nFrequencies][nSamples][2];
+		float[][] dftC = complexDFT(codes);
+		for (int d = 0; d < nFrequencies; ++d) {
+			float[][] dftX_fd = complexDFT(X[d]);
+			// Elementwise multiplication but with complex conjugate of C
+			float[][] product = new float[nSamples][2];
+			for (int i = 0; i < nSamples; ++i) {
+				product[i][0] = dftX_fd[i][0] *  dftC[i][0] - dftX_fd[i][1] * -dftC[i][1];
+				product[i][1] = dftX_fd[i][0] * -dftC[i][1] + dftX_fd[i][1] *  dftC[i][0];
+			}
+			R[d] = invComplexDFT(product);
+		}
 		
+		float S_max = 0;
+		for (int d = 0; d < nFrequencies; ++d) {
+			for (int n = 0; n < nSamples; ++n) {
+				float absVal = R[d][n][0] * R[d][n][0] + R[d][n][1] * R[d][n][1];
+				if (absVal > S_max) {
+					S_max = absVal;
+					dopplerShift = frequencies[d];
+					codeShift = n;
+				}
+			}
+		}
 		
-		return false;
+		//TODO Berechnung P kann in andere Schleife eingebaut werden
+		float P_in = 0;
+		for (int i = 0; i < nSamples; ++i) {
+			P_in += samples[i][0] * samples[i][0] + samples[i][1] * samples[i][1];
+		}
+		P_in /= nSamples;
+		
+		float Gamma = S_max / P_in;
+		if (Gamma > gamma) return true;
+		else return false;
 	}
 	
 	public int getDopplerverschiebung(){
