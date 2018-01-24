@@ -1,0 +1,683 @@
+toplevel(date,constBufOuts,peRomOuts,contextAddrWidth,maxContextWidth,contextDataWireWidth,ccuContextOffset,cboxContextOffset,maxContextWidthOver64,context_wire_decl,
+  context_wire_aggregation,cacheIO,ccntwidth,contextmemorysize,contextWidthCBox,portlist,otherIDWidth,peIDWidth,statusIns,statusWireDeclaration,resultConnection,pes,maxRFaddrWidth,
+  jointCacheValid,wires_direct_out_Pe,wires_out_Pe,wires_status,comUnitContextPorts,maxIDWidth, wrCtrlPeContextEnWires,wrCtrlPeParameterEnWires,wrCtrlPeEnPorts,parameterBufferSize,
+  parameterBufferCntrWidth,sensorContextWidth,actorContextWidth,maxLogContextWidth,logContextEnablePorts, PEDirectOutPorts,runCounterWidth,syncUnitDataWidth,
+  cycleCounterWidth,sensorDataInPorts,actorDataInPorts,sensorContextOffset,sensorWireDecl,sensorDataOutPorts,actorContextOffset,actorDataOutPorts,actorWireDecl,constBufPeConnections,
+  maxContextAddrWidth, gLogContextAddrWidth, actorDataSelection, nrOfCBoxOutputs, evaluationblocks, branchselection, maxOCMContextAddrWidth, maxLogContextAddrWidth, rom_modules)
+::= <<
+
+/*
+Author: Dennis L. Wolf
+Date: §date§
+Version: 3.0 - generator target dependent
+Version History:  2.1 converters for contexts, Fsm reduction and cleanup
+      2.0 changed to String Templates
+      1.1 changed to header and `define
+      1.0 construct
+*/
+
+`include "axiinterface.vh"
+`include "ultrasynth.vh"
+`include "sensorif.vh"
+`include "actorif.vh"
+// `include "constbuf.vh"
+`include "parameterbuffer.vh"
+`include "cgra.vh"
+
+module Cgra_Ultrasynth #(
+  parameter integer CONTEXT_ADDR_WIDTH = §contextAddrWidth§,
+  parameter integer MAX_CONTEXT_ADDR_WIDTH = §maxContextAddrWidth§,
+  parameter integer GLOG_CONTEXT_ADDR_WIDTH = §gLogContextAddrWidth§,
+  parameter integer RF_ADDR_WIDTH = §maxRFaddrWidth§, // the max RF address width (out of all PEs)
+  parameter integer OTHERID_WIDTH = §otherIDWidth§,
+  parameter integer PEID_WIDTH = §peIDWidth§,
+  parameter integer CONTEXT_SIZE = §contextmemorysize§,
+  parameter integer C_S_AXI_DATA_WIDTH  = 32,
+  parameter integer C_S_AXI_ADDR_WIDTH  = 32
+) 
+(
+// General ports
+(* dont_touch = "true" *) input wire EN_I,
+(* dont_touch = "true" *) input wire RST_I,
+(* dont_touch = "true" *) input wire CLK_I,
+(* dont_touch = "true" *) input wire AXI_ACLK_I,
+(* dont_touch = "true" *) output wire ERROR_O,
+// Sensor related ports
+(* dont_touch = "true" *) input wire SENSOR_DONE_I,
+(* dont_touch = "true" *) output wire SENSOR_SYNC_IN_O,
+(* dont_touch = "true" *) output wire SENSOR_READ_EN_O,
+(* dont_touch = "true" *) output wire [`SENSOR_ID_WIDTH-1:0] SENSOR_ADDR_O,
+(* dont_touch = "true" *) input wire [`DATA_WIDTH-1:0] SENSOR_DATA_I, // which data width is this? given by data path or explicit setting?
+// Actor related ports
+(* dont_touch = "true" *) output wire ACTOR_SYNC_OUT_O,
+(* dont_touch = "true" *) output wire ACTOR_WR_ENABLE_O,
+(* dont_touch = "true" *) output wire [`DATA_WIDTH-1:0] ACTOR_DATA_O, // which data width is this? given by data path or explicit setting?
+(* dont_touch = "true" *) output wire [`ACTOR_ID_WIDTH-1:0] ACTOR_WR_ADDR_O,
+// Log/OCM related ports
+(* dont_touch = "true" *) output wire OCM_SEND_DONE_O,
+(* dont_touch = "true" *) output wire LOG_SEND_DONE_O,
+// Informs the outside world that a hybrid (multirate)
+// CGRA execution run is now started (asserted for one cycle after SENSOR_DONE_I was asserted)
+(* dont_touch = "true" *) output wire MULTI_RATE_WAS_TRIGGERED_O,
+// additional generic ports, currently not used
+§portlist§
+// Slave ports
+(* dont_touch = "true" *) input wire [4-1:0] S_AXI_WSTRB_I,
+(* dont_touch = "true" *) input wire S_AXI_AWVALID_I,
+(* dont_touch = "true" *) output wire S_AXI_AWREADY_O,
+(* dont_touch = "true" *) input wire [32-1:0] S_AXI_AWADDR_I,
+(* dont_touch = "true" *) input wire S_AXI_WLAST_I,
+(* dont_touch = "true" *) output wire [2-1:0] S_AXI_BRESP_O,
+(* dont_touch = "true" *) input wire [2-1:0] S_AXI_AWBURST_I,
+(* dont_touch = "true" *) output wire S_AXI_BVALID_O,
+(* dont_touch = "true" *) input wire [3-1:0] S_AXI_AWSIZE_I,
+(* dont_touch = "true" *) input wire [32-1:0] S_AXI_WDATA_I,
+(* dont_touch = "true" *) input wire S_AXI_BREADY_I,
+(* dont_touch = "true" *) input wire [8-1:0] S_AXI_AWLEN_I,
+(* dont_touch = "true" *) output wire S_AXI_WREADY_O,
+(* dont_touch = "true" *) input wire S_AXI_WVALID_I,
+// Log Master Write Channel Ports
+(* dont_touch = "true" *) output wire [32-1:0] M_LOG_AWADDR_O,
+(* dont_touch = "true" *) input wire [2-1:0] M_LOG_BRESP_I,
+(* dont_touch = "true" *) output wire [3-1:0] M_LOG_AWSIZE_O,
+(* dont_touch = "true" *) output wire M_LOG_WLAST_O,
+(* dont_touch = "true" *) input wire M_LOG_AWREADY_I,
+(* dont_touch = "true" *) output wire M_LOG_WVALID_O,
+(* dont_touch = "true" *) output wire M_LOG_BREADY_O,
+(* dont_touch = "true" *) input wire M_LOG_BVALID_I,
+(* dont_touch = "true" *) input wire M_LOG_WREADY_I,
+(* dont_touch = "true" *) output wire [8-1:0] M_LOG_AWLEN_O,
+(* dont_touch = "true" *) output wire M_LOG_AWVALID_O,
+(* dont_touch = "true" *) output wire [64-1:0] M_LOG_WDATA_O,
+(* dont_touch = "true" *) output wire [2-1:0] M_LOG_AWBURST_O,
+// OCM Master Write Channel Ports
+(* dont_touch = "true" *) input wire M_OCM_AWREADY_I,
+(* dont_touch = "true" *) output wire M_OCM_BREADY_O,
+(* dont_touch = "true" *) output wire [2-1:0] M_OCM_AWBURST_O,
+(* dont_touch = "true" *) output wire [8-1:0] M_LOG_WSTRB_O,
+(* dont_touch = "true" *) output wire [32-1:0] M_OCM_AWADDR_O,
+(* dont_touch = "true" *) output wire [3-1:0] M_OCM_AWSIZE_O,
+(* dont_touch = "true" *) input wire M_OCM_BVALID_I,
+(* dont_touch = "true" *) input wire [2-1:0] M_OCM_BRESP_I,
+(* dont_touch = "true" *) output wire [64-1:0] M_OCM_WDATA_O,
+(* dont_touch = "true" *) output wire M_OCM_WLAST_O,
+(* dont_touch = "true" *) output wire M_OCM_WVALID_O,
+(* dont_touch = "true" *) input wire M_OCM_WREADY_I,
+(* dont_touch = "true" *) output wire [8-1:0] M_OCM_WSTRB_O,
+(* dont_touch = "true" *) output wire [8-1:0] M_OCM_AWLEN_O,
+(* dont_touch = "true" *) output wire M_OCM_AWVALID_O
+);
+
+// --- name resolution
+wire CGRA_CLK_I;
+assign CGRA_CLK_I = CLK_I;
+
+wire RST_N_I;
+assign RST_N_I = ~RST_I;
+
+// --- forward declarations
+wire [§ccntwidth§-1:0] w_ccnt;
+
+§wires_direct_out_Pe§
+§wires_out_Pe§
+// sensor
+wire sync_in;
+wire [`DATA_WIDTH-1:0] sensor_data;
+wire [`SENSOR_ID_WIDTH-1:0] sensor_addr;
+wire sensor_read_enable;
+assign SENSOR_SYNC_IN_O = sync_in;
+assign SENSOR_ADDR_O = sensor_addr;
+assign SENSOR_READ_EN_O = sensor_read_enable;
+
+// actor
+reg [`DATA_WIDTH-1:0] actor_data;
+wire [`ACTOR_ID_WIDTH-1:0] actor_addr;
+wire [`PE_ID_WIDTH-1:0] actor_pe_id;
+wire actor_write_enable;
+wire sync_out;
+assign ACTOR_SYNC_OUT_O = sync_out;
+assign ACTOR_DATA_O = actor_data;
+assign ACTOR_WR_ENABLE_O = actor_write_enable;
+assign ACTOR_WR_ADDR_O = actor_addr;
+
+// SyncUnit
+wire [CONTEXT_ADDR_WIDTH-1:0] start_addr;
+wire hybrid;
+wire enable_special_actions; // Enables parameter writing during multirate and causes an interrupt on CGRA start
+wire start_exec;
+wire [§runCounterWidth§-1:0] run_counter;
+
+// AXI interface
+wire enable_write_ctrl;
+wire valid_context;
+wire [`ADDR_CONTROL_WIDTH-1:0] control_addr;
+wire [`ADDR_OFFSET_WIDTH-1:0] w_offset_addr;
+wire [PEID_WIDTH+RF_ADDR_WIDTH-1:0] parameter_buffer_destination;
+
+§wrCtrlPeContextEnWires§
+wire is_peLog_context;
+wire ccu_context_wr_en;
+wire [`CBOX_EVAL_BLOCK_COUNT:0] cbox_context_wr_en;
+wire idc_wr_en;
+wire parameter_buffer_wr_en;
+wire parameter_buffer_exp_wr_en;
+wire parameter_buffer_is_hybrid;
+wire syncUnit_state_change;
+wire syncUnit_interval_change;
+wire special_action_counter_reset_val_change;
+wire glog_context_wr_en;
+wire sensor_context_wr_en;
+wire actor_context_wr_en;
+wire context_wr_en;
+wire logDestWrEn;
+wire logDestBoundWrEn;
+wire logDestIncWrEn;
+wire ocmDestWrEn;
+wire ocmDestBoundWrEn;
+wire ocmDestIncWrEn;
+wire ocmContextWrEn;
+wire ocmOutputContextWrEn;
+wire w_constBufferWrEn;
+
+wire [`SLAVE_DATA_WIDTH-1:0] w_incoming_context_data_0; // + w_incoming_context_data_x, ... +1 for each 32 bit of max(maxContextWidth, contextWidthCBox)
+§context_wire_decl§
+wire [§contextDataWireWidth§-1:0] w_context_data;
+assign w_context_data = {w_incoming_context_data_0§context_wire_aggregation§};
+
+// parameter buffer
+wire parameter_buffer_empty;
+wire parameter_buffer_full;
+wire parameter_buffer_all_hybrid_done;
+wire [`DATA_WIDTH-1:0] parameter_data;
+wire [PEID_WIDTH-1:0] parameter_target_pe;
+wire [RF_ADDR_WIDTH-1:0] rf_wr_addr;
+
+§wrCtrlPeParameterEnWires§
+wire parameter_context_preped;
+
+// ConstBuf
+§constBufOuts§
+
+// additional Ultrasynth PE outs
+§peRomOuts§
+
+// wires to additional outputs
+wire log_send_done;
+wire ocm_send_done;
+
+assign OCM_SEND_DONE_O = ocm_send_done;
+assign LOG_SEND_DONE_O = log_send_done;
+
+// --- FSM wires, registers and state definition
+
+reg [`STATE_WIDTH-1:0] state, next_state;
+
+// wires to output regs
+reg single_edge_enable_special_actions;
+reg ccu_load_en;
+reg parameter_update_allowed;
+reg use_sensor_data;
+reg error;
+reg [`ERROR_WIDTH-1:0] err_vec;
+
+// actual outputs
+reg single_edge_enable_special_actions_sync;
+reg ccu_load_en_sync;
+reg parameter_update_allowed_sync;
+reg use_sensor_data_sync;
+reg error_sync;
+reg [`ERROR_WIDTH-1:0] err_vec_sync;
+
+// helpful stuff
+reg parameter_update_oneMoreCycle;
+wire parameter_update_underway;
+
+// Output assignments related to the FSM
+assign parameter_update_underway = parameter_context_preped || parameter_update_oneMoreCycle;
+assign ERROR_O = error_sync;
+assign MULTI_RATE_WAS_TRIGGERED_O = single_edge_enable_special_actions_sync;
+
+// --- FSM BEGIN
+always @(posedge CGRA_CLK_I)
+begin
+  if (~RST_N_I)
+    begin
+      state <= `IDLE; // Absolutely required, otherwise the CCU reset will not work properly!
+      parameter_update_oneMoreCycle <= 1'b0;
+      single_edge_enable_special_actions_sync <= 1'b0;
+      ccu_load_en_sync <= 1'b0;
+      parameter_update_allowed_sync <= 1'b0;
+      use_sensor_data_sync <= 1'b0;
+      error_sync <= 1'b1;
+      err_vec_sync <= 0;
+    end
+  else if (EN_I)
+    begin
+      // management
+      state <= next_state;
+      parameter_update_oneMoreCycle <= parameter_context_preped;
+
+      // outputs
+      single_edge_enable_special_actions_sync <= single_edge_enable_special_actions;
+      ccu_load_en_sync <= ccu_load_en;
+      parameter_update_allowed_sync <= parameter_update_allowed;
+      use_sensor_data_sync <= use_sensor_data;
+      error_sync <= error;
+      err_vec_sync <= err_vec;
+    end
+end
+
+// state switching
+always @(*)
+begin
+  case(state)
+  `UPDATE_PARAMETER: begin
+    if (start_exec && ~hybrid)
+      next_state = `START;
+    else if (parameter_update_underway)
+      next_state = `UPDATE_PARAMETER;
+    else 
+      next_state = `IDLE;
+  end
+  `EXECUTE: begin
+    if (sync_in)
+      next_state = `ERROR;
+    else if (w_ccnt == §contextmemorysize§-1 || syncUnit_state_change)
+      next_state = `IDLE; // CGRA Exec done or run state change imminent
+    else
+      next_state = `EXECUTE;
+  end
+  `START: begin
+    next_state = `EXECUTE;
+  end
+  `IDLE: begin
+    // The SyncUnit guaranties that one cycle after reset hybrid
+    // will be deasserted, which makes the CCU reset possible.
+    if ( start_exec && !(~parameter_buffer_all_hybrid_done && hybrid) )
+      next_state = `START;
+    else if (parameter_update_underway)
+      next_state = `UPDATE_PARAMETER;
+    else
+      next_state = `IDLE;
+  end
+  `ERROR: begin
+    next_state = `ERROR;
+  end
+  default: next_state = `ERROR;
+  endcase
+end
+
+// output generation
+always @(*)
+begin
+  // `EXECUTE state
+  single_edge_enable_special_actions = 1'b0;
+  ccu_load_en = 1'b0;
+  parameter_update_allowed = 1'b0;
+  use_sensor_data = 1'b1;
+  error = 1'b0;
+  err_vec = 0;
+
+  if (next_state == `START) begin
+    single_edge_enable_special_actions = enable_special_actions;
+    ccu_load_en = 1'b1;
+    use_sensor_data = 1'b0;
+  end else if (next_state == `UPDATE_PARAMETER) begin
+    parameter_update_allowed = (~parameter_buffer_empty && ~start_exec && enable_special_actions) || (~parameter_buffer_all_hybrid_done && hybrid);
+    use_sensor_data = 1'b0;
+  end else if (next_state == `IDLE) begin
+    parameter_update_allowed = (~parameter_buffer_empty && ~start_exec && enable_special_actions) || (~parameter_buffer_all_hybrid_done && hybrid);
+    use_sensor_data = 1'b0;
+  end else if (next_state == `ERROR) begin
+    parameter_update_allowed = 1'b0;
+    error = 1'b1;
+    err_vec[`ERROR_WIDTH-1] = sync_in && state == `EXECUTE || err_vec_sync[`ERROR_WIDTH-1];
+  end
+end
+// --- FSM END
+
+ComUnit #
+(
+  .CONTEXT_ADDR_WIDTH(MAX_CONTEXT_ADDR_WIDTH),
+  .RF_ADDR_WIDTH(RF_ADDR_WIDTH),
+  .OTHERID_WIDTH(OTHERID_WIDTH),
+  .PEID_WIDTH(PEID_WIDTH)
+)
+axi_interface
+(
+  .S_AXI_ACLK_I(AXI_ACLK_I),
+  .CGRA_CLK_I(CGRA_CLK_I),
+  .RST_N_I(RST_N_I),
+  .EN_I(EN_I),
+  .S_AXI_AWADDR_I(S_AXI_AWADDR_I),
+  .S_AXI_AWLEN_I(S_AXI_AWLEN_I),
+  .S_AXI_AWSIZE_I(S_AXI_AWSIZE_I),
+  .S_AXI_AWBURST_I(S_AXI_AWBURST_I),
+  .S_AXI_AWVALID_I(S_AXI_AWVALID_I),
+  .S_AXI_AWREADY_O(S_AXI_AWREADY_O),
+  .S_AXI_WDATA_I(S_AXI_WDATA_I),
+  .S_AXI_WSTRB_I(S_AXI_WSTRB_I),
+  .S_AXI_WLAST_I(S_AXI_WLAST_I),
+  .S_AXI_WVALID_I(S_AXI_WVALID_I),
+  .S_AXI_WREADY_O(S_AXI_WREADY_O),
+  .S_AXI_BRESP_O(S_AXI_BRESP_O),
+  .S_AXI_BVALID_O(S_AXI_BVALID_O),
+  .S_AXI_BREADY_I(S_AXI_BREADY_I),
+  .ENABLE_WRITE_CTRL_O(enable_write_ctrl),
+  .VALID_CONTEXT_O(valid_context),
+  .CONTROL_ADDR_O(control_addr),
+  .OFFSET_ADDR_O(w_offset_addr),
+  .PARAMETER_BUFFER_DESTINATION_O(parameter_buffer_destination),
+  .DATA_0_O(w_incoming_context_data_0),
+  §comUnitContextPorts§
+  .WR_EN_IDC_I(idc_wr_en),
+  .PARAMETER_BUFFER_FULL_I(parameter_buffer_full),
+  .PARAMETER_CLEANUP_I(parameter_update_allowed_sync)
+);
+
+WriteControl #
+(
+  .OTHER_ID_WIDTH(OTHERID_WIDTH),
+  .PE_ID_WIDTH(PEID_WIDTH)
+)
+wr_cntrl
+( 
+  .CGRA_CLK_I(CGRA_CLK_I),
+  .EN_I(EN_I),
+  .RST_N_I(RST_N_I),
+  .EN_CONTROLLER_I(enable_write_ctrl),
+  .VALID_CONTEXT_I(valid_context),
+  .CONTROL_ADDR_I(control_addr),
+  .PARAMETER_UPDATE_ALLOWED_I(parameter_update_allowed_sync),
+  .PE_ID_I(parameter_target_pe),
+  // control
+  .IS_PELOG_CONTEXT_O(is_peLog_context),
+  §wrCtrlPeEnPorts§ 
+  .CONTEXT_WREN_CCU_O(ccu_context_wr_en),
+  .CONTEXT_WREN_CBOX_O(cbox_context_wr_en),
+  .CONTEXT_WREN_IDC_O(idc_wr_en),
+  .CONTEXT_WREN_GLOG_O(glog_context_wr_en),
+  .CONTEXT_WREN_ACTOR_O(actor_context_wr_en),
+  .CONTEXT_WREN_SENSOR_O(sensor_context_wr_en),
+  .PARAMETER_BUFFER_WREN_O(parameter_buffer_wr_en),
+  .PARAMETER_BUFFER_IS_HYBRID_O(parameter_buffer_is_hybrid),
+  .PARAMETER_BUFFER_EXP_WREN_O(parameter_buffer_exp_wr_en),
+  .SYNCUNIT_STATE_CHANGE_O(syncUnit_state_change),
+  .SYNCUNIT_INTERVAL_CHANGE_O(syncUnit_interval_change),
+  .SYNCUNIT_SPECIAL_ACTION_COUNTER_RST_CHANGE_O(special_action_counter_reset_val_change),
+  .LOG_DEST_CHANGE_O(logDestWrEn),
+  .LOG_DEST_BOUND_CHANGE_O(logDestBoundWrEn),
+  .LOG_DEST_INC_CHANGE_O(logDestIncWrEn),
+  .OCM_DEST_CHANGE_O(ocmDestWrEn),
+  .OCM_DEST_BOUND_CHANGE_O(ocmDestBoundWrEn),
+  .OCM_DEST_INC_CHANGE_O(ocmDestIncWrEn),
+  .CONTEXT_WREN_OCM_O(ocmContextWrEn),
+  .CONTEXT_WREN_OCM_OUTPUT_O(ocmOutputContextWrEn),
+  .CONST_BUF_WREN_O(w_constBufferWrEn),
+  .PREPARE_PARAMETER_CONTEXT_O(parameter_context_preped),
+  .PE_CONTEXT_ENABLE_O(context_wr_en)
+);
+
+ParameterBuffer #
+(
+  .BUFFER_SIZE(§parameterBufferSize§),
+  .PARAMETER_WIDTH(C_S_AXI_DATA_WIDTH),
+  .PE_ID_WIDTH(PEID_WIDTH),
+  .RF_WIDTH(RF_ADDR_WIDTH),
+  .COUNTER_WIDTH(§parameterBufferCntrWidth§)
+)
+parameterBuffer
+(
+  .EN_I(EN_I),
+  .CGRA_CLK_I(CGRA_CLK_I),
+  .RST_N_I(RST_N_I),
+  .WRITE_EN_PARAMETER_COUNT_I(parameter_buffer_exp_wr_en),
+  .EXPECTED_PARAMETER_COUNT_I(w_incoming_context_data_0[`PARAMETER_BUFFER_EXPECTED_COUNTER_WIDTH-1:0]),
+  .WRITE_EN_I(parameter_buffer_wr_en),
+  .IS_HYBRID_PARAMETER_I(parameter_buffer_is_hybrid),
+  .SYNC_IN_I(sync_in),
+  .NEXT_I(parameter_update_allowed_sync),
+  .DATA_I(w_incoming_context_data_0),
+  .DESTINATION_I(parameter_buffer_destination),
+  .FULL_O(parameter_buffer_full),
+  .EMPTY_O(parameter_buffer_empty),
+  .ALL_HYBRID_PARAMETERS_DONE_O(parameter_buffer_all_hybrid_done),
+  .DATA_O(parameter_data),
+  .DESTINATION_PE_O(parameter_target_pe),
+  .DESTINATION_RF_OFFSET_O(rf_wr_addr)
+);
+
+SyncUnit #
+(
+  .CONTEXT_ADDR_WIDTH(CONTEXT_ADDR_WIDTH),
+  .CYCLE_COUNTER_WIDTH(§cycleCounterWidth§),
+  .INCOMING_DATA_WIDTH(§syncUnitDataWidth§),
+  .RUN_COUNTER_WIDTH(§runCounterWidth§),
+  .SPECIAL_ACTION_COUNTER_WIDTH(16)
+)
+syncUnit
+(
+  .EN_I(EN_I),
+  .CGRA_CLK_I(CGRA_CLK_I),
+  .RST_N_I(RST_N_I),
+  .STATE_CHANGE_I(syncUnit_state_change),
+  .INTERVAL_CHANGE_I(syncUnit_interval_change),
+  .SPECIAL_ACTION_COUNTER_RESET_VAL_CHANGE_I(special_action_counter_reset_val_change),
+  .DATA_I(w_incoming_context_data_0[§syncUnitDataWidth§-1:0]),
+  .SENSOR_WRITES_COMPLETE_I(SENSOR_DONE_I),
+  .RUN_STARTED_I(ccu_load_en_sync),
+  .ENABLE_SPECIAL_ACTIONS_O(enable_special_actions),
+  .TRIGGER_RUN_O(start_exec),
+  .IS_HYBRID_O(hybrid),
+  .SYNC_IN_O(sync_in),
+  .START_ADDR_O(start_addr),
+  .RUN_COUNTER(run_counter)
+);
+
+OCMBuffer ocm_buffer (
+  .EN_I(EN_I),
+  .CGRA_CLK_I(CGRA_CLK_I),
+  .AXI_ACLK_I(AXI_ACLK_I),
+  .RST_N_I(RST_N_I),
+  .SYNC_IN_I(sync_in),
+  .CCNT_I(w_ccnt),
+  .ERROR_I(err_vec_sync),
+  .OCM_SEND_DONE_O(ocm_send_done),
+  .DEST_WREN_I(ocmDestWrEn),
+  .DEST_BOUND_WREN_I(ocmDestBoundWrEn),
+  .DEST_INC_WREN_I(ocmDestIncWrEn),
+  .BUFFER_CONTEXT_WREN_I(ocmContextWrEn),
+  .OUTPUT_CONTEXT_WREN_I(ocmOutputContextWrEn),
+  .CONTEXT_ADDR_I(w_offset_addr[§maxOCMContextAddrWidth§-1:0]),
+  .DATA_I(w_incoming_context_data_0),
+  §PEDirectOutPorts§
+  .OCM_AWLEN_O(M_OCM_AWLEN_O),
+  .OCM_AWSIZE_O(M_OCM_AWSIZE_O),
+  .OCM_AWBURST_O(M_OCM_AWBURST_O),
+  .OCM_AWADDR_O(M_OCM_AWADDR_O),
+  .OCM_AWVALID_O(M_OCM_AWVALID_O),
+  .OCM_AWREADY_I(M_OCM_AWREADY_I),
+  .OCM_WDATA_O(M_OCM_WDATA_O),
+  .OCM_WSTRB_O(M_OCM_WSTRB_O),
+  .OCM_WLAST_O(M_OCM_WLAST_O),
+  .OCM_WVALID_O(M_OCM_WVALID_O),
+  .OCM_WREADY_I(M_OCM_WREADY_I),
+  .OCM_BREADY_O(M_OCM_BREADY_O),
+  .OCM_BVALID_I(M_OCM_BVALID_I),
+  .OCM_BRESP_I(M_OCM_BRESP_I)
+);
+
+LogBuffer log_buffer (
+  .EN_I(EN_I),
+  .CGRA_CLK_I(CGRA_CLK_I),
+  .AXI_ACLK_I(AXI_ACLK_I),
+  .RST_N_I(RST_N_I),
+  .SYNC_IN_I(sync_in),
+  .CCNT_I(w_ccnt),
+  .RUN_COUNTER_I(run_counter),
+  .LOG_SEND_DONE_O(log_send_done),
+  §logContextEnablePorts§ 
+  .IS_LOG_CONTEXT_I(is_peLog_context),
+  .GLOBAL_LOG_CONTEXT_WREN_I(glog_context_wr_en),
+  .DEST_WREN_I(logDestWrEn),
+  .DEST_BOUND_WREN_I(logDestBoundWrEn),
+  .DEST_INC_WREN_I(logDestIncWrEn),
+  .CONTEXT_ADDR_I(w_offset_addr[§maxLogContextAddrWidth§-1:0]),
+  .DATA_I(w_incoming_context_data_0),
+  §PEDirectOutPorts§ 
+  .LOG_AWLEN_O(M_LOG_AWLEN_O),
+  .LOG_AWSIZE_O(M_LOG_AWSIZE_O),
+  .LOG_AWBURST_O(M_LOG_AWBURST_O),
+  .LOG_AWADDR_O(M_LOG_AWADDR_O),
+  .LOG_AWVALID_O(M_LOG_AWVALID_O),
+  .LOG_AWREADY_I(M_LOG_AWREADY_I),
+  .LOG_WDATA_O(M_LOG_WDATA_O),
+  .LOG_WSTRB_O(M_LOG_WSTRB_O),
+  .LOG_WLAST_O(M_LOG_WLAST_O),
+  .LOG_WVALID_O(M_LOG_WVALID_O),
+  .LOG_WREADY_I(M_LOG_WREADY_I),
+  .LOG_BREADY_O(M_LOG_BREADY_O),
+  .LOG_BVALID_I(M_LOG_BVALID_I),
+  .LOG_BRESP_I(M_LOG_BRESP_I)
+);
+
+§rom_modules§
+
+SensorIF #
+(
+  .CGRA_CONTEXT_ADDR_WIDTH(CONTEXT_ADDR_WIDTH),
+  .CGRA_CONTEXT_SIZE(§contextmemorysize§)
+)
+sensor_interface
+(
+  .EN_I(EN_I),
+  .CGRA_CLK_I(CGRA_CLK_I),
+  .RST_N_I(RST_N_I),
+  .CCNT_I(w_ccnt),
+  .SENSOR_ADDR_O(sensor_addr),
+  .SENSOR_READ_EN_O(sensor_read_enable),
+  .CONTEXT_WRITE_EN_I(sensor_context_wr_en),
+  .CONTEXT_ADDR_I(w_offset_addr[CONTEXT_ADDR_WIDTH-1:0]),
+  .CONTEXT_DATA_I(w_context_data[§sensorContextOffset§])
+);
+
+ActorIF #
+(
+  .CGRA_CONTEXT_ADDR_WIDTH(CONTEXT_ADDR_WIDTH),
+  .CGRA_CONTEXT_SIZE(§contextmemorysize§)
+)
+actor_interface
+(
+  .EN_I(EN_I),
+  .CGRA_CLK_I(CGRA_CLK_I),
+  .RST_N_I(RST_N_I),
+  .CCNT_I(w_ccnt),
+  .SYNC_OUT_O(sync_out),
+  .ACTOR_WRITE_ADDR_O(actor_addr),
+  .ACTOR_SOURCE_PE_ID_O(actor_pe_id),
+  .ACTOR_WRITE_ENABLE_O(actor_write_enable),
+  .CONTEXT_WRITE_EN_I(actor_context_wr_en),
+  .CONTEXT_ADDR_I(w_offset_addr[CONTEXT_ADDR_WIDTH-1:0]),
+  .CONTEXT_DATA_I(w_context_data[§actorContextOffset§])
+);
+
+
+always @(*) begin
+  case(actor_pe_id)
+    §actorDataSelection§
+    default: actor_data = 0; 
+  endcase
+end
+
+wire [§nrOfCBoxOutputs§-1:0] predication;
+wire alu_reset;
+
+§if(branchselection)§
+wire branch_selection;
+§endif§
+
+// How the CCU is reset:
+// 1. On reset, the SyncUnit triggers an execution run and makes sure that its 
+//    own state remains unaffected by triggering this run (i.e. it is correctly reset)
+//    The start address driven by the SyncUnit after reset is context_size - 1.
+// 2. The top level FSM was reset to IDLE state and sees the execution trigger request
+//    one cycle after reset.
+// 3. The FSM transitions to state START and uses context_size - 1 as the start address,
+//    resetting the CCU in the process of doing so.
+// 4. The FSM transitions to state EXECUTE. This is save as the driven ccnt is the highest
+//    context entry.
+//    -> as expected, the CCU will now loop until another start request is issued
+//    -> all PEs will execute NOPs
+// 5. Right after this single execution cycle, the FSM transitions to state IDLE,
+//    the reset is complete now.
+// It should be impossible that this process is stopped, as the only thing which may 
+// prevent a reset, is an incoming write on the AXI slave. But this is also impossible
+// as the slave requires several cycles until it is able to process any writes to internals
+// of this CGRA (including the SyncUnit).
+ContextControlUnit #
+(
+  §ccntwidth§,
+  §contextmemorysize§
+)
+controlunit
+(
+  .CLK_I(CGRA_CLK_I),                                       §if(branchselection)§
+  .BRANCH_SELECTION_I(branch_selection),                    §endif§
+  .CONTEXT_DATA_I(w_context_data[§ccuContextOffset§]),
+  .CONTEXT_WR_ADDR_I(w_offset_addr[CONTEXT_ADDR_WIDTH-1:0]),
+  .CONTEXT_WR_EN_I(ccu_context_wr_en),
+  .ADDR_I(start_addr[§ccntwidth§-1:0]),
+  .LOAD_EN_I(ccu_load_en_sync),
+  .CCNT_O(w_ccnt),
+  .RST_ALU_O(alu_reset)
+);
+
+§wires_status§ 
+  
+CBoxWrapper cBoxWrapper(
+  .CLK_I(CGRA_CLK_I),
+  .CCNT_I(w_ccnt),                                          §statusIns§
+  .CONTEXT_DATA_I(w_context_data[§cboxContextOffset§]),
+  .CONTEXT_WR_ADDR_I(w_offset_addr[CONTEXT_ADDR_WIDTH-1:0]),
+  .CONTEXT_WR_EN_I(cbox_context_wr_en),
+  .PREDICATION_O(predication)                               §if(branchselection)§,
+  .BRANCH_SELECTION_O(branch_selection)                     §endif§
+);
+
+// Sensor or parameter data depending on FSM state.
+wire [`DATA_WIDTH-1:0] data_live_in; 
+assign data_live_in = use_sensor_data_sync ? SENSOR_DATA_I : parameter_data;
+
+§pes§
+
+endmodule
+>>
+
+peModule(ID,contextwidth,regFileAddrWidth,maskRFMuxLen,maskZeroPadding1Len,maskZeroPadding2Len,
+  maskZeroPadding3Len,maskZeroPadding4Len, constAccess)
+::= <<
+// We want to write to the highest ccnt value and 
+// make sure that we reset the prepared context entry to 0
+// right after writing the last parameter to this PE.
+wire parameter_context_write_enable_pe§ID§;
+assign parameter_context_write_enable_pe§ID§ = ctrl_parameterEn_pe§ID§ || parameter_update_oneMoreCycle;
+
+// Context data required to write a parameter,
+// make sure to clear all bits of the written entry after using it the last time.
+wire [§contextwidth§-1:0] preped_context_pe§ID§;
+assign preped_context_pe§ID§ = ctrl_parameterEn_pe§ID§ ? 
+    { {1'b1},{§maskZeroPadding4Len§'b0},{1'b1},{§maskZeroPadding3Len§'b0},{rf_wr_addr[§regFileAddrWidth§-1:0]},
+    {§maskZeroPadding2Len§'b0},{§maskRFMuxLen§'b1},{§maskZeroPadding1Len§'b0} } : // the prepared context
+    0; // clears the prepared context
+
+// Enable the context of this PE if this is not a PE Log Context write
+wire context_write_enable_pe§ID§;
+assign context_write_enable_pe§ID§ = ctrl_contextEn_pe§ID§ && ~is_peLog_context;
+
+>>
+
+// Old assignments to PE wires, not really used any more 
+/*assign w_context_data_pe§ID§ = ctrl_parameterEn_pe§ID§ ? preped_context_pe§ID§ : parameter_update_oneMoreCycle ? 0 : w_context_data[§contextOffset§];
+assign w_offset_addr_pe§ID§ = parameter_update_oneMoreCycle || ctrl_parameterEn_pe§ID§ ? {§ccntwidth§{1'b1}} : w_offset_addr[CONTEXT_ADDR_WIDTH-1:0];
+assign write_enable_context_pe§ID§ = (ctrl_contextEn_pe§ID§ && ~is_peLog_context) || ctrl_parameterEn_pe§ID§ || parameter_update_oneMoreCycle;
+assign preped_context_pe§ID§ = { {1'b1},{§maskZeroPadding4Len§'b0},{1'b1},{§maskZeroPadding3Len§'b0},{rf_wr_addr[§regFileAddrWidth§-1:0]},{§maskZeroPadding2Len§'b0},{§maskRFMuxLen§'b1},{§maskZeroPadding1Len§'b0} };*/

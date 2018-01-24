@@ -1,0 +1,61 @@
+document(pictures)
+::= <<
+\documentclass[tikz,20pt]{standalone}
+
+\usepackage[utf8]{inputenc}
+
+
+
+\usepackage{amssymb,amsmath,color,graphicx}
+
+  \usepackage{pgfplots,filecontents}
+  \usepackage{pgf}
+  \usepackage{tikz}
+
+\begin{document}
+	\definecolor{tud2b}{RGB}{0,131,204}
+	\definecolor{tud4b}{RGB}{153,192,0}
+	\definecolor{tud7b}{RGB}{245,163,0}
+	\definecolor{tud9b}{RGB}{230,0,26}
+
+       §pictures§
+      %\endpgfgraphicnamed     
+ % \end{figure}
+\end{document}
+
+>>
+
+
+
+
+pic(appName, scalePlot, scaleXaxis,scaleYaxis)
+::= <<
+
+\begin{tikzpicture} 
+	\begin{axis}[ ylabel near ticks, yticklabel pos=right, ylabel={Speedup}, ytick pos = right, axis x line=none, height=5cm,width=11cm, ymin = 0, ymax = §scaleYaxis§, xmin=0, xmax= §scaleXaxis§, enlargelimits=0.15, legend style={at={(0.5,-0.45)}, anchor=north,legend columns=2}, xtick=data, x tick label style={rotate=30,anchor=east}]
+	\end{axis}
+	\begin{axis}[height=5cm,width=11cm, ybar = 1, bar width = 1.5, ytick pos = left, enlargelimits=0.15, legend style={at={(0.5,-0.45)}, anchor=north,legend columns=2}, ylabel={Percent}, xtick=data, x tick label style={rotate=30,anchor=east}, xlabel=Problem Scale]
+		\addplot[black,fill = black, thick] table [x=benchmarkScale, y expr=\thisrow{application:§appName§} * §scalePlot§,] {speedup_SweepResult.txt} node at (axis cs:4,115) [anchor=north west] {§appName§};			
+		\addplot[tud9b,fill = tud9b, thick] table [x=benchmarkScale, y=application:§appName§,] {l1usage_SweepResult.txt}; 
+		\addplot[tud7b,fill = tud7b, thick] table [x=benchmarkScale, y=application:§appName§,] {l2usage_SweepResult.txt}; 
+		\addplot[tud4b,fill = tud4b, thick] table [x=benchmarkScale, y=application:§appName§,] {communicationOverhead_SweepResult.txt}; 
+		\addplot[tud2b,fill = tud2b, thick] table [x=benchmarkScale, y=application:§appName§,] {dmaOverhead_SweepResult.txt}; 
+		\legend{Speedup, L1 Cache Utilization, L2 Cache Utilization, Communication overhead, DMA overhead} 
+	\end{axis}
+\end{tikzpicture}
+
+>>
+
+pic2(appName, scaleXaxis)
+::= <<
+
+%\begin{tikzpicture} 
+%	\begin{axis}[ ylabel near ticks, yticklabel pos=right, ylabel={Speedup}, ytick pos = right, axis x line=none, height=5cm,width=11cm, xmin=0, xmax= §scaleXaxis§, enlargelimits=0.15, legend style={at={(0.5,-0.45)}, anchor=north,legend columns=2}, xtick=data, x tick label style={rotate=30,anchor=east}]
+%	\end{axis}
+%	\begin{axis}[height=5cm,width=11cm, ybar = 1,ymin = 0, ymax = 3, bar width = 1.5, ytick pos = left, enlargelimits=0.15, legend style={at={(0.5,-0.45)}, anchor=north,legend columns=2}, ylabel={Cycles}, xtick=data, x tick label style={rotate=30,anchor=east}, xlabel=Problem Scale]
+%		\addplot[tud2b,fill = tud2b, thick] table [x=benchmarkScale, y=application:§appName§] {memTime_SweepResult.txt} node at (axis cs:4,3) [anchor=north west] {§appName§};			
+%		\legend{Average memory access time in cycles} 
+%	\end{axis}
+%\end{tikzpicture}
+
+>>

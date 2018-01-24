@@ -1,0 +1,46 @@
+{
+"parameter" : 
+	{
+	"UNROLL" : [4]
+	},
+"application" :
+	[
+	
+		"de/amidar/crypto/AESTest_rkg_orig",
+		"de/amidar/crypto/DESedeTest_rkg_orig",
+		"de/amidar/crypto/BlowfishTest_rkg_orig",
+		"de/amidar/crypto/IDEATest_rkg_orig",
+		"de/amidar/crypto/RC6Test_rkg_orig",
+		"de/amidar/crypto/SerpentTest_rkg_orig",
+		"de/amidar/crypto/SkipjackTest_rkg_orig",
+		"de/amidar/crypto/TwofishTest_rkg_orig",
+		"de/amidar/crypto/XTEATest_rkg_orig",
+		
+		"de/amidar/crypto/AESTest_sbe_orig",
+		"de/amidar/crypto/DESedeTest_sbe_orig",
+		"de/amidar/crypto/BlowfishTest_sbe_orig",
+		"de/amidar/crypto/IDEATest_sbe_orig",
+		"de/amidar/crypto/RC6Test_sbe_orig",
+		"de/amidar/crypto/SerpentTest_sbe_orig",
+		"de/amidar/crypto/SkipjackTest_sbe_orig",
+		"de/amidar/crypto/TwofishTest_sbe_orig",
+		"de/amidar/crypto/XTEATest_sbe_orig",
+		
+		"de/amidar/digests/BLAKE256Test_orig",
+		"de/amidar/digests/CubeHash512Test_orig",
+		"de/amidar/digests/ECOH256Test_orig",
+		"de/amidar/digests/MD5Test_orig",
+		"de/amidar/digests/RadioGatun32Test_orig",
+		"de/amidar/digests/SHA1Test_orig",
+		"de/amidar/digests/SHA256Test_orig",
+		"de/amidar/digests/SIMD512Test_orig",
+		
+		"de/amidar/filter/ContrastFilterTest_pixel",
+		"de/amidar/filter/GrayscaleFilterTest_pixel",
+		"de/amidar/filter/SobelFilterTest_pixel_orig",
+		"de/amidar/filter/SwizzleFilterTest_pixel",
+		
+		"net/spy/photo/JpegEncode"
+	]
+
+}

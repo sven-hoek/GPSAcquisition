@@ -1,0 +1,12 @@
+ {
+"name" : "CGRA_4pe_vn",
+"composition" : "CGRA_9_comp.json",
+"CacheConfig" : "config/FU/Cache/Cache.json",
+"htCacheConfig" : "config/FU/Cache/HTCache.json",
+
+"staticEnergy" : 0.2,
+	"SENDLOCALVAR" :					{"energy": 1.3, "duration": 1},
+	"RUN" :           					{"energy": 1.3, "duration": 1},
+	"WRITECONTEXT" :           			{"energy": 1.3, "duration": 1},
+	"RECEIVELOCALVAR" :					{"energy": 1.3, "duration": 1}
+}

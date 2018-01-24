@@ -1,0 +1,89 @@
+ConstBuf(peConnections, mems)
+::= <<
+`ifndef INCLUDE_CONSTBUF
+`define INCLUDE_CONSTBUF
+
+`include "ultrasynth.vh"
+`include "cgra.vh"
+`include "constbuf.vh"
+
+module ConstBuf
+(
+input wire CGRA_CLK_I,
+input wire RST_N_I,
+input wire EN_I,
+{peConnections}
+input wire WRITE_ENABLE_I,
+input wire [`CONST_BUF_ADDR_WIDTH-1:0] WRITE_ADDR_I,
+input wire [`DATA_WIDTH-1:0] DATA_I
+);
+
+{mems}
+
+endmodule
+
+module Memory 
+(
+	input wire CGRA_CLK_I,
+	input wire RST_N_I,
+	input wire EN_I,
+	input wire WRITE_ENABLE_I,
+	input wire [`CONST_BUF_ADDR_WIDTH-1:0] WRITE_ADDR_I,
+	input wire [`DATA_WIDTH-1:0] DATA_I,
+	input wire READ_ENABLE_I,
+	input wire [`CONST_BUF_ADDR_WIDTH-1:0] READ_ADDR_I,
+	input wire [`CONST_BUF_ACCESS_SIZE_WIDTH-1:0] READ_SIZE_I,
+	output wire [`DATA_WIDTH-1:0] DATA_O
+);
+
+(* ram_style = "block" *) reg [`DATA_WIDTH-1:0] mem [`CONST_BUF_SIZE-1:0];
+reg [`DATA_WIDTH-1:0] mem_out;
+
+reg [`CONST_BUF_ACCESS_SIZE_WIDTH-1:0] reads_remaining;
+reg [`CONST_BUF_ADDR_WIDTH-1:0] next_read_addr;
+
+assign DATA_O = mem_out;
+
+always @(posedge CGRA_CLK_I) begin
+	if (~RST_N_I) begin
+		mem_out <= 0;
+		next_read_addr <= 0;
+		reads_remaining <= 0;
+	end else if (EN_I) begin
+		if (WRITE_ENABLE_I)
+			mem[WRITE_ADDR_I] <= DATA_I;
+
+		if (READ_ENABLE_I) begin
+			next_read_addr <= READ_ADDR_I + 1;
+			reads_remaining <= READ_SIZE_I;
+			mem_out <= mem[READ_ADDR_I];
+		end else if (reads_remaining != 0) begin
+			next_read_addr <= next_read_addr + 1;
+			reads_remaining <= reads_remaining - 1;
+			mem_out <= mem[next_read_addr];
+		end
+	end
+end
+
+endmodule
+`endif // INCLUDE_CONSTBUF
+>>
+
+MemInst(id)
+::= <<
+Memory mem{id} (
+	.CGRA_CLK_I(CGRA_CLK_I),
+	.RST_N_I(RST_N_I),
+	.EN_I(EN_I),
+	.WRITE_ENABLE_I(WRITE_ENABLE_I),
+	.WRITE_ADDR_I(WRITE_ADDR_I),
+	.DATA_I(DATA_I),
+	.READ_ENABLE_I(CONST_READ_ENABLE_PE{id}_I),
+	.READ_ADDR_I(CONST_READ_ADDR_PE{id}_I),
+	.READ_SIZE_I(CONST_READ_SIZE_PE{id}_I),
+	.DATA_O(CONST_READ_DATA_PE{id}_O)
+);
+
+>>
+
+

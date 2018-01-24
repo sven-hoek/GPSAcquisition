@@ -1,0 +1,236 @@
+<?xml version="1.0" ?>
+
+<project name="jvm_sim" default="compileall">
+	
+	<property name="runtype" value="-simple" />
+	<property name="config" value="config/amidar.json" />
+	<property name="application" value="de/amidar/ADPCMn" />
+	<property name="method" value="decode([IIII[I)I" />
+	<property name="synthesis" value="false" />
+	<property name="schedule" value="true" />
+	<property name="remoteUsername" value="remoteUserName" />
+	<property name="remoteHost" value="trav" />
+	<property name="remotePort" value="1099" />
+
+	
+	<target name="apiinit">
+		<mkdir dir="../API/bin" />
+	</target>
+	
+	<target name="api" depends="apiinit">
+		<javac includeAntRuntime="false" srcdir="../API/src" destdir="../API/bin" source="1.4" target="1.4"
+			debug="true" debuglevel="lines,vars,source" />
+		<echo>api compilation complete</echo>
+		<touch file="../API/bin/timeStamp"/>
+	</target>
+
+	<target name="apiclean" depends="apiinit">
+		<delete dir="../API/bin" />
+		<echo>cleaned up api</echo>
+	</target>
+
+
+	<target name="appsinit">
+		<mkdir dir="../Applications/bin" />
+	</target>
+	
+	<target name="apps" depends="api, appsinit">
+		<javac includeAntRuntime="false" srcdir="../Applications/src" destdir="../Applications/bin" source="1.4" target="1.4"
+			classpath="../API/bin"
+			debug="true" debuglevel="lines,vars,source" />
+		<echo>application compilation complete</echo>
+		<touch file="../Applications/bin/timeStamp"/>
+	</target>
+
+	<target name="appsclean" depends="appsinit">
+		<delete dir="../Applications/bin" />
+		<echo>cleaned up applications</echo>
+	</target>
+
+
+	<target name="amidarinit">
+		<mkdir dir="../Amidar/bin" />
+	</target>
+	
+	<target name="amidar" depends="amidarinit, amidartools, axtloader, synthesis">
+		<javac includeAntRuntime="false" srcdir="../Amidar/src" destdir="../Amidar/bin" source="1.8" target="1.8"
+			classpath="../AXTLoader/bin:
+				../Synthesis/bin:
+				../AmidarTools/lib/axtConverter.jar:
+				../AmidarTools/lib/bcel-5.2.jar:
+				../AmidarTools/lib/commons-lang-2.6.jar:
+				../AmidarTools/lib/j-text-utils-0.3.3.jar:
+				../AmidarTools/lib/json-simple-1.1.1.jar:
+				../AmidarTools/lib/json-io-4.1.9.jar:
+				../AmidarTools/lib/lombok.jar:
+				../AmidarTools/bin:
+				../cgra/CGRA/bin"
+			debug="true" debuglevel="lines,vars,source" />
+		<echo>amidar compilation complete</echo>
+	</target>
+
+	<target name="amidarclean" depends="amidarinit">
+		<delete dir="../Amidar/bin" />
+		<echo>cleaned up amidar</echo>
+	</target>
+
+
+	<target name="amidartoolsinit">
+		<mkdir dir="../AmidarTools/bin" />
+	</target>
+	
+	<target name="amidartools" depends="amidartoolsinit">
+		<javac includeAntRuntime="false" srcdir="../AmidarTools/src" destdir="../AmidarTools/bin" source="1.8" target="1.8"
+			classpath="../AmidarTools/lib/axtConverter.jar:
+				../AmidarTools/lib/bcel-5.2.jar:
+				../AmidarTools/lib/commons-lang-2.6.jar:
+				../AmidarTools/lib/j-text-utils-0.3.3.jar:
+				../AmidarTools/lib/json-simple-1.1.1.jar:
+				../AmidarTools/lib/lombok.jar"
+			debug="true" debuglevel="lines,vars,source" />
+		<echo>amidartools compilation complete</echo>
+	</target>
+
+	<target name="amidartoolsclean" depends="amidartoolsinit">
+		<delete dir="../AmidarTools/bin" />
+		<echo>cleaned up amidartools</echo>
+	</target>
+	
+	
+	<target name="compileall" depends="api, apps">
+		<!--<fail status="2" />-->
+	</target>
+	
+
+	<target name="axtloaderinit">
+		<mkdir dir="../AXTLoader/bin" />
+	</target>
+	
+	<target name="axtloader" depends="axtloaderinit">
+		<javac includeAntRuntime="false" srcdir="../AXTLoader/src" destdir="../AXTLoader/bin" source="1.8" target="1.8"
+			classpath="../AmidarTools/lib/json-simple-1.1.1.jar"
+			debug="true" debuglevel="lines,vars,source" />
+		<echo>axtloader compilation complete</echo>
+	</target>
+
+	<target name="axtloaderclean" depends="axtloaderinit">
+		<delete dir="../AXTLoader/bin" />
+		<echo>cleaned up axtloader</echo>
+	</target>
+	
+
+	<target name="synthesisinit">
+		<mkdir dir="../Synthesis/bin" />
+	</target>
+	
+	<target name="synthesis" depends="synthesisinit, amidartools">
+		<javac includeAntRuntime="false" srcdir="../Synthesis/src" destdir="../Synthesis/bin" source="1.8" target="1.8"
+			classpath="../AmidarTools/bin:
+				../AmidarTools/lib/json-io-4.1.9.jar:
+				../AmidarTools/lib/json-simple-1.1.1.jar:
+				../cgra/CGRA/bin"
+			debug="true" debuglevel="lines,vars,source" />
+		<echo>synthesis compilation complete</echo>
+	</target>
+
+	<target name="synthesisclean" depends="synthesisinit">
+		<delete dir="../Synthesis/bin" />
+		<echo>cleaned up synthesis</echo>
+	</target>
+	
+	
+
+	<target name="run" depends="api, apps, amidar">
+		<java fork="true"
+			classname="amidar.AmidarSimulator"
+			classpath="../Amidar/bin:
+				../AmidarTools/bin:
+				../AmidarTools/lib/axtConverter.jar:
+				../AmidarTools/lib/bcel-5.2.jar:
+				../AmidarTools/lib/commons-lang-2.6.jar:
+				../AmidarTools/lib/j-text-utils-0.3.3.jar:
+				../AmidarTools/lib/json-simple-1.1.1.jar:
+				../AmidarTools/lib/json-io-4.1.9.jar:
+				../AmidarTools/lib/lombok.jar:
+				../AXTLoader/bin:
+				../Synthesis/bin:
+				../cgra/CGRA/bin">
+			<arg value="${runtype}" />
+			<arg value="${config}" />
+			<arg value="${application}" />
+			<arg value="${synthesis}" />
+		</java>
+	</target>
+	
+	<target name="synthesizeMethod" depends="api, apps, amidar">
+		<java fork="true"
+			classname="amidar.AmidarSimulator"
+			classpath="../Amidar/bin:
+				../AmidarTools/bin:
+				../AmidarTools/lib/axtConverter.jar:
+				../AmidarTools/lib/bcel-5.2.jar:
+				../AmidarTools/lib/commons-lang-2.6.jar:
+				../AmidarTools/lib/j-text-utils-0.3.3.jar:
+				../AmidarTools/lib/json-simple-1.1.1.jar:
+				../AmidarTools/lib/json-io-4.1.9.jar:
+				../AmidarTools/lib/lombok.jar:
+				../AXTLoader/bin:
+				../Synthesis/bin">
+			<arg value="-synthesize" />
+			<arg value="${config}" />
+			<arg value="${application}" />
+			<arg value="${method}" />
+			<arg value="${schedule}" />
+		</java>
+	</target>
+	
+	<target name="archive" depends="api, apps, amidar">
+		<jar destfile="../Amidar/jvm_sim.jar"
+			basedir="../Amidar/bin:
+				../AXTLoader/bin:
+				../Synthesis/bin:
+				../AmidarTools/lib/axtConverter.jar:
+				../AmidarTools/lib/bcel-5.2.jar:
+				../AmidarTools/lib/commons-lang-2.6.jar:
+				../AmidarTools/lib/j-text-utils-0.3.3.jar:
+				../AmidarTools/lib/json-simple-1.1.1.jar:
+				../AmidarTools/lib/json-io-4.1.9.jar:
+				../AmidarTools/lib/lombok.jar:
+				../AmidarTools/bin">
+			<manifest>
+				<attribute name="Main-Class" value="amidar.AmidarSimulator" />
+				<attribute name="Class-Path" value="../Application/bin" />
+			</manifest>
+		</jar>
+		<echo>sim creation complete</echo>
+	</target>
+
+	<target name="clean" depends="apiclean, appsclean, amidarclean, amidartoolsclean, axtloaderclean, synthesisclean">
+		<!-- xx -->
+	</target>
+	
+	<target name="installRemote">
+		<exec dir="src/amidar/sweep" executable="./installRemote.sh">
+			<arg value="${remoteUsername}"/>
+			<arg value="${remoteHost}"/>
+		</exec>
+		<echo>installed Amidar Remote Simulator on ${remoteHost}</echo>
+	</target>
+
+	<target name="startRemote" depends="installRemote">
+		<echo>working on ${remoteHost} now</echo>
+		<exec dir="src/amidar/sweep" executable="./startRemote.sh">
+			<arg value="${remoteUsername}"/>
+			<arg value="${remoteHost}"/>
+		</exec>
+	</target>
+	
+	<target name="stopRemote">
+		<echo>telling Amidar Remote Simulator on ${remoteHost} to stop now</echo>
+			<exec dir="src/amidar/sweep" executable="./stopRemote.sh">
+				<arg value="${remoteHost}"/>
+				<arg value="${remotePort}"/>
+			</exec>
+	</target>
+
+</project>

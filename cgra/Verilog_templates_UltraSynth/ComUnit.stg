@@ -1,0 +1,461 @@
+comUnit(idcSize, idcAddrWidth, moreDataPorts, moreDataPortAssignments, contextDataRegDecl, contextDataCascade, 
+		bufferValidContextGen, validContextGen, bigContexts, validDataCntrWidth, bigParameters, singleParamTransferCount,
+		paramValidCounterWidth)
+::= <<
+`include "axiinterface.vh"
+`include "cgra.vh"
+
+module ComUnit #
+(
+parameter integer CONTEXT_ADDR_WIDTH = -1,
+parameter integer RF_ADDR_WIDTH = -1, // the max RF address width (out of all PEs)
+parameter integer OTHERID_WIDTH = -1,
+parameter integer PEID_WIDTH = -1,
+parameter integer IDC_SIZE = §idcSize§,
+parameter integer IDC_ADDR_WIDTH = §idcAddrWidth§,
+parameter integer IDC_WIDTH = PEID_WIDTH + RF_ADDR_WIDTH
+)
+(
+/* S_AXI I/O start */
+input wire  S_AXI_ACLK_I,
+input wire  CGRA_CLK_I,
+input wire  RST_N_I,
+input wire  EN_I,
+input wire [`SLAVE_DATA_WIDTH-1:0] S_AXI_AWADDR_I,
+input wire [7:0] S_AXI_AWLEN_I,
+input wire [2:0] S_AXI_AWSIZE_I,
+input wire [1:0] S_AXI_AWBURST_I,
+input wire  S_AXI_AWVALID_I,
+output wire  S_AXI_AWREADY_O,
+input wire [`SLAVE_DATA_WIDTH-1:0] S_AXI_WDATA_I,
+input wire [(`SLAVE_DATA_WIDTH/8)-1:0] S_AXI_WSTRB_I,
+input wire  S_AXI_WLAST_I,
+input wire  S_AXI_WVALID_I,
+output wire  S_AXI_WREADY_O,
+output wire [1:0] S_AXI_BRESP_O,
+output wire  S_AXI_BVALID_O,
+input wire  S_AXI_BREADY_I,
+/* S_AXI I/O end */
+
+/* WriteControl output start */
+output wire  ENABLE_WRITE_CTRL_O, // enables the WriteControl module
+output wire  VALID_CONTEXT_O, // declares that enough context data has been accumulated to write contexts > 32 bit
+output wire [`ADDR_CONTROL_WIDTH-1:0] CONTROL_ADDR_O, // the control info of the current address
+output wire [`ADDR_OFFSET_WIDTH-1:0] OFFSET_ADDR_O, // the offset to write to (e.g. a context memory address)
+output wire [IDC_WIDTH-1:0] PARAMETER_BUFFER_DESTINATION_O, // specifies the destination of a parameter, stored in the parameter buffer until it is written to its final destination
+/* WriteControl output end */
+
+/* data output start */
+output wire [`SLAVE_DATA_WIDTH-1:0] DATA_0_O, // + further ports if context width > 32 bit
+§moreDataPorts§
+/* data output end */
+
+/* feedback inputs */
+input wire 	WR_EN_IDC_I,
+input wire 	PARAMETER_BUFFER_FULL_I,
+input wire 	PARAMETER_CLEANUP_I
+);
+/* --- S_AXI internal signals start --- */
+
+// AXI4FULL signals
+wire [`SYSTEM_ADDR_WIDTH-1:0] S_AXI_AWADDR;
+wire [7:0] S_AXI_AWLEN;
+wire [2:0] S_AXI_AWSIZE;
+wire [1:0] S_AXI_AWBURST;
+wire  S_AXI_AWVALID;
+wire  S_AXI_AWREADY;
+wire [`SLAVE_DATA_WIDTH-1:0] S_AXI_WDATA;
+wire [(`SLAVE_DATA_WIDTH/8)-1:0] S_AXI_WSTRB;
+wire  S_AXI_WLAST;
+wire  S_AXI_WVALID;
+wire  S_AXI_WREADY;
+wire [1:0] S_AXI_BRESP;
+wire  S_AXI_BVALID;
+wire  S_AXI_BREADY;
+
+reg axi_awready;
+reg axi_wready;
+reg axi_bvalid;
+reg [2-1:0] axi_bresp;
+
+// I/O Connections assignments
+assign S_AXI_AWREADY = axi_awready;
+assign S_AXI_WREADY	= axi_wready;
+assign S_AXI_BRESP	= axi_bresp;
+assign S_AXI_BVALID	= axi_bvalid;
+
+/* --- S_AXI internal signals end --- */
+
+/* --- data --- */
+reg [`SLAVE_DATA_WIDTH-1:0] filtered; // incoming data, filtered by using the write strobe signal
+reg [`SLAVE_DATA_WIDTH-1:0] data_0; // output to be written to contexts
+§contextDataRegDecl§
+
+/* --- internal burst handling --- */
+// incoming burst infos, used to check for currently invalid operations 
+reg [8-1:0]                  incoming_len; 
+reg [2-1:0]                  incoming_type;
+reg [`ADDR_OFFSET_WIDTH-1:0] 	incoming_offset;
+reg [`ADDR_CONTROL_WIDTH-1:0] 	incoming_control;
+
+// current burst infos, burst_offset or burst_control may be manipulated during the transaction processing
+reg [8-1:0]                  burst_len; 
+reg [2-1:0]                  burst_type;
+reg [`ADDR_OFFSET_WIDTH-1:0]  	burst_offset; // burst_offset, address for writing to context memories
+reg [`ADDR_CONTROL_WIDTH-1:0] 	burst_control; // control info for the current transaction
+
+reg 	burst_hold; // latches the inverted valid_context	signal and forces an address change low
+reg 	valid_context; // is only high if there is enough data available to write one context entry of the current transaction target
+reg [8-1:0] transfer_cntr; // default 0, tracks (for the current burst) the amount of transfers already done
+reg 	burst_underway; // states that there was a valid (AWVALID) address for the current burst
+§if(bigContexts)§
+reg 	ctrl_was_triggered; /* stores the last value of enable_write_ctrl to check if write control was enabled */
+reg 	[§validDataCntrWidth§-1:0] valid_data_cntr; /* counts how many transfers were done to evaluate if there is enough data for a context write */
+§endif§
+wire 	enable_write_ctrl; // enables the Write_Control module
+wire 	hold_transactions; // collects all conditions which force the slave to not take in any more data (for the time being)
+wire 	allowed_to_proceed; // indicates that a burst is allowed to be carried out
+wire 	burst_en_wrap; // wrap enable for the wrapping AXI burst
+
+assign burst_en_wrap = ((burst_offset & burst_len) == burst_len) ? 1'b1 : 1'b0;
+
+/* --- idContext --- */
+ (* ram_style = "block" *) reg [IDC_WIDTH-1:0] idContext [IDC_SIZE-1:0];
+reg [IDC_WIDTH-1:0] idContext_out; // idc output helper signal, in sync with data_0
+
+/* --- output assignments --- */
+assign ENABLE_WRITE_CTRL_O = enable_write_ctrl;
+assign VALID_CONTEXT_O = valid_context;
+assign CONTROL_ADDR_O = burst_control;
+assign OFFSET_ADDR_O = burst_offset;
+assign PARAMETER_BUFFER_DESTINATION_O = idContext_out;
+assign DATA_0_O = data_0; // + further assignments if context width > 32 bit
+§moreDataPortAssignments§
+
+/* --- handle write strobes and unaligned data --- */
+
+/*
+ * Does not support unaligned 4/2 byte transfers,
+ */
+always @(*) begin
+	filtered[32-1:0] = 0;
+	if (S_AXI_AWSIZE == 3'b000) // 1 byte transfer
+		filtered[8-1:0] = S_AXI_WSTRB[0] ? S_AXI_WDATA[8-1:0] :
+						  S_AXI_WSTRB[1] ? S_AXI_WDATA[16-1:8] :
+						  S_AXI_WSTRB[2] ? S_AXI_WDATA[24-1:16] : S_AXI_WDATA[32-1:24];
+	else if (S_AXI_AWSIZE == 3'b001) // 2 byte transfer
+		filtered[16-1:0] = S_AXI_WSTRB[0] ? S_AXI_WDATA[16-1:0] : 
+						   S_AXI_WSTRB[2] ? S_AXI_WDATA[24-1:8] : S_AXI_WDATA[32-1:16];
+	else 
+		filtered[32-1:0] = S_AXI_WDATA[32-1:0]; // 4 byte transfer
+end
+
+/* --- handle incoming and internal data/info ------------- */
+
+// data and start address latching
+always @(posedge CGRA_CLK_I) begin
+	if (~RST_N_I) begin
+		data_0 <= 0;
+		§if(bigContexts)§
+		ctrl_was_triggered <= 1'b0;
+		§endif§
+	end else if (EN_I) begin
+		// data
+		if (enable_write_ctrl)
+			data_0 <= filtered;
+
+		§if(bigContexts)§
+		ctrl_was_triggered <= enable_write_ctrl;
+
+		/* helps with changing intervals between ops 
+		 * (e.g. fast reading from the buffer but suddenly having to wait for new arrivals) 
+		 * ctrl_was_triggered actually implicates that data was available */
+		if (ctrl_was_triggered) begin
+			data_1 <= data_0;
+			§contextDataCascade§
+		end
+		§endif§
+	end
+end
+
+
+/* This block handles incoming information, prepares the next burst
+ * or increments the address used in the current burst. The process works like this: 
+ * AWVALID HIGH ->  save all needed information in incoming_*, save AWVALID to burst_underway
+ * during the next cycle -> generate allowed_to_proceed
+ * at the next rising clock edge -> write incoming_* to burst_*, set the WriteControl enable based on WVALID and allowed_to_proceed */
+always @(posedge CGRA_CLK_I) begin
+	if (RST_N_I == 1'b0) begin
+		incoming_len <= 8'hff;
+		incoming_type <= 0;
+		incoming_offset <= {`ADDR_OFFSET_WIDTH{1'b1}};
+		incoming_control <= 0;
+		burst_len <= 8'hff;
+		burst_type <= 0;
+		burst_offset <= {`ADDR_OFFSET_WIDTH{1'b1}};
+		burst_control <= 0;
+	end 
+	else if (EN_I) begin
+		if (S_AXI_AWVALID && S_AXI_AWREADY) begin
+			incoming_len <= S_AXI_AWLEN;
+			incoming_type <= S_AXI_AWBURST;
+			incoming_offset <= S_AXI_AWADDR[`ADDR_OFFSET_HIGH+`ULTRASYNTH_SYSTEM_ADDR_OFFSET:`ADDR_OFFSET_LOW+`ULTRASYNTH_SYSTEM_ADDR_OFFSET];
+			incoming_control <= S_AXI_AWADDR[`ADDR_CONTROL_HIGH+`ULTRASYNTH_SYSTEM_ADDR_OFFSET:`ADDR_CONTROL_LOW+`ULTRASYNTH_SYSTEM_ADDR_OFFSET];
+		end
+
+		// if no burst is running => get new info
+		if (transfer_cntr == 0 && burst_underway) begin 
+			burst_len <= incoming_len;
+			burst_type <= incoming_type;
+			burst_offset <= incoming_offset;
+			burst_control <= incoming_control;
+		end
+		else if (enable_write_ctrl) begin
+			if (burst_type == 2'b00 || burst_hold)
+				burst_offset <= burst_offset; // hold the address while waiting for more data (data item > 32 bit)
+			else if (burst_type == 2'b10 && burst_en_wrap)
+				burst_offset <= burst_offset - burst_len;
+			else
+				burst_offset <= burst_offset + 1;
+		end
+	end // if(EN_I)
+end
+
+/* --- internal burst management ------------------- */
+
+/* This block generates the 'valid_context' signal.
+ * The signals value is driven to high if the last bits of 'valid_data_cntr' match the context length
+ * of a context counted in 32 bit steps, starting at 0 (meaning a size <= 32 bits). 
+ * This block uses the template validContextGenLine, located at the EOF */
+always @(*) begin
+	§if(bigParameters)§
+	if (incoming_control[`GENERAL_TARGET_SELECTION_HIGH:`GENERAL_TARGET_SELECTION_LOW] == `GENERAL_TARGET_PARAMETER) begin
+		// We are trying to write big parameters
+		if (§singleParamTransferCount§ == valid_data_cntr[§paramValidCounterWidth§-1:0])
+			valid_context = 1'b1;
+		else
+			valid_context = 1'b0;
+	end else begin §endif§
+		case(burst_control[`TARGET_ID_HIGH:`TARGET_ID_LOW])
+		§validContextGen§
+		default: valid_context = 1'b1;
+		endcase
+	§if(bigParameters)§
+	end §endif§
+end
+
+always @(posedge CGRA_CLK_I) begin
+	if (RST_N_I == 1'b0) begin
+		transfer_cntr <= 0;
+		burst_hold <= 1'b1;
+		§if(bigContexts)§
+		valid_data_cntr <= 0;
+		§endif§
+	end
+	else if (EN_I && enable_write_ctrl) begin
+		burst_hold <= ~valid_context;
+		
+		if (transfer_cntr == burst_len) begin // prepare the next burst, or ...
+			transfer_cntr <= 0;
+			§if(bigContexts)§
+			valid_data_cntr <= 0;
+			§endif§
+		end else if (burst_underway) begin // ... continue with next transfer of the current burst
+			transfer_cntr <= transfer_cntr + 1;
+
+			§if(bigContexts)§
+			if (valid_context)
+				valid_data_cntr <= 0;
+			else
+				valid_data_cntr <= valid_data_cntr + 1;
+			§endif§
+		end
+	end
+end
+
+
+/* --- AXI based enable -------------------------------------------------- */
+
+/*
+ * Checks incoming burst information for a currently invalid operation. 
+ * (e.g. a full parameter buffer while writing parameters).
+ */
+assign hold_transactions = !(incoming_control[`GENERAL_TARGET_SELECTION_HIGH:`GENERAL_TARGET_SELECTION_LOW] == `GENERAL_TARGET_PARAMETER && PARAMETER_BUFFER_FULL_I)
+							&& !(incoming_control[`GENERAL_TARGET_SELECTION_HIGH:`GENERAL_TARGET_SELECTION_LOW] == `GENERAL_TARGET_PE && PARAMETER_CLEANUP_I);
+
+/*
+ * Is only asserted if there was a asserted AWVALID for this burst 
+ * (stored in "burst_underway" until WLAST) without an hold request.
+ */
+assign allowed_to_proceed = burst_underway && hold_transactions && !(enable_write_ctrl && S_AXI_WLAST);
+
+/*
+ * Availability of data and actually being ready to take in data marks the moment in which 
+ * WriteControl will be enabled.
+ */
+assign enable_write_ctrl = S_AXI_WVALID && S_AXI_WREADY;
+
+/* 
+ * Generates the WriteControl enable signal while keeping track of if there
+ * was a valid address for the current transaction.
+ */
+always @(posedge CGRA_CLK_I) begin
+	if (RST_N_I == 1'b0) begin
+		burst_underway <= 1'b0;
+	end else if (EN_I) begin
+		if (S_AXI_AWVALID && S_AXI_AWREADY)
+			burst_underway <= 1'b1;
+		else if (enable_write_ctrl && S_AXI_WLAST)
+			burst_underway <= 1'b0;
+	end
+end
+
+/* --- idContext read and write -------------------------------------------------- */
+
+always @(posedge CGRA_CLK_I) begin
+	if (EN_I) begin
+		if (WR_EN_IDC_I)
+			idContext[burst_offset[IDC_ADDR_WIDTH-1:0]] <= data_0[IDC_WIDTH-1:0];
+		idContext_out <= idContext[burst_offset[IDC_ADDR_WIDTH-1:0]];
+	end
+end
+
+/* --- S_AXI outside protocol handling start --- */
+
+// Implement axi_awready generation
+always @( posedge CGRA_CLK_I ) begin
+	if ( RST_N_I == 1'b0 ) begin
+		axi_awready <= 1'b0;
+		axi_bresp <= 2'b0;
+	end else if (EN_I) begin
+		axi_awready <= !(axi_awready && S_AXI_AWVALID) && ~burst_underway;
+
+		if (S_AXI_AWVALID)
+			axi_bresp <= 2'b00; // OKAY
+	end 
+end  
+
+// Implement axi_wready generation
+always @( posedge CGRA_CLK_I ) begin
+	if (RST_N_I == 1'b0) begin
+		axi_wready <= 1'b0;
+	end else if (EN_I) begin
+		axi_wready <= allowed_to_proceed;
+	end 
+end       
+
+// Implement write response logic generation
+always @(posedge CGRA_CLK_I) begin
+	if ( RST_N_I == 1'b0 ) begin
+		axi_bvalid <= 0;  
+	end else begin    
+		if (axi_wready && S_AXI_WVALID && S_AXI_WLAST && EN_I) begin
+			axi_bvalid <= 1'b1; 
+		end else if (S_AXI_BREADY && axi_bvalid) begin
+			//check if bready is asserted while bvalid is high) 
+			//(there is a possibility that bready is always asserted high)   
+			axi_bvalid <= 1'b0; 
+		end
+	end
+end   
+
+// --- CDC FIFO master interface wires and instantiation
+
+// the sole purpose of these wires is connecting the AXI FIFO to internally used wires
+wire [`SYSTEM_ADDR_WIDTH-1:0] m_axi_awaddr;
+wire [8-1:0] m_axi_awlen;
+wire [3-1:0] m_axi_awsize;
+wire [2-1:0] m_axi_awburst;
+wire m_axi_awvalid;
+wire m_axi_awready;
+wire [`SLAVE_DATA_WIDTH-1:0] m_axi_wdata;
+wire [(`SLAVE_DATA_WIDTH/8)-1:0] m_axi_wstrb;
+wire m_axi_wlast;
+wire m_axi_wvalid;
+wire m_axi_wready;
+wire [2-1:0] m_axi_bresp;
+wire m_axi_bvalid;
+wire m_axi_bready;
+
+assign S_AXI_AWADDR = m_axi_awaddr;
+assign S_AXI_AWLEN = m_axi_awlen;
+assign S_AXI_AWSIZE = m_axi_awsize;
+assign S_AXI_AWBURST = m_axi_awburst;
+assign S_AXI_AWVALID = m_axi_awvalid;
+assign m_axi_awready = S_AXI_AWREADY && EN_I;
+assign S_AXI_WDATA = m_axi_wdata;
+assign S_AXI_WSTRB = m_axi_wstrb;
+assign S_AXI_WLAST = m_axi_wlast;
+assign S_AXI_WVALID = m_axi_wvalid;
+assign m_axi_wready = S_AXI_WREADY && EN_I;
+assign m_axi_bresp = S_AXI_BRESP;
+assign m_axi_bvalid = S_AXI_BVALID;
+assign S_AXI_BREADY = m_axi_bready;
+
+axi_cdc_fifo cdc_fifo (
+  .m_aclk(CGRA_CLK_I),
+  .s_aclk(S_AXI_ACLK_I),
+  .s_aresetn(RST_N_I),
+  .s_axi_awaddr(S_AXI_AWADDR_I),
+  .s_axi_awlen(S_AXI_AWLEN_I),
+  .s_axi_awsize(S_AXI_AWSIZE_I),
+  .s_axi_awburst(S_AXI_AWBURST_I),
+  .s_axi_awlock(1'b0),
+  .s_axi_awcache(4'b0),
+  .s_axi_awprot(3'b010),
+  .s_axi_awqos(4'b0),
+  .s_axi_awregion(4'b0),
+  .s_axi_awvalid(S_AXI_AWVALID_I),
+  .s_axi_awready(S_AXI_AWREADY_O),
+  .s_axi_wdata(S_AXI_WDATA_I),
+  .s_axi_wstrb(S_AXI_WSTRB_I),
+  .s_axi_wlast(S_AXI_WLAST_I),
+  .s_axi_wvalid(S_AXI_WVALID_I),
+  .s_axi_wready(S_AXI_WREADY_O),
+  .s_axi_bresp(S_AXI_BRESP_O),
+  .s_axi_bvalid(S_AXI_BVALID_O),
+  .s_axi_bready(S_AXI_BREADY_I),
+  .m_axi_awaddr(m_axi_awaddr),
+  .m_axi_awlen(m_axi_awlen),
+  .m_axi_awsize(m_axi_awsize),
+  .m_axi_awburst(m_axi_awburst),
+  .m_axi_awlock(),
+  .m_axi_awcache(),
+  .m_axi_awprot(),
+  .m_axi_awqos(),
+  .m_axi_awregion(),
+  .m_axi_awvalid(m_axi_awvalid),
+  .m_axi_awready(m_axi_awready),
+  .m_axi_wdata(m_axi_wdata),
+  .m_axi_wstrb(m_axi_wstrb),
+  .m_axi_wlast(m_axi_wlast),
+  .m_axi_wvalid(m_axi_wvalid),
+  .m_axi_wready(m_axi_wready),
+  .m_axi_bresp(m_axi_bresp),
+  .m_axi_bvalid(m_axi_bvalid),
+  .m_axi_bready(m_axi_bready)
+);
+
+/* --- S_AXI outside protocol handling end --- */
+
+endmodule
+>>
+
+validContextGenLine(bigPE, id, otherCntrMatch, peCntrMatch)
+::= <<
+§id§: begin
+	if (burst_control[`GENERAL_TARGET_SELECTION_HIGH:`GENERAL_TARGET_SELECTION_LOW]  == `GENERAL_TARGET_OTHER) 
+		valid_context = §otherCntrMatch§
+	else if (burst_control[`GENERAL_TARGET_SELECTION_HIGH:`GENERAL_TARGET_SELECTION_LOW]  == `GENERAL_TARGET_PE)
+		valid_context = §peCntrMatch§
+	else 
+		valid_context = 1'b1;
+end
+
+>>
+
+validContextMatchCounter(width, size)
+::= <<
+valid_data_cntr[§width§-1:0] == §size§;
+>>
+

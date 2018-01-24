@@ -1,0 +1,15 @@
+cgrastaticdata(log_result_offsets, ocm_result_offsets)
+::= <<
+#include "cgrastaticdata.h"
+
+const size_t cgra_log_data_offset_map[CGRA_LOG_RESULT_COUNT] =
+{
+	§log_result_offsets§
+};
+
+const size_t cgra_ocm_data_offset_map[CGRA_OCM_RESULT_COUNT] =
+{
+	§ocm_result_offsets§
+};
+
+>>

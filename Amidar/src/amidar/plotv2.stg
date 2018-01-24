@@ -1,0 +1,44 @@
+document(pictures)
+::= <<
+\documentclass[tikz,20pt]{standalone}
+
+\usepackage[utf8]{inputenc}
+
+
+
+\usepackage{amssymb,amsmath,color,graphicx}
+
+  \usepackage{pgfplots,filecontents}
+  \usepackage{pgf}
+  \usepackage{tikz}
+
+\begin{document}
+	\definecolor{tud2b}{RGB}{0,131,204}
+	\definecolor{tud4b}{RGB}{153,192,0}
+	\definecolor{tud7b}{RGB}{245,163,0}
+	\definecolor{tud9b}{RGB}{230,0,26}
+
+       §pictures§
+      %\endpgfgraphicnamed     
+ % \end{figure}
+\end{document}
+
+>>
+
+
+
+
+pic(name)
+::= <<
+
+\begin{tikzpicture} 
+	
+	\begin{axis}[height=5cm,width=11cm, ybar = 1, bar width = 1.5, ytick pos = left, enlargelimits=0.15, legend style={at={(0.4,0.95)}, anchor=north,legend columns=2}, ylabel={§name§}, xtick=data, x tick label style={rotate=60,anchor=east}, xticklabels from table={§name§_SweepResult_benchmarkScale=6.txt}{application}]
+		%\addplot[tud7b,fill = tud7b, thick] table [x= nr, y expr=100*\thisrow{PREFETCHING:NONE}/\thisrow{PREFETCHING:NONE}-100,] {§name§_SweepResult_benchmarkScale=6.txt}; 
+		\addplot[tud4b,fill = tud4b, thick] table [x= nr, y expr=100*\thisrow{PREFETCHING:UNROLL}/\thisrow{PREFETCHING:NONE}-100,] {§name§_SweepResult_benchmarkScale=6.txt}; 
+		\addplot[tud2b,fill = tud2b, thick] table [x= nr, y expr=100*\thisrow{PREFETCHING:LINEAR}/\thisrow{PREFETCHING:NONE}-100,] {§name§_SweepResult_benchmarkScale=6.txt}; 
+		\legend{Unroll based Prefetch, Linear Prefetch} 
+	\end{axis}
+\end{tikzpicture}
+
+>>

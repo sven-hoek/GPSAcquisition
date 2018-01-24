@@ -1,0 +1,507 @@
+logModule(globalLogAddrWidth, globalLogSize, logIDWidth, logMaxAddrWidth, globalLogContextWidth, 
+	contextSize, ocmContextWidth, peIDWidth, ocmDataWidth, ocmBufferSize, ocmBufferAddrWidth, runCounterWidth, 
+	ccntWidth, maxContextAddrWidth, contextEnablePorts, maxLogContextAddrWidth, peDirectOut, wiresLogPEenable, 
+	logDataOutWires, dataToSendAssignment, logs, wstrb, wsize, test, ocmDataWrites)
+::= <<
+`include "axiinterface.vh"
+`include "ultrasynth.vh"
+`include "cgra.vh"
+
+module Log #
+(
+	parameter integer LOG_GLOBAL_CONTEXT_ADDR_WIDTH = §globalLogAddrWidth§,
+	parameter integer LOG_GLOBAL_CONTEXT_SIZE = §globalLogSize§,
+	parameter integer LOG_ID_WIDTH = §logIDWidth§, // determined by the PE ID width 
+	parameter integer MAX_LOG_ADDR_WIDTH = §logMaxAddrWidth§, // the maximum width needed to fully address every log data BRAM in the logPE modules
+	parameter integer LOG_GLOBAL_CONTEXT_WIDTH = §globalLogContextWidth§,
+	parameter integer CONTEXT_SIZE = §contextSize§, // equivalent to the CGRA's context size
+	parameter integer OCM_CONTEXT_WIDTH = §ocmContextWidth§,
+	parameter integer OCM_DATA_BUFFER_WIDTH = §ocmDataWidth§,
+	parameter integer OCM_DATA_BUFFER_SIZE = §ocmBufferSize§,
+	parameter integer OCM_DATA_BUFFER_ADDR_WIDTH = §ocmBufferAddrWidth§
+)
+(
+	input wire EN_I,
+	input wire CGRA_CLK_I,
+	input wire AXI_ACLK_I,
+	input wire RST_N_I,
+	input wire SYNC_IN_I,
+	input wire [§ccntWidth§-1:0] CCNT_I,
+	§contextEnablePorts§	
+	input wire IS_LOG_CONTEXT_I,
+	input wire GLOBAL_LOG_CONTEXT_WREN_I,
+	input wire DEST_WREN_I,
+	input wire DEST_BOUND_WREN_I,
+	input wire DEST_INC_WREN_I,
+	input wire OCM_DEST_WREN_I,
+	input wire OCM_DEST_BOUND_WREN_I,
+	input wire OCM_DEST_INC_WREN_I,
+	input wire OCM_CONTEXT_WREN_I,
+	input wire [§maxContextAddrWidth§-1:0] CONTEXT_ADDR_I,
+	input wire [`SLAVE_DATA_WIDTH-1:0] DATA_I,
+	§peDirectOut§	
+	input wire [§runCounterWidth§-1:0] RUN_COUNTER_I,
+	input wire [`ERROR_WIDTH-1:0] ERROR_I,
+	output wire OCM_SEND_DONE_O,
+	// Log Master
+	output wire [8-1:0] LOG_AWLEN_O,
+	output wire [3-1:0] LOG_AWSIZE_O,
+	output wire [2-1:0] LOG_AWBURST_O,
+	output wire [`SYSTEM_ADDR_WIDTH-1:0] LOG_AWADDR_O,
+	output wire LOG_AWVALID_O,
+	input wire  LOG_AWREADY_I,
+	output wire [`MASTER_DATA_WIDTH-1:0] LOG_WDATA_O,
+	output wire [(`MASTER_DATA_WIDTH/8)-1:0] LOG_WSTRB_O,
+	output wire LOG_WLAST_O,
+	output wire LOG_WVALID_O,
+	input wire LOG_WREADY_I,
+	output wire LOG_BREADY_O,
+	input wire LOG_BVALID_I,
+	input wire [2-1:0] LOG_BRESP_I,
+	// OCM Master
+	output wire [8-1:0] OCM_AWLEN_O,
+	output wire [3-1:0] OCM_AWSIZE_O,
+	output wire [2-1:0] OCM_AWBURST_O,
+	output wire [`SYSTEM_ADDR_WIDTH-1:0] OCM_AWADDR_O,
+	output wire OCM_AWVALID_O,
+	input wire  OCM_AWREADY_I,
+	output wire [`MASTER_DATA_WIDTH-1:0] OCM_WDATA_O,
+	output wire [(`MASTER_DATA_WIDTH/8)-1:0] OCM_WSTRB_O,
+	output wire OCM_WLAST_O,
+	output wire OCM_WVALID_O,
+	input wire OCM_WREADY_I,
+	output wire OCM_BREADY_O,
+	input wire OCM_BVALID_I,
+	input wire [2-1:0] OCM_BRESP_I
+);
+
+// context declarations
+(* ram_style = "block" *) reg [LOG_GLOBAL_CONTEXT_WIDTH-1:0] logGlobalContext [LOG_GLOBAL_CONTEXT_SIZE-1:0];
+
+// logPE enable wires
+§wiresLogPEenable§
+// further declarations
+§logDataOutWires§
+// counters
+reg [LOG_GLOBAL_CONTEXT_ADDR_WIDTH-1:0] log_ccnt;
+reg [LOG_GLOBAL_CONTEXT_ADDR_WIDTH-1:0] stored_log_ccnt;
+
+
+// AXI and related control
+reg [`SYSTEM_ADDR_WIDTH-1:0] awaddr; // used to start transactions (incremented by transfer size)
+reg [`SYSTEM_ADDR_WIDTH-1:0] transaction_set_start_addr; // incremented by awaddr_inc, assigned to awaddr on each completed transaction set
+reg [`SYSTEM_ADDR_WIDTH-1:0] awaddr_inc;
+reg [`SYSTEM_ADDR_WIDTH-1:0] awaddr_lower; 
+reg [`SYSTEM_ADDR_WIDTH-1:0] awaddr_upper;
+reg [`DATA_WIDTH-1:0] log_data;
+wire [`MASTER_DATA_WIDTH-1:0] wdata;
+reg [8-1:0] transaction_length;
+wire start_transaction;
+wire awready;
+wire wready;
+wire bvalid;
+reg awvalid;
+reg wvalid;
+reg wlast;
+reg new_transaction_set;
+reg wvalid_was_deasserted;
+wire log_read_en;
+
+assign wdata = new_transaction_set ? RUN_COUNTER_I : log_data;
+
+// global log context related wires and outputs
+reg [§ccntWidth§-1:0] last_ccnt;
+reg [LOG_GLOBAL_CONTEXT_WIDTH-1:0] context_out;
+wire [LOG_ID_WIDTH-1:0] c_out_log_id;
+reg [LOG_ID_WIDTH-1:0] log_id;
+wire [MAX_LOG_ADDR_WIDTH-1:0] c_out_log_read_addr;
+wire c_out_transaction_set_done;
+wire c_out_awvalid;
+
+assign c_out_log_read_addr = context_out[MAX_LOG_ADDR_WIDTH-1:0];
+assign c_out_log_id = context_out[LOG_ID_WIDTH+MAX_LOG_ADDR_WIDTH-1:MAX_LOG_ADDR_WIDTH];
+assign c_out_awvalid = context_out[LOG_GLOBAL_CONTEXT_WIDTH-2];
+assign c_out_transaction_set_done = context_out[LOG_GLOBAL_CONTEXT_WIDTH-1];
+
+// --- log data output assignment
+always @(*) begin
+	case (log_id)
+	§dataToSendAssignment§	
+	default: log_data = {`DATA_WIDTH{1'b1}};
+	endcase
+end
+
+// --- context handling
+always @(posedge CGRA_CLK_I) begin
+	if (EN_I) begin
+		if (GLOBAL_LOG_CONTEXT_WREN_I)
+			logGlobalContext[CONTEXT_ADDR_I] <= DATA_I[LOG_GLOBAL_CONTEXT_WIDTH-1:0];
+
+		context_out <= logGlobalContext[log_ccnt];
+	end
+end
+
+// --- logic which found no other place to stay
+always @(posedge CGRA_CLK_I) begin
+	if (~RST_N_I) begin
+		new_transaction_set <= 1'b0;
+		stored_log_ccnt <= {LOG_GLOBAL_CONTEXT_ADDR_WIDTH{1'b1}};
+	end else if (EN_I) begin
+		if (wvalid && wready)
+			new_transaction_set <= 1'b0;
+		else if (c_out_awvalid && stored_log_ccnt == 0)
+			new_transaction_set <= 1'b1;
+
+		if (log_read_en)
+			log_id <= c_out_log_id;
+
+		if (context_out[§ccntWidth§-1:0] == last_ccnt && ~c_out_awvalid && ~wvalid && ~awvalid)
+			stored_log_ccnt <= 0;
+		else
+			stored_log_ccnt <= log_ccnt;
+
+		last_ccnt <= CCNT_I;
+	end
+end
+
+// --- transaction process
+
+// start a transaction only there is a corresponding context entry and the last transaction is done
+assign start_transaction = c_out_awvalid && ~wvalid && EN_I;
+
+// This is triggered the first time when the tag data is send. (new transaction set)
+// Or alternatively for every awvalid (with corresponding ready), 
+// which also signals a valid log read address. (not a new transaction set)
+// "wvalid_was_deasserted" forces a read in the first enable cycle after being disabled.
+assign log_read_en = (wvalid && wready && ~wlast) || (awvalid && awready) || wvalid_was_deasserted;
+
+// --- log_ccnt
+always @(*) begin
+	if (log_read_en || start_transaction || c_out_transaction_set_done)
+		// take the next log entry only when done with the current one
+		// start_transaction forces a log id/address out of the global log context (as early as possible)
+		log_ccnt = stored_log_ccnt + 1;
+	else 
+		log_ccnt = stored_log_ccnt;
+end
+
+// --- all LogPE module instances
+§logs§
+
+/* --- OCM master, context and FIFO, START --- */
+// signal declarations
+reg ocm_start_transaction;
+reg new_ocm_transaction_set;
+reg ocm_wvalid_was_deasserted;
+reg [OCM_DATA_BUFFER_ADDR_WIDTH-1:0] ocm_transfer_count;
+
+// memories
+reg [OCM_CONTEXT_WIDTH-1:0] ocm_context [CONTEXT_SIZE-1:0];
+reg [OCM_CONTEXT_WIDTH-1:0] ocm_context_out;
+wire [OCM_CONTEXT_WIDTH-3:0] c_out_ocm_pe_id;
+wire c_out_ocm_wren;
+wire c_out_ocm_finished;
+reg ocm_finished; // use this instead of c_out_ocm_finished to prevent problems with delayed ocm_transfer_count increment
+reg [OCM_DATA_BUFFER_WIDTH-1:0] ocm_data [OCM_DATA_BUFFER_SIZE-1:0];
+reg [OCM_DATA_BUFFER_WIDTH-1:0] ocm_data_out;
+reg [OCM_DATA_BUFFER_ADDR_WIDTH-1:0] ocm_read_counter;
+reg [OCM_DATA_BUFFER_ADDR_WIDTH-1:0] ocm_write_counter;
+wire [OCM_DATA_BUFFER_WIDTH-1:0] ocm_data_axi;
+
+assign c_out_ocm_pe_id = ocm_context_out[OCM_CONTEXT_WIDTH-3:0];
+assign c_out_ocm_wren = ocm_context_out[OCM_CONTEXT_WIDTH-2];
+assign c_out_ocm_finished = ocm_context_out[OCM_CONTEXT_WIDTH-1];
+assign ocm_data_axi = new_ocm_transaction_set ? {{`MASTER_DATA_WIDTH-`ERROR_WIDTH-1{1'b0}},ERROR_I} : ocm_data_out;
+
+// special Outout assignments
+assign OCM_SEND_DONE_O = ocm_finished;
+
+// master related signals
+reg [`SYSTEM_ADDR_WIDTH-1:0] ocm_awaddr; // incremented by MASTER_DATA_WIDTH in bytes for every completed transfer, used for transactions
+reg [`SYSTEM_ADDR_WIDTH-1:0] ocm_transaction_set_start_addr; // incremented by ocm_awaddr_inc if a transaction set completes, not used for transactions
+reg [`SYSTEM_ADDR_WIDTH-1:0] ocm_awaddr_lower;
+reg [`SYSTEM_ADDR_WIDTH-1:0] ocm_awaddr_upper;
+reg [`SYSTEM_ADDR_WIDTH-1:0] ocm_awaddr_inc;
+reg [8-1:0] ocm_transfer_counter;
+reg [8-1:0] ocm_awlen;
+reg ocm_wvalid;
+reg ocm_wlast;
+reg ocm_awvalid;
+wire ocm_wready;
+wire ocm_awready;
+wire ocm_bvalid;
+
+§if(test)§
+reg [OCM_DATA_BUFFER_WIDTH-1:0] ocm_test_data;
+§endif§
+
+// data handling
+always @(posedge CGRA_CLK_I) begin
+	if (~RST_N_I) begin
+		ocm_read_counter <= 0;
+		ocm_write_counter <= 0;
+		ocm_data_out <= 0;
+	end else if (EN_I) begin
+		if (c_out_ocm_wren) begin
+			ocm_write_counter <= ocm_write_counter + 1;
+			§if(test)§
+			ocm_data[ocm_write_counter] <= ocm_test_data; 
+			§else§
+			case (c_out_ocm_pe_id)
+				§ocmDataWrites§
+			endcase
+			§endif§
+		end
+		if ( (ocm_wvalid && ocm_wready && ~ocm_wlast && ~new_ocm_transaction_set) || ocm_start_transaction || ocm_wvalid_was_deasserted) begin
+			ocm_read_counter <= ocm_read_counter + 1;
+			ocm_data_out <= ocm_data[ocm_read_counter];
+		end
+	end
+end
+
+// context handling
+always @(posedge CGRA_CLK_I) begin
+	if (EN_I) begin
+		if (OCM_CONTEXT_WREN_I)
+			ocm_context[CONTEXT_ADDR_I] <= DATA_I[OCM_CONTEXT_WIDTH-1:0];
+
+		ocm_context_out <= ocm_context[CCNT_I];
+		ocm_finished <= c_out_ocm_finished;
+	end
+end
+
+// axi address handling
+always @(posedge CGRA_CLK_I) begin
+	if (~RST_N_I) begin
+		ocm_awaddr <= 0;
+		ocm_transaction_set_start_addr <= 0;
+		ocm_awaddr_inc <= 0;
+		ocm_awaddr_lower <= 0;
+		ocm_awaddr_upper <= 0;
+	end else if (EN_I) begin
+		if (OCM_DEST_WREN_I) begin
+			ocm_awaddr_lower <= DATA_I[`SYSTEM_ADDR_WIDTH-1:0];
+			if (ocm_transaction_set_start_addr == ocm_awaddr_lower)
+				ocm_transaction_set_start_addr <= DATA_I[`SYSTEM_ADDR_WIDTH-1:0]; 
+		end else if (ocm_finished) begin
+			if (ocm_transaction_set_start_addr + (ocm_awaddr_inc << 1) < ocm_awaddr_upper)
+				ocm_transaction_set_start_addr <= ocm_transaction_set_start_addr + ocm_awaddr_inc;
+			else
+				ocm_transaction_set_start_addr <= ocm_awaddr_lower;
+		end 
+
+		if (OCM_DEST_BOUND_WREN_I)
+			ocm_awaddr_upper <= DATA_I[`SYSTEM_ADDR_WIDTH-1:0];
+		if (OCM_DEST_INC_WREN_I)
+			ocm_awaddr_inc <= DATA_I[`SYSTEM_ADDR_WIDTH-1:0];
+
+		if (OCM_DEST_WREN_I && ocm_awaddr_lower == ocm_awaddr)
+			ocm_awaddr <= DATA_I[`SYSTEM_ADDR_WIDTH-1:0];
+		else if (ocm_transfer_count == 0 && ocm_finished)
+			ocm_awaddr <= ocm_transaction_set_start_addr;
+		else if (ocm_wvalid && ocm_wready)
+			ocm_awaddr <= ocm_awaddr + `MASTER_DATA_WIDTH/8;
+	end
+end
+
+// generate ocm_start_transaction
+always @(posedge CGRA_CLK_I) begin
+	if (~RST_N_I) begin
+		ocm_start_transaction <= 1'b0;
+		new_ocm_transaction_set <= 1'b1;
+	end else if (EN_I || ocm_wvalid_was_deasserted) begin
+		if (ocm_start_transaction) begin
+			ocm_start_transaction <= 1'b0;
+		end else if (ocm_wvalid && ocm_wready) begin
+			new_ocm_transaction_set <= 1'b0; // wait until error data was actually transfered						
+		end else if ( ( ((~new_ocm_transaction_set || ocm_finished) && ocm_transfer_count != 0) ||
+						(new_ocm_transaction_set && ocm_transfer_count > 8'hff) ) && ~ocm_wvalid && ~ocm_wvalid_was_deasserted)
+			ocm_start_transaction <= 1'b1; // only assert if the last transaction went through and data is available
+		else if (ocm_transfer_count == 0 && ocm_finished)
+			new_ocm_transaction_set <= 1'b1; // ocm_data_axi will be the error registers contents
+ 	end
+end
+
+// calculate the awlen for the next burst
+always @(posedge CGRA_CLK_I) begin
+	if (~RST_N_I) begin
+		ocm_transfer_count <= 0;
+	end else if (EN_I) begin
+		if (ocm_wvalid && ocm_wready && ocm_wlast) begin
+			if (c_out_ocm_wren) // errors are accounted for -> ignore them here
+				ocm_transfer_count <= ocm_transfer_count - ocm_awlen; // - (used length) + data 
+			else
+				ocm_transfer_count <= ocm_transfer_count - ocm_awlen - 1; // - (used length)
+		end else if ( c_out_ocm_wren && (ocm_start_transaction && new_ocm_transaction_set) ) begin
+				ocm_transfer_count <= ocm_transfer_count + 2; // + data && + error
+		end else if ( c_out_ocm_wren || (ocm_start_transaction && new_ocm_transaction_set) ) begin
+				ocm_transfer_count <= ocm_transfer_count + 1; // + data || + error
+		end
+	end
+end
+
+// handle transactions
+always @(posedge CGRA_CLK_I) begin
+	if (~RST_N_I) begin
+		ocm_awvalid <= 1'b0;
+		ocm_awlen <= 0;
+		ocm_wvalid <= 1'b0;
+		ocm_wlast <= 1'b0;
+		ocm_transfer_counter <= 0;
+		ocm_wvalid_was_deasserted <= 1'b0;
+	end else begin
+		// ocm_wlast, ocm_wvalid, transfer length and counter
+		if (ocm_wvalid && ocm_wready) begin // used during a log transaction
+			ocm_wlast <= ocm_transfer_counter == ocm_awlen - 1; // almost finished
+			ocm_wvalid <= ~ocm_wlast && EN_I; // assert if not done and enabled
+			ocm_transfer_counter <= ocm_transfer_counter + 1;
+			ocm_wvalid_was_deasserted <= ~EN_I;
+		end else if (ocm_start_transaction) begin // at the start of a log transaction
+			ocm_wvalid <= EN_I;
+			ocm_wvalid_was_deasserted <= ~EN_I;
+			ocm_wlast <= ocm_transfer_count - 1 == 0;
+			ocm_transfer_counter <= 0;
+			ocm_awlen <= ocm_transfer_count - 1 > 8'hff ? 8'hff : ocm_transfer_count - 1;
+		end else if (EN_I && ocm_wvalid_was_deasserted) begin
+			ocm_wvalid <= ~new_ocm_transaction_set; // get back on track, but don't send the error data once again (if this was the last transfer)
+			ocm_wvalid_was_deasserted <= new_ocm_transaction_set;
+		end
+
+		// ocm_awvalid
+		if (ocm_start_transaction && ~ocm_awvalid && EN_I)
+			ocm_awvalid <= 1'b1;
+		else if (ocm_awready)
+			ocm_awvalid <= 1'b0;
+	end
+end
+
+/* --- OCM master, context and FIFO, END --- */
+
+axi_clock_converter logMasterClkConverter (
+	.m_axi_aclk(AXI_ACLK_I),
+  .m_axi_aresetn(RST_N_I),
+  .s_axi_aclk(CGRA_CLK_I),
+  .s_axi_aresetn(RST_N_I),
+	// .m_aclk(AXI_ACLK_I),
+ //  .s_aclk(CGRA_CLK_I),
+ //  .s_aresetn(RST_N_I),
+  .s_axi_awburst(2'b01),
+  .s_axi_awaddr(awaddr),
+  .s_axi_awsize(3'b011),
+  .s_axi_awlen(transaction_length),
+  .s_axi_awvalid(awvalid),
+  .s_axi_awready(awready),
+  .s_axi_wdata(wdata),
+  .s_axi_wstrb(8'hff),
+  .s_axi_wlast(wlast),
+  .s_axi_wvalid(wvalid),
+  .s_axi_wready(wready),
+  .s_axi_bvalid(bvalid),
+  .s_axi_bready(1'b1),
+  .m_axi_awburst(LOG_AWBURST_O),
+  .m_axi_awaddr(LOG_AWADDR_O),
+  .m_axi_awsize(LOG_AWSIZE_O),
+  .m_axi_awlen(LOG_AWLEN_O),
+  .m_axi_awvalid(LOG_AWVALID_O),
+  .m_axi_awready(LOG_AWREADY_I),
+  .m_axi_wdata(LOG_WDATA_O),
+  .m_axi_wstrb(LOG_WSTRB_O),
+  .m_axi_wlast(LOG_WLAST_O),
+  .m_axi_wvalid(LOG_WVALID_O),
+  .m_axi_wready(LOG_WREADY_I),
+  .m_axi_bvalid(LOG_BVALID_I),
+  .m_axi_bready(LOG_BREADY_O),
+  .m_axi_bresp(LOG_BRESP_I),
+  .s_axi_awlock(1'b0),
+  .s_axi_awcache(4'b0),
+  .s_axi_awprot(3'b010),
+  .s_axi_awqos(4'b0),
+  .s_axi_awregion(4'b0),
+  .s_axi_bresp(),
+  .m_axi_awlock(),
+  .m_axi_awcache(),
+  .m_axi_awprot(),
+  .m_axi_awqos(),
+  .m_axi_awregion()
+);
+
+axi_clock_converter ocmMasterClkConverter (
+	.m_axi_aclk(AXI_ACLK_I),
+  .m_axi_aresetn(RST_N_I),
+  .s_axi_aclk(CGRA_CLK_I),
+  .s_axi_aresetn(RST_N_I),
+	// .m_aclk(AXI_ACLK_I),
+ //  .s_aclk(CGRA_CLK_I),
+ //  .s_aresetn(RST_N_I),
+  .s_axi_awburst(2'b01),
+  .s_axi_awaddr(ocm_awaddr),
+  .s_axi_awsize(3'b011),
+  .s_axi_awlen(ocm_awlen),
+  .s_axi_awvalid(ocm_awvalid),
+  .s_axi_awready(ocm_awready),
+  .s_axi_wdata({{`MASTER_DATA_WIDTH-OCM_DATA_BUFFER_WIDTH{1'b0}},ocm_data_axi}),
+  .s_axi_wstrb(8'hff),
+  .s_axi_wlast(ocm_wlast),
+  .s_axi_wvalid(ocm_wvalid),
+  .s_axi_wready(ocm_wready),
+  .s_axi_bvalid(ocm_bvalid),
+  .s_axi_bready(1'b1),
+  .m_axi_awburst(OCM_AWBURST_O),
+  .m_axi_awaddr(OCM_AWADDR_O),
+  .m_axi_awsize(OCM_AWSIZE_O),
+  .m_axi_awlen(OCM_AWLEN_O),
+  .m_axi_awvalid(OCM_AWVALID_O),
+  .m_axi_awready(OCM_AWREADY_I),
+  .m_axi_wdata(OCM_WDATA_O),
+  .m_axi_wstrb(OCM_WSTRB_O),
+  .m_axi_wlast(OCM_WLAST_O),
+  .m_axi_wvalid(OCM_WVALID_O),
+  .m_axi_wready(OCM_WREADY_I),
+  .m_axi_bvalid(OCM_BVALID_I),
+  .m_axi_bready(OCM_BREADY_O),
+  .m_axi_bresp(OCM_BRESP_I),
+  .s_axi_awlock(1'b0),
+  .s_axi_awcache(4'b0),
+  .s_axi_awprot(3'b010),
+  .s_axi_awqos(4'b0),
+  .s_axi_awregion(4'b0),
+  .s_axi_bresp(),
+  .m_axi_awlock(),
+  .m_axi_awcache(),
+  .m_axi_awprot(),
+  .m_axi_awqos(),
+  .m_axi_awregion()
+);
+
+endmodule
+>>
+
+logPE(id, contextSize, contextAddrWidth, contextWidth, logSize, logAddrWidth)
+::= <<
+LogPE #
+(
+	.CONTEXT_SIZE(§contextSize§),
+	.CONTEXT_ADDR_WIDTH(§contextAddrWidth§),
+	.CONTEXT_WIDTH(§contextWidth§),
+	.LOG_SIZE(§logSize§),
+	.LOG_ADDR_WIDTH(§logAddrWidth§)
+)
+logPE§id§
+(
+	.EN_I(EN_I),
+	.CGRA_CLK_I(CGRA_CLK_I),
+	.RST_N_I(RST_N_I),
+	.SYNC_IN_I(SYNC_IN_I),
+	.LOG_TRANSACTIONS_DONE_I(c_out_transaction_set_done),
+	.CCNT_I(CCNT_I),
+	.CONTEXT_WREN_I(enable_logContext_pe§id§),
+	.CONTEXT_ADDR_I(CONTEXT_ADDR_I[§contextAddrWidth§-1:0]),
+	.CONTEXT_DATA_I(DATA_I[§contextWidth§-1:0]),
+	.LOG_DATA_I(DIRECT_OUT_PE§id§_I),
+	//.LOG_CLEAR_I, // ? not used atm
+	.LOG_READ_ADDR_I(c_out_log_read_addr[§logAddrWidth§-1:0]),
+	.LOG_READ_EN_I(log_read_en),
+	.LOG_DATA_O(log_out§id§)
+);
+
+>>

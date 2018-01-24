@@ -1,0 +1,470 @@
+package generator;
+
+import io.AttributeParser;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
+import org.stringtemplate.v4.ST;
+import org.stringtemplate.v4.STGroupFile;
+
+import cgramodel.CgraModel;
+import cgramodel.CgraModelAmidar;
+import cgramodel.ContextMaskPE;
+import cgramodel.PEModel;
+import target.Processor;
+import target.Ultrasynth;
+
+/**
+ * This is dedicated Verilog generator for the host processor Amidar. 
+ * @author wolf
+ *
+ */
+public class VerilogGeneratorAmidar extends VerilogGenerator{
+
+	
+	/**
+	 * Amidar works with Caches of 32 bit words. 
+	 */
+	final static int CACHEDATAWIDTH = 32;
+
+	/**
+	 * The model that is to be exported.
+	 */
+	public CgraModel getModel(){
+		return model;
+	}
+
+	/**
+	 * constructor
+	 * @param model Model to be exported
+	 */
+	public VerilogGeneratorAmidar(CgraModel model){
+		super(model);
+	}
+
+	/**
+	 * constructor
+	 */
+	public VerilogGeneratorAmidar(){
+		super();
+	}
+
+	/**
+	 * This methods prints the top level Verilog description of the CGRA. It instantiates all modules and connects them.
+	 * Furthermore An FSM is contained as well as context converters to map incoming context to the indiv. context masks. 
+	 */
+	protected void printTopLevel() {
+		STGroupFile group = new STGroupFile(target.Processor.Instance.getHardwareTemplatePathProcessorRelated() + "/Cgra_new_gen_template.stg", '§', '§');
+		ST template = group.getInstanceOf("toplevel");
+		
+		template.add("date", date.toString());
+		template.add("ccntwidth", (int) Math.ceil(Math.log(model.getContextMemorySize()) / Math.log(2)));
+		template.add("contextWidthCBox", model.getcBoxModel().getContextmaskEvaLuationBlocks().getContextWidth());
+		template.add("contextAddrWidth", (int) Math.ceil((Math.log(model.getContextMemorySize()) / Math.log(2))));
+		template.add("viaWidth",model.getViaWidth());
+		
+		template.add("nrOfCBoxOutputs", model.getcBoxModel().getCBoxPreicationOutputsPerBox()*model.getcBoxModel().getNrOfEvaluationBlocks());
+		template.add("evaluationblocks", model.getcBoxModel().getNrOfEvaluationBlocks());
+<<<<<<< HEAD
+		template.add("maxMemCols", (int)Math.ceil(((CgraModelAmidar)model).getMaxMemoryWidth()/32.0));
+		
+		// constPointerWidth,locationInformationPointerWidth, kernelTableAddrWidth, maxMuxWidth, rfAddrWidth, locInfoMemWidth
+		template.add("constPointerWidth", ((CgraModelAmidar)model).getConstantMemoryAddrWidth());
+		template.add("locationInformationPointerWidth", ((CgraModelAmidar)model).getLocationInformationMemoryAddrWidth());
+		template.add("kernelTableAddrWidth", ((CgraModelAmidar)model).getKernelTableAddrWidth());
+		template.add("maxMuxWidth", model.getMaxMuxAddrWidth());
+		template.add("rfAddrWidth", model.getMaxRegfileAddrWidth());
+		
+		int a = model.getViaWidth() + model.getMaxMuxAddrWidth();
+		if(a < model.getNrOfPEs()){
+			a =  model.getNrOfPEs();
+		}
+		
+		template.add("locInfoMemWidth", model.getMaxRegfileAddrWidth() + a);
+		
+=======
+		template.add("branchselection", model.isConditionalJumps());
+>>>>>>> f20ec5aeab03faa8426cab6e9a6f9c13bec466ad
+		int resultconnectioncounter = 0;
+
+		// port decleration
+		fillPortList();
+
+		int portcounter = toplevelports.size();
+		for(VerilogPort port: toplevelports){
+			portcounter --;
+			String verilogport = "(* dont_touch = \"true\" *) ";
+			verilogport += port.getDirection() + " ";
+			verilogport += port.getTypeDeclaration() + " ";
+			if(port.getPortwidth() > 1){
+				verilogport += "[" + port.getPortwidth() + "-1:0] ";
+			}
+			verilogport += port.getPortDeclaration().toLowerCase() + " ";
+
+			if(portcounter > 0){
+				verilogport += ", \n";
+			}
+			template.add("portlist", verilogport);
+		}
+		System.out.println();
+
+		for (PEModel pe : model.getPEs()) {
+//			ST templateCache = group.getInstanceOf("cacheIO");
+			if (pe.getMemAccess()) {
+//				templateCache.add("index", pe.getID());
+//				template.add("cacheIO", templateCache.render());
+				template.add("jointCacheValid", ",CACHE_VALID_"+ pe.getID() +"_I");
+			}
+			if (pe.getControlFlow()) {
+				template.add("statusIns", "\n     .STATUS_" + pe.getID() + "_I(w_status_" + pe.getID() + "),");
+				template.add("statusWireDeclaration", "wire w_status_" + pe.getID() + "; \n");
+			}
+			// TODO - check width !!!
+			if(pe.getLiveout()){
+				template.add("resultConnection", " \n" + resultconnectioncounter + ": result_low = w_pe_out_" + pe.getID() + "["+ pe.getMaxWidthResult() + "-1:0];");
+				resultconnectioncounter++;
+			}
+
+			ST templatePE = group.getInstanceOf("peModule");
+			templatePE.add("ID", pe.getID());
+			templatePE.add("outputwidth", pe.getMaxWidthResult());
+			templatePE.add("controlflow", pe.getControlFlow());
+			templatePE.add("memoryAccess", pe.getMemAccess());
+			templatePE.add("contextwidth", pe.getContextWidth());
+			templatePE.add("multicycle", pe.getMultiCycle());
+			templatePE.add("liveout",pe.getLiveout());
+			templatePE.add("stallable", model.isStallable());
+
+			templatePE.add("ccntwidth", model.getCCNTWidth());
+
+			for(PEModel source: pe.getInputs()){
+				if(pe.getID() != source.getID())
+					templatePE.add("inputs", "\n   .INPUT_" + source.getID() + "_I(w_direct_out_" + source.getID()+"),");
+			}
+
+			template.add("pes", templatePE.render());
+			template.add("wires_direct_out_Pe", "wire ["+ pe.getMaxWidthResult() +"-1:0] w_direct_out_"+ pe.getID() +";\n");
+			if(pe.getLiveout() || pe.getMemAccess()){
+				template.add("wires_out_Pe", "wire ["+ pe.getMaxWidthResult() +"-1:0] w_pe_out_"+ pe.getID() +";\n");
+			}
+			if(pe.getControlFlow()){
+				template.add("wires_status", "wire  w_status_"+ pe.getID() +";\n");
+			}
+
+		}
+
+		int maxContextWidth = 0;
+		for(PEModel pe : model.getPEs()){
+			if(pe.getContextWidth() > maxContextWidth){
+				maxContextWidth = pe.getContextWidth();
+			}
+		}
+		if(model.getcBoxModel().getContextmaskEvaLuationBlocks().getContextWidth() > maxContextWidth){
+			maxContextWidth = model.getcBoxModel().getContextmaskEvaLuationBlocks().getContextWidth();
+		}
+
+		template.add("maxContextWidth", maxContextWidth);
+		template.add("peAddrWidth", (int) Math.ceil((Math.log(model.getNrOfPEs()) / Math.log(2) )));
+		template.add("nrOfPes", model.getNrOfPEs());
+		template.add("contextmemorysize", model.getContextMemorySize());
+		
+		if(initializationPath != null){
+			template.add("initPath", initializationPath);
+		}
+		
+		dump(model.getName() +".v", template);
+	}
+
+	/**
+	 * The prepare method is currently not needed
+	 */
+	protected void prepare(){
+	}
+
+	/**
+	 * The context converters are Amidar related and need to be generated 
+	 */
+	void printHostProcessorRelatedModules(){
+		for(PEModel pe : model.getPEs()){
+			printConverter(pe);
+		}
+		
+		String sourceFolder = target.Processor.Instance.getHardwareTemplatePathProcessorRelated();
+		String fileName = "/kernelTableCGRA.v";
+		
+		File source = new File(sourceFolder + fileName);
+		File destination = new File(destinationFolder + fileName);
+		
+		try {
+			Files.copy(source.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			e.printStackTrace(System.err);
+		}
+		
+		fileName = "/locationInformationMemory.v";
+		
+		source = new File(sourceFolder + fileName);
+		destination = new File(destinationFolder + fileName);
+		
+		try {
+			Files.copy(source.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			e.printStackTrace(System.err);
+		}
+		
+		fileName = "/constantMemory.v";
+		
+		source = new File(sourceFolder + fileName);
+		destination = new File(destinationFolder + fileName);
+		
+		try {
+			Files.copy(source.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			e.printStackTrace(System.err);
+		}
+	}
+
+
+	/**
+	 * Method to print an individual Converter for a PE. They are need to map incoming context  
+	 * @param pe
+	 */
+	private void printConverter(PEModel pe) {
+
+		STGroupFile group = new STGroupFile(target.Processor.Instance.getHardwareTemplatePathProcessorRelated() + "/Context_Converter.stg", '§', '§');
+		ST template = group.getInstanceOf("Context_Converter");
+		template.add("date", date.toString());
+		template.add("ID",pe.getID());
+		template.add("ccntwidth",model.getCCNTWidth());
+		template.add("contextWidth",pe.getContext().getContextWidth());
+		template.add("nrPes",model.getNrOfPEs());
+		template.add("viawidth",model.getViaWidth());
+		template.add("memaccess", pe.getMemAccess());
+		template.add("multipleInputs", 1);
+		ContextMaskPE peMask = pe.getContext();
+		if(peMask.getOpcodewidth() > 0){
+			template.add("opL", peMask.getOpL());
+			template.add("opH", peMask.getOpH());
+		}
+		template.add("muxRegL", peMask.getMuxRegL());
+		template.add("muxRegH", peMask.getMuxRegH());
+		if(pe.getMaxWidthInputB()>0){
+			template.add("muxBL", peMask.getMuxBL());
+			template.add("muxBH", peMask.getMuxBH());
+		}
+		if(pe.getMaxWidthInputB()>0){
+			template.add("muxAL", peMask.getMuxAL());
+			template.add("muxAH", peMask.getMuxAH());
+		}
+		template.add("maxMuxWidth", model.getMaxMuxAddrWidth());
+
+		boolean print = (peMask.getRegAddrWidthWrite()>0) ? true : false;
+		if(print){
+			template.add("wrL", peMask.getWrL());
+			template.add("wrH", peMask.getWrH());
+
+			if (pe.getMemAccess()) {
+				template.add("rdCacheL", peMask.getRdCacheL());
+				template.add("rdCacheH", peMask.getRdCacheH());
+			}
+
+			template.add("rddoL", peMask.getRddoL());
+			template.add("rddoH", peMask.getRddoH());
+
+			template.add("rdmuxL", peMask.getRdmuxL());
+			template.add("rdmuxH", peMask.getRdmuxH());
+		}
+		template.add("wr_en", peMask.getWr_en());
+		template.add("cond_wr", peMask.getCond_wr());
+		if (pe.getMemAccess()) {
+			template.add("cond_dma", peMask.getCond_dma());
+		}
+
+		dump("Context_Converter" + pe.getID() + ".v", template);
+	}
+
+
+	/**
+	 * Method to add static files. Currently used:
+	 * 	 <p><ul>
+	 * <li> Definitions (CGRA specific parameters)
+	 * <li> Definitions_Amidar (Amidar specific parameters)
+	 * <li> Timing constraints (default: 8.5 ns)
+	 * </ul><p>
+	 */
+	protected void addStaticFiles(){
+		super.addStaticFiles();
+
+		Path source = Paths.get(target.Processor.Instance.getHardwareTemplatePathProcessorRelated() + "/cgra_definitions_template.vh");
+		Path destination = Paths.get(destinationFolder + "/cgra.vh");
+
+
+		try {
+			Files.copy(source, destination);
+			source = Paths.get(target.Processor.Instance.getHardwareTemplatePathProcessorRelated() + "/AMIDAR_definitions.vh");
+			destination = Paths.get(destinationFolder + "/AMIDAR_definitions.vh");
+			modules.add("definitions.vh");
+			modules.add("AMIDAR_definitions.vh");
+			Files.copy(source, destination);
+
+			source = Paths.get(target.Processor.Instance.getHardwareTemplatePathDataPath() + "/constraints.xdc");
+			destination = Paths.get(destinationFolder + "/constraints.xdc");
+			Files.copy(source, destination);
+		} catch (IOException e) {
+			System.err.println("Error "+ e);
+			System.err.println("IO Exception in addStaticFiles() with File " + source);
+		}
+	}
+
+	protected static final String TOKENVALID = "TOKEN_VALID";
+	protected static final String OPCODE = "OPCODE";
+	protected static final String DESTINATIONTAG = "DEST_TAG";
+	protected static final String DESTINATIONFU = "DEST_FU";
+	protected static final String DESTINATIONPORT = "DEST_PORT";
+	protected static final String RESULTTAG = "RESULT_TAG";
+	protected static final String RESULTFU = "RESULT_FU";
+	protected static final String RESULTPORT = "RESULT_PORT";
+	protected static final String OPERANDBLOW = "OPERAND_B_LOW";
+	protected static final String OPERANDBLOW_VALID = "OPERAND_B_LOW_VALID";
+	protected static final String OPERANDALOW = "OPERAND_A_LOW";
+	protected static final String OPERANDALOW_VALID = "OPERAND_A_LOW_VALID";
+	protected static final String OPERANDBHIGH = "OPERAND_B_HIGH";
+	protected static final String OPERANDBHIGH_VALID = "OPERAND_B_HIGH_VALID";
+	protected static final String OPERANDAHIGH = "OPERAND_A_HIGH";
+	protected static final String OPERANDAHIGH_VALID = "OPERAND_A_HIGH_VALID";
+	protected static final String RESULTLOW = "RESULT_LOW";
+	protected static final String RESULTLOWVALID = "RESULT_LOW_VALID";
+	protected static final String RESULTACK = "RESULT_ACK";
+	protected static final String RESULTHIGH = "RESULT_HIGH";
+	protected static final String RESULTHIGHVALID = "RESULT_HIGH_VALID";
+
+	protected static final String CACHEDATA = "CACHE_DATA";
+	protected static final String CACHEVALID = "CACHE_VALID";
+	protected static final String CACHEADDR = "CACHE_ADDR";
+	protected static final String CACHEOFFSET = "CACHE_OFFSET";
+	protected static final String CACHEWR = "CACHE_WR";
+	protected static final String OPERANDACKNOWLEDGE = "OPERAND_ACK";
+
+
+	int maxContextWidth;
+
+	protected void fillPortList() {
+	
+
+		int busdatawidth = Processor.Instance.getDataPathWidth();
+		toplevelports.clear();
+		toplevelports.add(new VerilogPort(CLOCK, 1, 0, portdirectionality.input,porttype.wire, false));
+		toplevelports.add(new VerilogPort(RESET, 1, 0, portdirectionality.input,porttype.wire, false));
+		// TODO - all ports that exceed the width of 1 should be checked whether they actually are of width 32 .. or databuswidth
+		toplevelports.add(new VerilogPort(TOKENVALID, 1, 0, portdirectionality.input,porttype.wire, false));	
+		toplevelports.add(new VerilogPort(OPCODE, 7, 0, portdirectionality.input,porttype.wire, false));
+		toplevelports.add(new VerilogPort(DESTINATIONTAG, 7, 0, portdirectionality.input,porttype.wire, false));
+		toplevelports.add(new VerilogPort(DESTINATIONFU, 4, 0, portdirectionality.input,porttype.wire, false));
+		toplevelports.add(new VerilogPort(DESTINATIONPORT, 2, 0, portdirectionality.input,porttype.wire, false));
+
+		toplevelports.add(new VerilogPort(RESULTTAG, 7, 0, portdirectionality.output,porttype.wire, false));
+		toplevelports.add(new VerilogPort(RESULTFU, 4, 0, portdirectionality.output,porttype.wire, false));
+		toplevelports.add(new VerilogPort(RESULTPORT, 2, 0, portdirectionality.output,porttype.wire, false));
+
+		toplevelports.add(new VerilogPort(OPERANDBLOW, busdatawidth, 0, portdirectionality.input,porttype.wire, false));
+		toplevelports.add(new VerilogPort(OPERANDBLOW_VALID, 1, 0, portdirectionality.input,porttype.wire, false));
+		toplevelports.add(new VerilogPort(OPERANDALOW, busdatawidth, 0, portdirectionality.input,porttype.wire, false));
+		toplevelports.add(new VerilogPort(OPERANDALOW_VALID, 1, 0, portdirectionality.input,porttype.wire, false));
+		
+		toplevelports.add(new VerilogPort(OPERANDBHIGH, busdatawidth, 0, portdirectionality.input,porttype.wire, false));
+		toplevelports.add(new VerilogPort(OPERANDBHIGH_VALID, 1, 0, portdirectionality.input,porttype.wire, false));
+		toplevelports.add(new VerilogPort(OPERANDAHIGH, busdatawidth, 0, portdirectionality.input,porttype.wire, false));
+		toplevelports.add(new VerilogPort(OPERANDAHIGH_VALID, 1, 0, portdirectionality.input,porttype.wire, false));
+
+		maxContextWidth = 0;
+		for(PEModel pe : model.getPEs()){
+			if(pe.getMemAccess()){
+				toplevelports.add(new VerilogPort(CACHEDATA, CACHEDATAWIDTH, pe.getID(), portdirectionality.input,porttype.wire, true));
+				toplevelports.add(new VerilogPort(CACHEVALID, 1, pe.getID(), portdirectionality.input,porttype.wire, true));
+				toplevelports.add(new VerilogPort(CACHEADDR, busdatawidth, pe.getID(), portdirectionality.output,porttype.wire, true));
+				toplevelports.add(new VerilogPort(CACHEOFFSET, busdatawidth, pe.getID(), portdirectionality.output,porttype.wire, true));
+				toplevelports.add(new VerilogPort(CACHEWR, 1, pe.getID(), portdirectionality.output,porttype.wire, true));
+				toplevelports.add(new VerilogPort(CACHEVALID, 1, pe.getID(), portdirectionality.output,porttype.wire, true));
+				toplevelports.add(new VerilogPort(CACHEDATA, CACHEDATAWIDTH, pe.getID(), portdirectionality.output,porttype.wire, true));
+			}
+
+			if(pe.getContextWidth() > maxContextWidth){
+				maxContextWidth = pe.getContextWidth();
+			}
+		}
+		if(model.getcBoxModel().getContextmaskEvaLuationBlocks().getContextWidth() > maxContextWidth){
+			maxContextWidth = model.getcBoxModel().getContextmaskEvaLuationBlocks().getContextWidth();
+		}
+
+		toplevelports.add(new VerilogPort(RESULTLOW, busdatawidth, 0, portdirectionality.output,porttype.register, false));
+		toplevelports.add(new VerilogPort(RESULTLOWVALID, 1, 0, portdirectionality.output,porttype.wire, false));
+		toplevelports.add(new VerilogPort(RESULTHIGH, busdatawidth, 0, portdirectionality.output,porttype.register, false));
+		toplevelports.add(new VerilogPort(RESULTHIGHVALID, 1, 0, portdirectionality.output,porttype.wire, false));
+		toplevelports.add(new VerilogPort(RESULTACK, 1, 0, portdirectionality.input,porttype.wire, false));
+		toplevelports.add(new VerilogPort(OPERANDACKNOWLEDGE, 1, 0, portdirectionality.output,porttype.wire, false));
+	}
+
+	protected void printDummy(CgraModel cgra) {
+		STGroupFile group = new STGroupFile(target.Processor.Instance.getHardwareTemplatePathProcessorRelated() + "/top_level_dummy_template.stg", '§',
+				'§');
+		ST template = group.getInstanceOf("topLevelDummy");
+	int maxContextWidth = 0;
+		for (PEModel pe : cgra.getPEs()) {
+			if (pe.getMemAccess()) {
+				ST cacheIO = group.getInstanceOf("cacheIO");
+				cacheIO.add("index", pe.getID());
+				template.add("cacheIO", cacheIO.render() + "\n");
+				ST cacheOutputs = group.getInstanceOf("cacheOutputs");
+				cacheOutputs.add("index", pe.getID());
+				template.add("cacheOutputs", cacheOutputs);
+				ST cacheConjunction = group.getInstanceOf("cacheConjunction");
+				cacheConjunction.add("index", pe.getID());
+				template.add("cacheConjunction", cacheConjunction);
+			if (maxContextWidth < pe.getContextWidth()) {
+				maxContextWidth = pe.getContextWidth();
+			}
+		}
+	}
+	if (maxContextWidth < cgra.getcBoxModel().getContextmaskEvaLuationBlocks().getContextWidth()) {
+		maxContextWidth = cgra.getcBoxModel().getContextmaskEvaLuationBlocks().getContextWidth();
+		}
+		template.add("maxContextWidth", maxContextWidth);
+		template.add("ccntwidth", model.getCCNTWidth());
+		
+		dump("top_level_dummy.v", template);
+	}
+	
+	public static void main(String [] args){
+//		String currentDir = System.getProperty("user.dir");
+//	    System.out.println("Current dir using System:"	 +currentDir);
+		
+		String cgraPath = args[0];
+		String outputPath = args[1];
+	    
+	    CgraModelAmidar cgra = (CgraModelAmidar) target.Processor.Instance.getAttributeParser().loadCgra(cgraPath);
+	    
+	    cgra.finalizeCgra();
+	    
+	    VerilogGenerator gen = target.Processor.Instance.getGenerator();
+	    
+	    
+	    String path = System.getProperty("user.dir");
+	    
+	    
+	    path = path + "/../../Amidar/gen";
+	    System.out.println(path);
+	    gen.setInitializationPath(path);
+	    
+	    gen.printVerilogDescription(outputPath,cgra);
+		
+		
+		
+	}
+
+}

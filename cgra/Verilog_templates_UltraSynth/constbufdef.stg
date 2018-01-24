@@ -1,0 +1,15 @@
+ConstBuf(addrWidth, size, accessSizeWidth)
+::= <<
+`ifndef INCLUDE_CONST_BUF
+  `define INCLUDE_CONST_BUF
+ 
+  `define CONST_BUF_SIZE {size}
+  `define CONST_BUF_ADDR_WIDTH {addrWidth}
+
+  // How many memory lines have to be read to complete
+  // a read request. Zero if the data path is able to take in 
+  // any the request in on cycle.
+  `define CONST_BUF_ACCESS_SIZE_WIDTH {accessSizeWidth}
+  
+`endif // INCLUDE_CONST_BUF
+>>

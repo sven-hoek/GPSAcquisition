@@ -1,0 +1,29 @@
+!SESSION 2018-01-24 10:38:24.939 -----------------------------------------------
+eclipse.buildId=4.7.2.M20171130-0510
+java.version=1.8.0_151
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=de_DE
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -data /home/chris/git/amidar-sim2 -os linux -ws gtk -arch x86_64 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.egit.core 4 0 2018-01-24 10:39:56.922
+!MESSAGE Auto sharing project with git failed
+!STACK 0
+java.lang.IllegalArgumentException: Repository directory to configure does not look like a Git directory: /home/chris/git/amidar-sim2/.git/modules/cgra
+	at org.eclipse.egit.core.RepositoryUtil.addConfiguredRepository(RepositoryUtil.java:482)
+	at org.eclipse.egit.core.Activator$CheckProjectsToShare.visitConnect(Activator.java:614)
+	at org.eclipse.egit.core.Activator$CheckProjectsToShare.run(Activator.java:535)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:56)
+
+!ENTRY org.eclipse.egit.core 4 0 2018-01-24 10:39:57.592
+!MESSAGE Remove repository mapping of Git mapped resource for which project or mapped git repository has disappeared: 'RepositoryMapping[<empty> -> '../../.git/modules/cgra', absolute path: '/home/chris/git/amidar-sim2/.git/modules/cgra' ]'
+!STACK 0
+java.io.FileNotFoundException: 
+	at org.eclipse.egit.core.project.GitProjectData.logAndUnmapGoneMappedResource(GitProjectData.java:720)
+	at org.eclipse.egit.core.project.GitProjectData.map(GitProjectData.java:683)
+	at org.eclipse.egit.core.project.GitProjectData.remapAll(GitProjectData.java:647)
+	at org.eclipse.egit.core.project.GitProjectData.setRepositoryMappings(GitProjectData.java:456)
+	at org.eclipse.egit.core.op.ConnectProviderOperation.connectProject(ConnectProviderOperation.java:151)
+	at org.eclipse.egit.core.op.ConnectProviderOperation.execute(ConnectProviderOperation.java:109)
+	at org.eclipse.egit.core.internal.job.JobUtil$1.run(JobUtil.java:53)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:56)

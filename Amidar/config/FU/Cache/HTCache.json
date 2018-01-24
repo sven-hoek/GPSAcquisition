@@ -1,0 +1,10 @@
+{
+	"name" : "Handle Table Cache",
+	"size" : 16,
+	"sets" : 2,
+	"wordsperline" : 4,
+	"wrAlloc" : false,
+	"wrBack" : false,
+	"extMemoryAccTicks" : 10
+	
+}

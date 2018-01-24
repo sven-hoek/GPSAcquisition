@@ -1,0 +1,127 @@
+<<<<<<< HEAD
+CCU(stallcapability,initPath)::= <<
+=======
+CCU(stallcapability,branchselection)::= <<
+>>>>>>> f20ec5aeab03faa8426cab6e9a6f9c13bec466ad
+
+/*
+Author: Dennis L. Wolf
+Date: parameter driven module - latest change: 8th April 2016
+Version: 1.5 minor changes - conditional & unconditional changed to jump and u/c
+Version History: 1.4 New funktionality - relative jumpgs
+		 1.3 Changed to String Template Interface
+		 1.2 Code Review and Cleanup
+		 1.1 debugged and tested
+		 1.0 Concept
+
+Comments: This controlunit uses an adder to reduce the amoubnt of needed contextmemory.
+the main advantage is the use of an context that is clocked synchronously as
+all other contexts. the d-flip flip is in prallel. therefore the contexct
+is the only clocked module, wherefore the second stage of a potential pipeline
+can be drawn within or after the alu. an noticable increase in frequency should be
+recognizable.
+*/
+
+`include "cgra.vh" // import definitions of parameters and types
+
+`default_nettype wire
+
+module ContextControlUnit #(parameter CONTEXT_ADDR_WIDTH = 0, CONTEXT_MEMORY_LENGTH = 0)(
+
+input  wire  					CLK_I,§if(stallcapability)§
+input  wire 					EN_I,§endif§ §if(branchselection)§
+input  wire 			 		BRANCH_SELECTION_I, §endif§
+input  wire [CONTEXT_ADDR_WIDTH+2:0]		CONTEXT_DATA_I,
+input  wire 					CONTEXT_WR_EN_I,
+input  wire [CONTEXT_ADDR_WIDTH-1:0]		CONTEXT_WR_ADDR_I,
+input  wire [CONTEXT_ADDR_WIDTH-1:0]	  ADDR_I,
+input  wire  														LOAD_EN_I,
+output wire RST_ALU_O,
+output wire [CONTEXT_ADDR_WIDTH-1:0]  		CCNT_O);
+
+// Contextmemory, that holds configurations
+reg [CONTEXT_ADDR_WIDTH+§if(branchselection)§2§else§1§endif§:0] contextmemory [CONTEXT_MEMORY_LENGTH-1:0];
+reg [CONTEXT_ADDR_WIDTH+§if(branchselection)§2§else§1§endif§:0] mem_out;
+
+wire [CONTEXT_ADDR_WIDTH-1:0] alternative_ccnt;
+reg [CONTEXT_ADDR_WIDTH-1:0] ccnt;
+
+// There are three mode bits for jumps. They can be arbitrarily combined.  Jump marks an actual jump. Conditional determines whether the jump is conditional and relative determines whether the jump is relative to the current ccnt or absolut.
+wire jump, §if(branchselection)§conditional,§endif§ relative;
+reg [CONTEXT_ADDR_WIDTH-1:0] r_plus;
+
+reg reset;
+assign RST_ALU_O = reset;
+
+// address offset if the jump is relative (=1) otherwise (=0) the jump address 
+assign alternative_ccnt = mem_out[CONTEXT_ADDR_WIDTH-1:0];
+// Jump indicator
+assign jump = mem_out[CONTEXT_ADDR_WIDTH];
+// Relative (=1) or absolut jump (=0)
+assign relative = mem_out[CONTEXT_ADDR_WIDTH+1]; §if(branchselection)§
+// Jumps can be conditional (=1) (then condition is the branch selection signal from the CBox)
+assign conditional = mem_out[CONTEXT_ADDR_WIDTH+2]; §endif§
+
+
+assign CCNT_O = ccnt;
+
+// context memory management
+always@(posedge CLK_I) begin
+   if(CONTEXT_WR_EN_I) begin
+    contextmemory[CONTEXT_WR_ADDR_I] <= CONTEXT_DATA_I;
+   end
+§if(stallcapability)§   if(EN_I) begin §endif§
+    mem_out <= contextmemory[ccnt];
+    r_plus <= ccnt;
+§if(stallcapability)§   end §endif§
+end
+
+// Counter logic
+always@* begin
+// Loading an external counter 
+ if(LOAD_EN_I) begin
+  ccnt = ADDR_I;
+  reset = 1'b1;
+ end
+	else begin
+	// autonomous behavior
+		if(jump) begin §if(branchselection)§
+			 if((conditional && !BRANCH_SELECTION_I) || (!conditional)) begin §endif§
+					 reset = 1'b1;
+			     if(relative) begin
+			     ccnt = r_plus + alternative_ccnt;
+			     end
+			     else begin
+			     ccnt = alternative_ccnt;
+			     end 
+§if(branchselection)§			  end
+
+			  else begin
+			  ccnt = r_plus + 1;
+			  reset = 1'b0;
+			  end §endif§
+		end 
+		else begin
+			  ccnt = r_plus + 1;
+			  reset = 1'b0;
+		end
+	end
+end
+
+
+initial begin
+§if(initPath)§
+$readmemb("§initPath§/ctrlunit.dat", contextmemory);
+§else§
+ // forces start condition
+<<<<<<< HEAD
+ contextmemory[CONTEXT_MEMORY_LENGTH-1] = {3'b101,{(CONTEXT_ADDR_WIDTH){1'b0}}};
+§endif§
+=======
+ contextmemory[CONTEXT_MEMORY_LENGTH-1] = {3'b0§if(branchselection)§0§endif§1,{(CONTEXT_ADDR_WIDTH){1'b1}}};
+>>>>>>> f20ec5aeab03faa8426cab6e9a6f9c13bec466ad
+end
+
+endmodule
+
+>>

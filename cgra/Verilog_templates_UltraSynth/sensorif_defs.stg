@@ -1,0 +1,10 @@
+sensorif_defs(sensorContextWidth, sensorIDWidth)
+::= <<
+`ifndef INCLUDE_SENSOR
+  `define INCLUDE_SENSOR
+ 
+  `define SENSOR_CONTEXT_WIDTH {sensorContextWidth}
+  `define SENSOR_ID_WIDTH {sensorIDWidth}
+  
+`endif // INCLUDE_SENSOR
+>>

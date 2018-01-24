@@ -1,0 +1,5 @@
+# Reading C:/Microsemi/Libero_v11.4/Model/tcl/vsim/pref.tcl
+pwd
+# C:/Users/ae/Desktop/RS/cgra
+cd out
+# couldn't change working directory to "out": no such file or directory

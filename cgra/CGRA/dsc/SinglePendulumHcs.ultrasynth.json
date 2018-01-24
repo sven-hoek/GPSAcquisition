@@ -1,0 +1,39 @@
+{
+"toplevel_inputs" : [
+  { "id": 0, "tag": "SinglePendulumHcs.torque", "saddr": 24, "prec": { "min" : -10, "max" : 10, "res" : 1.0000000000000001e-005 },                             "arrayindex": 0 }
+],
+"toplevel_parameters" : [
+  { "id": 1, "tag": "SinglePendulumHcs.d",                   "prec": { "min" : -10, "max" : 10, "res" : 1.0000000000000001e-005 },"init": 0.20000000000000001, "arrayindex": 0 },
+  { "id": 2, "tag": "SinglePendulumHcs.singlePendulum.g",    "prec": { "min" : -10, "max" : 10, "res" : 1.0000000000000001e-005 },"init": 9.8100000000000005,  "arrayindex": 1 },
+  { "id": 3, "tag": "SinglePendulumHcs.singlePendulum.m",    "prec": { "min" : -10, "max" : 10, "res" : 1.0000000000000001e-005 },"init": 0.5,                 "arrayindex": 2 },
+  { "id": 4, "tag": "SinglePendulumHcs.singlePendulum.I",    "prec": { "min" : -10, "max" : 10, "res" : 1.0000000000000001e-005 },"init": 0.20000000000000001, "arrayindex": 3 }
+],
+"constants" : [
+  { "id": 5, "val" : 1 }
+],
+"states" : [
+  { "id": 6, "tag": "SinglePendulumHcs.singlePendulum.x_phi" , "driv": 7 },
+  { "id": 7, "tag": "SinglePendulumHcs.singlePendulum.x_phiP" ,"driv": 16 }
+],
+"predecessors" : [
+
+],
+"operators" : [
+  { "id":  8, "op" : "DIV", "args" : [5, 4] },
+  { "id":  9, "op" : "NEG", "args" : [3] },
+  { "id": 10, "op" : "MUL", "args" : [9, 2] },
+  { "id": 11, "op" : "SIN", "args" : [6] },
+  { "id": 12, "op" : "MUL", "args" : [10, 11] },
+  { "id": 13, "op" : "MUL", "args" : [7, 1] },
+  { "id": 14, "op" : "SUB", "args" : [12, 13] },
+  { "id": 15, "op" : "ADD", "args" : [14, 0] },
+  { "id": 16, "op" : "MUL", "args" : [8, 15] }
+],
+"toplevel_outputs" : [
+  { "id": 17, "tag": "SinglePendulumHcs.phi",                   "driv": 6, "prec": { "min" : -10, "max" : 10, "res" : 1.0000000000000001e-005 }, "laddr": 0 },
+  { "id": 18, "tag": "SinglePendulumHcs.phiP",                  "driv": 7, "prec": { "min" : -10, "max" : 10, "res" : 1.0000000000000001e-005 }, "laddr": 1 },  
+  { "id": 19, "tag": "SinglePendulumHcs.singlePendulum.torque", "driv": 0, "prec": { "min" : -10, "max" : 10, "res" : 1.0000000000000001e-005 }, "raddr": 0 },
+  { "id": 20, "tag": "SinglePendulumHcs.singlePendulum.phi",    "driv": 6, "prec": { "min" : -10, "max" : 10, "res" : 1.0000000000000001e-005 }, "raddr": 1 },
+  { "id": 21, "tag": "SinglePendulumHcs.singlePendulum.phiP",   "driv": 7, "prec": { "min" : -10, "max" : 10, "res" : 1.0000000000000001e-005 }, "raddr": 2 }
+]
+}

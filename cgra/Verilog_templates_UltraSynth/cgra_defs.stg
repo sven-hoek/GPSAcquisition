@@ -1,0 +1,29 @@
+cgra_defs(contextAddrWidth, contextSize, peCount, peIDWidth,
+          rfAddrWidth, dataPathWidth, cBoxEvalBlockCount, romAddrWidth)
+::= <<
+`ifndef INCLUDE_CGRA
+`define INCLUDE_CGRA
+ 
+  // This header is Ultrasynth specific!
+
+  `define 	CGRA_CONTEXT_SIZE {contextSize}
+  `define 	CGRA_CONTEXT_ADDR_WIDTH {contextAddrWidth}
+  `define 	PE_COUNT {peCount}
+  `define   PE_ID_WIDTH {peIDWidth} // bits needed to identify PE_COUNT PEs
+  `define 	RF_ADDR_WIDTH {rfAddrWidth}
+  `define   CBOX_EVAL_BLOCK_COUNT {cBoxEvalBlockCount}
+  `define   ROM_ADDR_WIDTH {romAddrWidth}
+
+	`define   DATA_WIDTH {dataPathWidth}
+  `define 	ERROR_WIDTH 1
+
+  // state definitions 
+  `define 	STATE_WIDTH 3
+	`define 	IDLE 0
+	`define 	START 1
+	`define 	EXECUTE 2
+	`define 	UPDATE_PARAMETER 3
+	`define 	ERROR 4
+  
+`endif // INCLUDE_CGRA
+>>

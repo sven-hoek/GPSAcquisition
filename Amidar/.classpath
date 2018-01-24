@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/AmidarTools/lib/json-simple-1.1.1.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/AXTLoader"/>
+	<classpathentry kind="lib" path="/AmidarTools/lib/axtConverter.jar"/>
+	<classpathentry kind="lib" path="/AmidarTools/lib/bcel-5.2.jar"/>
+	<classpathentry kind="lib" path="/AmidarTools/lib/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="/AmidarTools/lib/j-text-utils-0.3.3.jar"/>
+	<classpathentry kind="lib" path="/AmidarTools/lib/lombok.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/CGRA"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Synthesis"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/AmidarTools"/>
+	<classpathentry kind="lib" path="/CGRA/lib/ST-4.0.8.jar"/>
+	<classpathentry kind="lib" path="/CGRA/lib/junit-4.12.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

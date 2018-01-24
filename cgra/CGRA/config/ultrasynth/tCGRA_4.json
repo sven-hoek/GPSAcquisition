@@ -1,0 +1,17 @@
+ {
+	"PEs" : {
+		"0" : "tPE_all.json",
+		"1" : "tPE_all.json",
+		"2" : "tPE_all.json",
+		"3" : "tPE_all.json"
+	},
+	"Context_memory_size" : 1024,
+	"Interconnect" : "Interconnect_4pe_mesh.json",
+	"CBox_slots" : 1024,
+	"CBox_evaluation_blocks" :1,
+	"CBOX_output_ports_per_evaluation_blocks" : 1,
+	"Pipelined" : false,
+	"SecondRFOutput2ALU" : false,
+	"Branch_selection_mode" : "default",
+	"Branch_selection_sources" : ["regInNegative","regInPositive"]
+}

@@ -1,0 +1,559 @@
+package io;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+import target.Amidar;
+import target.Processor;
+import cgramodel.CgraModel;
+import cgramodel.PEModel;
+
+@Deprecated
+public class JSONConfigGenerator {
+	
+	//TODO adapt to new cgra model
+
+	CgraModel cgra;
+	
+	String baseName;
+	
+	String pePath = null, pePathDMA = null;
+	boolean defaultPE = false;
+	
+	public static void main(String[] args) {
+		
+		JSONConfigGenerator jc = new JSONConfigGenerator();
+	    jc.writeJSON();
+
+	    
+//	    vgen.setDumpOperatorTestbench(true);
+	}
+	
+	
+	public JSONConfigGenerator(CgraModel cgra){
+		this();
+		this.cgra = cgra;
+	}
+	
+	
+	public JSONConfigGenerator(){
+		
+		
+<<<<<<< HEAD
+		int rows = 7;
+		int cols = 7;
+=======
+		int rows = 15;
+		int cols = 15;
+>>>>>>> 54dea5e99b91f067743f20608f182ec207a05437
+
+		if(Processor.Instance == Amidar.Instance){
+			baseName = "config/amidar/lukas/CGRA_Mesh_"+rows+"x"+cols;
+		}
+		
+		createMeshCGRA(rows, cols, "PE_no_mem.json", "PE_mem.json");
+	}
+	
+	
+	
+	
+	public void writeJSON(){
+		
+		int contextMemorySize = 256;
+		int cboxSlots = 32;
+		//////////////////////////////////////////////////////////////
+		// Interconnect												//				
+		//////////////////////////////////////////////////////////////
+		String interconnectFileName = baseName+"_interconnect.json";
+		try {
+			FileWriter fw = new FileWriter(interconnectFileName);
+			
+			TreeMap<Integer,TreeSet<Integer>> sourceDrainMap = new TreeMap();
+			
+			for(int i = 0; i < cgra.getNrOfPEs(); i++){
+				sourceDrainMap.put(i, new TreeSet<>());
+			}
+			
+			for(int i = 0; i < cgra.getNrOfPEs(); i++){
+				for(PEModel pe: cgra.getPEs().get(i).getInputs()){
+					sourceDrainMap.get(pe.getID()).add(i);
+				}
+			}
+			
+			StringBuffer connections = new StringBuffer("{\n\"name\" : \"Interconnect\",\n\"Interconnection\":\n\t{\n");
+			
+			
+			for(int i = 0; i < cgra.getNrOfPEs(); i ++){
+				connections.append("\t\""+i+"\" : [");
+				for(Integer drain: sourceDrainMap.get(i)){
+					connections.append(drain +",");
+				}
+				connections.deleteCharAt(connections.length()-1);
+				if(i == cgra.getNrOfPEs()-1){
+					connections.append("]\n");
+				} else{
+					connections.append("],\n");
+				}
+			}
+			
+			connections.append("\t},\n\"live_out\" :\n\t{\n");
+			
+			
+			for(int i = 0; i < cgra.getNrOfPEs()-1; i++){
+				connections.append("\t\""+i+"\" : "+cgra.getPEs().get(i).getLiveout()+",\n");
+			}
+			connections.append("\t\""+(cgra.getNrOfPEs()-1)+"\" : "+cgra.getPEs().get(cgra.getNrOfPEs()-1).getLiveout()+"\n");
+			
+			connections.append("\t},\n\"live_in\" :\n\t{\n");
+			
+			
+			for(int i = 0; i < cgra.getNrOfPEs()-1; i++){
+//				connections.append("\t\""+i+"\" : "+cgra.getPEs().get(i).getLivein()+",\n");
+			}
+//			connections.append("\t\""+(cgra.getNrOfPEs()-1)+"\" : "+cgra.getPEs().get(cgra.getNrOfPEs()-1).getLivein()+"\n");
+			connections.append("\t}\n}");
+			
+			fw.write(connections.toString());
+			fw.flush();
+			fw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//////////////////////////////////////////////////////////////
+		// Interconnect												//				
+		//////////////////////////////////////////////////////////////
+		String fileName = baseName+".json";
+		
+		try {
+			FileWriter fw = new FileWriter(fileName);
+			
+			StringBuffer content = new StringBuffer("{\n\"name\" : \""+baseName+"\",\n\"PEs\" : \n\t{\n");
+			
+			for(int i = 0; i < cgra.getPEs().size(); i++){
+				PEModel pe = cgra.getPEs().get(i);
+				if(defaultPE){
+					if(pe.getMemAccess()){
+						content.append("\t\""+i+"\" : \""+pePathDMA+"\",\n");
+					} else{
+						content.append("\t\""+i+"\" : \""+pePath+"\",\n");
+					}
+				} else{
+					//TODO
+				}
+				
+			}
+			content.deleteCharAt(content.length()-1);
+			content.deleteCharAt(content.length()-1);
+			content.append("\n\t},\n\"Context_memory_size\" : "+contextMemorySize+",\n");
+			content.append("\"Interconnect\" : \""+interconnectFileName+"\",\n");
+			content.append("\"CBox_slots\" : " + cboxSlots+"\n}");
+			
+			fw.write(content.toString());
+			fw.flush();
+			fw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
+	public void createMeshCGRA(int rows, int colums, String pePath, String pePathDMA){
+		this.cgra = new CgraModel();
+		this.pePath = pePath;
+		this.pePathDMA = pePathDMA;
+		this.defaultPE = true;
+		
+		int nrOfPEs = rows*colums;
+		
+		PEModel[] PEs = new PEModel[nrOfPEs];
+		for(int i = 0; i < nrOfPEs; i++){
+			PEModel pe = new PEModel();
+			pe.setID(i);
+			PEs[i] = pe;
+		}
+
+		// Connections /////////////////////////////////////////////////////////////
+		for(int i = 0; i < nrOfPEs; i++){
+			PEModel pe = PEs[i];
+			int row = i / colums;
+			int col = i % colums;
+
+			if(row != 0){
+				pe.addPE2inputs(PEs[i-colums]);
+			}
+			if(row != rows-1){
+				pe.addPE2inputs(PEs[i+colums]);
+			}
+			if(col != 0){
+				pe.addPE2inputs(PEs[i-1]);
+			}
+			if(col != colums-1){
+				pe.addPE2inputs(PEs[i+1]);
+			}
+			pe.setLiveout(false);
+//			pe.setMemAccess(false);// TODO - check why this should be set. this attr depends on whether a mem accessing op is available
+			this.cgra.addPE(pe);
+		}
+		// liveouts ///////////////////////////////////////////////////////////////
+		
+		setFullOutgoingConnections(PEs, rows, colums);
+//		setMinimalOutgoingConnections(PEs, rows, colums);
+				
+	}
+	
+	public void setFullOutgoingConnections(PEModel[] PEs, int rows, int colums){
+		int startX = (colums+1)/ 2 - 1;
+		int startY = (rows + 1)/ 2 - 1;
+
+		if(rows % 2 == 0){
+			startY--;
+		}
+
+		char EMPTY = 'o';
+		char LIVE = 'X';
+		char NORTH = ',';
+		char EAST= '-';
+		char SOUTH = '\'';
+		char WEST = '-';
+
+		
+		char[][][] allPES = new char[5][rows][colums];
+		int best = Integer.MAX_VALUE;
+		int bestIndex = -1;
+
+		for(int off = 0; off < 5; off++){
+
+			int count = 0;
+			
+			char[][] pess = allPES[off];//new char[rows][colums];
+
+			for(int i = 0; i < rows; i++){
+				for(int j = 0; j < colums; j++){
+					pess[i][j] = EMPTY;
+				}
+			}
+
+
+			for(int i = 0; i < rows; i++){
+				int currentStart = startX - 2 * (startY-i);
+				while(currentStart < 0){
+					currentStart += 5;
+				}
+
+
+				currentStart+=off;
+				currentStart = currentStart % 5;
+
+
+
+				for(int j = currentStart; j < colums; j+=5){
+					pess[i][j] = LIVE;
+					count ++;
+//					PEs[i*colums+j].setLiveout(true);
+
+					if(i != 0){
+						pess[i-1][j] = NORTH;
+					}
+					if(i != rows-1){
+						pess[i+1][j] = SOUTH;
+					}
+					if(j != 0){
+						pess[i][j-1] = WEST;
+					}
+					if(j != colums-1){
+						pess[i][j+1] = EAST;
+					}
+
+
+
+				}
+
+			}
+			//////////////////////////////////////////
+			// Manage borders
+			
+			for(int i = 1; i < colums-1; i++){
+				if(pess[0][i] != EMPTY && pess[0][i+1] == EMPTY && pess[0][i-1] == EMPTY){
+					pess[0][i] = LIVE;
+//					PEs[i].setLiveout(true);
+					pess[0][i-1] = WEST;
+					pess[0][i+1] = EAST;
+					count++;
+				}
+				if(pess[rows-1][i] != EMPTY && pess[rows-1][i+1] == EMPTY && pess[rows-1][i-1] == EMPTY){
+					pess[rows-1][i] = LIVE;
+//					PEs[(rows-1)*colums+i].setLiveout(true);
+					pess[rows-1][i-1] = WEST;
+					pess[rows-1][i+1] = EAST;
+					count++;
+				}
+			}
+			
+			for(int i = 1; i < rows-1; i++){
+				if(pess[i][0] != EMPTY && pess[i+1][0] == EMPTY && pess[i-1][0] == EMPTY){
+					pess[i][0] = LIVE;
+//					PEs[i*colums].setLiveout(true);
+					pess[i-1][0] = WEST;
+					pess[i+1][0] = EAST;
+					count++;
+				}
+				if(pess[i][colums-1] != EMPTY && pess[i+1][colums-1] == EMPTY && pess[i-1][colums-1] == EMPTY){
+					pess[i][colums-1] = LIVE;
+//					PEs[i*colums+colums -1].setLiveout(true);
+					pess[i-1][colums-1] = WEST;
+					pess[i+1][colums-1] = EAST;
+					count++;
+				}
+			}
+			
+			
+			if(pess[0][0] == EMPTY){
+				pess[0][0] = LIVE;
+				count++;
+//				PEs[0].setLiveout(true);
+				if(pess[0][1] == EMPTY){
+					pess[0][1] = EAST;
+				}
+				if(pess[1][0] == EMPTY){
+					pess[1][0] = SOUTH;
+				}
+			}
+			
+			
+			if(pess[rows-1][0] == EMPTY){
+				pess[rows-1][0] = LIVE;
+				count++;
+//				PEs[(rows-1)*colums].setLiveout(true);
+				if(pess[rows-1][1] == EMPTY){
+					pess[rows-1][1] = EAST;
+				}
+				if(pess[rows-2][0] == EMPTY){
+					pess[rows-2][0] = NORTH;
+				}
+			}
+			
+			if(pess[rows-1][colums-1] == EMPTY){
+				pess[rows-1][colums-1] = LIVE;
+				count++;
+//				PEs[rows*colums -1].setLiveout(true);
+				if(pess[rows-1][colums-2] == EMPTY){
+					pess[rows-1][colums-2] = WEST;
+				}
+				if(pess[rows-2][colums-1] == EMPTY){
+					pess[rows-2][colums-1] = NORTH;
+				}
+			}
+			
+			
+			if(pess[0][colums-1] == EMPTY){
+				pess[0][colums-1] = LIVE;
+				count++;
+//				PEs[colums-1].setLiveout(true);
+				if(pess[0][colums-2] == EMPTY){
+					pess[0][colums-2] = WEST;
+				}
+				if(pess[1][colums-1] == EMPTY){
+					pess[1][colums-1] = SOUTH;
+				}
+			}
+			
+			for(int i = 1; i < colums-1; i++){
+				if(pess[0][i] == EMPTY){
+					pess[0][i] = LIVE;
+					count++;
+//					PEs[i].setLiveout(true);
+					if(pess[0][i+1] == EMPTY){
+						pess[0][i+1] = EAST;
+					}
+				}
+				if(pess[rows-1][colums-1-i] == EMPTY){
+					pess[rows-1][colums-1-i] = LIVE;
+					count++;
+//					PEs[colums*(rows-1) + colums-1-i].setLiveout(true);
+					if(pess[rows-1][colums-2-i] == EMPTY){
+						pess[rows-1][colums-2-i] = WEST;
+					}
+				}
+				
+			}
+			
+			for(int i = 1; i < rows-1; i++){
+				if(pess[rows-1-i][0] == EMPTY){
+					pess[rows-1-i][0] = LIVE;
+					count++;
+//					PEs[colums*(rows-1-i)].setLiveout(true);
+					if(pess[rows-2-i][0] == EMPTY){
+						pess[rows-2-i][0] = NORTH;
+					}
+				}
+				if(pess[i][colums-1] == EMPTY){
+					pess[i][colums-1] = LIVE;
+					count++;
+//					PEs[colums*i + colums -1].setLiveout(true);
+					if(pess[i+1][colums-1] == EMPTY){
+						pess[i+1][colums-1] = SOUTH;
+					}
+				}
+			}
+			
+			
+			
+			System.out.println();
+			for(int i = 0; i < rows; i++){
+
+				for(int j = 0; j < colums; j++){
+					System.out.print(pess[i][j]+ " ");
+				}
+				System.out.println();
+			}
+			System.out.println("Expected liveouts: "  + (int)Math.ceil((rows*colums)/4.0 ));
+			System.out.println("Nr of Liveouts: "+ count);
+			
+			if(count < best){
+				best = count;
+				bestIndex = off;
+			}
+			
+		}
+		
+		System.out.println();
+		System.out.println("BEST SOLUTION: ");
+		
+		char[][] pess = allPES[bestIndex];
+
+		System.out.println();
+		for(int i = 0; i < rows; i++){
+
+			for(int j = 0; j < colums; j++){
+				System.out.print(pess[i][j]+ " ");
+				if(pess[i][j] == LIVE){
+					PEs[i*colums + j ].setLiveout(true);
+				}
+				
+			}
+			System.out.println();
+		}
+		System.out.println("Expected liveouts: "  + (int)Math.ceil((rows*colums)/4.0 ));
+		System.out.println("Nr of Liveouts: "+ best);
+		
+		
+		// DMA ////////////////////////////////////////
+		startX+=bestIndex;
+		if(rows % 2 == 1){
+			startX--;
+			startY--;
+		}
+		
+		
+		HashSet<Integer> dma = new HashSet<>();
+		int dma1 = startY*colums + startX+1;
+		int dma2 = (startY+2)*colums + startX+2;
+		int dma3 = (startY+3)*colums + startX;
+		int dma4 = (startY+1)*colums + startX-1;
+		dma.add(dma1);
+		dma.add(dma2);
+		dma.add(dma3);
+		dma.add(dma4);
+		
+		System.out.println();
+		System.out.println("DMA SOLUTION: ");
+		System.out.println();
+		for(int i = 0; i < rows; i++){
+
+			for(int j = 0; j < colums; j++){
+				if(dma.contains(i*colums+j)){
+					System.out.print("D ");
+//					PEs[i*colums+j].setMemAccess(true); // TODO - fix this !
+				} else {
+					System.out.print(pess[i][j]+ " ");
+				}
+			}
+			System.out.println();
+		}
+		
+		//////////////////////////////////////////
+	}
+	
+	public void setMinimalOutgoingConnections(PEModel [] PEs, int rows, int colums){
+		int startX = (colums+1)/ 2 - 1;
+		int startY = (rows + 1)/ 2 - 1;
+
+		
+
+		char EMPTY = 'o';
+		char LIVE = 'X';
+		char NORTH = ',';
+		char EAST= '-';
+		char SOUTH = '\'';
+		char WEST = '-';
+		char[][] pess = new char[rows][colums];
+
+		for(int i = 0; i < rows; i++){
+			for(int j = 0; j < colums; j++){
+				pess[i][j] = EMPTY;
+			}
+		}
+		
+//		for(int i = 0; i < PEs.length; i++){
+//			PEs[i].setLivein(false);
+//		}
+		
+		
+		// LIVEOUT
+		
+		
+		PEModel live = PEs[(startY)*colums + startX];
+//		live.setLiveout(true);
+		pess[startY][startX] = LIVE;
+//		live.setLivein(true);
+		
+		
+		// DMA ////////////////////////////////////////
+		if(rows % 2 == 0){
+			startY--;
+		}
+		if(rows % 2 == 1){
+			startX--;
+			startY--;
+		}
+
+
+		HashSet<Integer> dma = new HashSet<>();
+		int dma1 = startY*colums + startX+1;
+		int dma2 = (startY+2)*colums + startX+2;
+		int dma3 = (startY+3)*colums + startX;
+		int dma4 = (startY+1)*colums + startX-1;
+		dma.add(dma1);
+		dma.add(dma2);
+		dma.add(dma3);
+		dma.add(dma4);
+
+		System.out.println();
+		System.out.println("DMA SOLUTION: ");
+		System.out.println();
+		for(int i = 0; i < rows; i++){
+
+			for(int j = 0; j < colums; j++){
+				if(dma.contains(i*colums+j)){
+					System.out.print("D ");
+//					PEs[i*colums+j].setMemAccess(true);
+				} else {
+					System.out.print(pess[i][j]+ " ");
+				}
+			}
+			System.out.println();
+		}
+				
+				//////////////////////////////////////////
+	}
+
+}

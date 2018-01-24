@@ -1,0 +1,369 @@
+package operator;
+
+import java.util.Comparator;
+import java.util.List;
+
+import accuracy.Format;
+import graph.Node;
+
+/**
+ * Common interface for the operator enumerations of all
+ * {@code target.Processor}s.
+ * <p>
+ * By implementing this interface, the {@link Operator}s are linked to their
+ * (Verilog) {@link Implementation}s.
+ *
+ * @author Andreas Engel [engel@esa.cs.tu-darmstadt.de]
+ */
+public interface Operator {
+<<<<<<< HEAD
+
+	/**
+	 * {@code Comparator} used to sort {@code Operator} lists by name. The
+	 * {@link Operator} interface can not extend {@link Comparable} due to a
+	 * conflict for the generic types of {@link target.Processor}.
+	 */
+	public static final Comparator<Operator> COMPARATOR = new Comparator<Operator>() {
+		@Override
+		public int compare(Operator a, Operator b) {
+			if (a == null && b == null) {
+				return 0;
+			}
+			if (a == null) {
+				return -1;
+			}
+			if (b == null) {
+				return 1;
+			}
+			return a.toString().compareTo(b.toString());
+		}
+	};
+
+	/**
+	 * Create the default {@code Implementation} of this {@code Operator}.
+	 * <p>
+	 * The {@link Implementation} details (e.g., I/O accuracy) may be altered
+	 * before code generation. Therefore, a new {@link Implementation} object is
+	 * created for each operation, even when derived from the same
+	 * {@link Operator}.
+	 * 
+	 * @return the {@link Implementation} of this {@link Operator} with the
+	 *         default configuration for
+	 */
+	public Implementation createDefaultImplementation();
+
+	/**
+	 * Iterates the design space and executes a handle for each valid
+	 * {@code Implementation}.
+	 * <p>
+	 * Try using lambda expressions (since Java 8):
+	 * 
+	 * <pre>
+	 * <code>
+	 *   UltraSynth.Operator.MUL.iterateDesignSpace(implementation -> System.out.println(implementation));
+	 * </code>
+	 * </pre>
+	 * 
+	 * @param h
+	 *            the handle implementing
+	 *            {@link Consumer#accept(Implementation)}
+	 */
+	default public void iterateDesignSpace(Consumer<Implementation> h) {
+		Implementation implementation = createDefaultImplementation();
+		if (implementation != null) {
+			implementation.setFirstConfiguration();
+			do {
+				if (implementation.isValidConfiguration()) {
+					h.accept(implementation);
+				}
+			} while (implementation.setNextConfiguration());
+		}
+	}
+
+	/**
+	 * Create a list of all supported {@code Implementation}s of this
+	 * {@code Operator}.
+	 * <p>
+	 * The usage of this method is discouraged as the resulting list may occupy
+	 * a lot of memory. Instead, consider iterating the design space
+	 * sequentially.
+	 * 
+	 * @return the list of all supported {@link Implementation}s of this
+	 *         {@link Operation}
+	 * @see interateDesignSpace
+	 */
+	default public List<Implementation> getDesignSpace() {
+		LinkedList<Implementation> res = new LinkedList<Implementation>();
+		iterateDesignSpace(implementation -> res.add(implementation.clone()));
+		return res;
+	}
+
+	/*
+	 * Static (implementation independent) properties
+	 **********************************************************************************************************************/
+
+	/**
+	 * Number of arithmetic inputs (without control signals) of this
+	 * {@code Operator}.
+	 * 
+	 * @return input arity.
+	 */
+	public int getNumberOfOperands();
+
+	/**
+	 * Number of arithmetic outputs (without control signals) of this
+	 * {@code Operator}.
+	 * 
+	 * @return output arity.
+	 */
+	public int getNumberOfResults();
+
+	/**
+	 * @return true, if this {@code Operator} is a constant value;
+	 */
+	public boolean isConst();
+
+	/**
+	 * @return true, if this {@code Operator} is a cache write access;
+	 */
+	public boolean isCacheStore();
+
+	/**
+	 * @return true, if this {@code Operator} is a cache read access;
+	 */
+	public boolean isCacheLoad();
+	
+	/**
+	 * @return true, if this {@code Operator} is a cache prefetch instruction;
+	 */
+	public boolean isCachePrefetch();
+
+	/**
+	 * @return true, if this {@code Operator} is a cache access;
+	 */
+	default public boolean isCacheAccess() {
+		return isCacheLoad() || isCacheStore();
+	}
+
+	/**
+	 * @return true, if this {@code Operator} is a register file write access;
+	 */
+	public boolean isRegfileStore();
+
+	/**
+	 * @return true, if this {@code Operator} is a register file read access;
+	 */
+	public boolean isRegfileLoad();
+
+	/**
+	 * @return true, if this {@code Operator} is a register file access;
+	 */
+	default public boolean isRegfileAccess() {
+		return isRegfileLoad() || isRegfileStore();
+	}
+
+	/**
+	 * @return true, if this {@code Operator} generates a status flag
+	 */
+	public boolean isControlFlow();
+
+	/**
+	 * @return true, if this {@link Operator} is not implemented by a dedicated
+	 *         Verilog module
+	 */
+	public boolean isNative();
+	
+	
+	public boolean isAluOpTwoInputs();
+	
+	
+	public Operator getPrefetchOperation();
+	
+	
+=======
+  
+  /**
+   * {@code Comparator} used to sort {@code Operator} lists by name. The
+   * {@link Operator} interface can not extend {@link Comparable} due to a
+   * conflict for the generic types of {@link target.Processor}.
+   */
+  public static final Comparator<Operator> COMPARATOR = new Comparator<Operator>() {
+    @Override
+    public int compare(Operator a, Operator b) {
+      if (a == null && b == null) {
+        return 0;
+      }
+      if (a == null) {
+        return -1;
+      }
+      if (b == null) {
+        return 1;
+      }
+      return a.toString().compareTo(b.toString());
+    }
+  };
+
+  /**
+   * Create the default {@code Implementation} of this {@code Operator}.
+   * <p>
+   * The {@link Implementation} details (e.g., I/O accuracy) may be altered
+   * before code generation. Therefore, a new {@link Implementation} object is
+   * created for each operation, even when derived from the same
+   * {@link Operator}.
+   * 
+   * @return the {@link Implementation} of this {@link Operator} with the
+   *         default configuration for
+   */
+  public Implementation createDefaultImplementation();
+  
+  /**
+   * Create a specific {@code Implementation} of this {@code Operator} for a specific I/O accuracy.
+   * 
+   * The latency of the {@link Implementation} is also adjusted to the accuracy configuration.
+   * 
+   * @param f the common or port-specific I/O {@code Format}(s)
+   * @return the {@link Implementation} for specified accuracy, or {@code null}, if configuration is not supported 
+   */
+  default public Implementation createImplementation(Format... f) {
+    Implementation imp = createDefaultImplementation();
+    
+    // common Format for all operands and results
+    if (f.length == 1) {
+      imp.setCommonFormat(f[0]);
+      
+    // operand/result-specific formats
+    } else if (f.length == imp.getNumberOfOperands() + imp.getNumberOfResults()) {
+      for (int i=0; i<imp.getNumberOfOperands(); i++) imp.setOperandFormat(i, f[i]);
+      for (int i=0; i<imp.getNumberOfResults();  i++) imp.setResultFormat(i, f[imp.getNumberOfOperands()+i]);
+    } else {
+      throw new IllegalArgumentException("single common or operand/result specific format expected");
+    }
+    
+    // adjust latency
+    imp.fitLatency();
+    
+    // check, if configuration can be implemented
+    return imp.isValidConfiguration() ? imp : null;
+  }
+  
+  /**
+   * Get supported I/O accuracy, this {code Operator} can be implemented for.
+   * 
+   * @return list of supported I/O {@link Format}s, which may contain null.
+   * @see Implementation#getSupportedFormats()
+   */
+  public List<Class<? extends Format>> getSupportedFormats();
+  
+
+  /*
+   * Static (implementation independent) properties
+   **********************************************************************************************************************/
+
+  /**
+   * Number of arithmetic inputs (without control signals) of this
+   * {@code Operator}.
+   * 
+   * @return input arity.
+   */
+  public int getNumberOfOperands();
+
+  /**
+   * Number of arithmetic outputs (without control signals) of this
+   * {@code Operator}.
+   * 
+   * @return output arity.
+   */
+  public int getNumberOfResults();
+
+  /**
+   * @return true, if this {@code Operator} is a constant value;
+   */
+  public boolean isConst();
+
+  /**
+   * @return true, if this {@code Operator} is a cache write access;
+   */
+  public boolean isCacheStore();
+
+  /**
+   * @return true, if this {@code Operator} is a cache read access;
+   */
+  public boolean isCacheLoad();
+
+  /**
+   * @return true, if this {@code Operator} is a cache access;
+   */
+  default public boolean isCacheAccess() {
+    return isCacheLoad() || isCacheStore();
+  }
+  
+  /**
+   * Test peripheral store.
+   * <p>
+   * Graph {@link Node}s with peripheral store operation will provide at least one peripheral address:
+   * <ul>
+   *   <li>{@link Node#getActuatorAddress()}
+   *   <li>{@link Node#getResultAddress()}
+   *   <li>{@link Node#getLogAddress()}
+   * </ul> 
+   * @return true, if this {@code Operator} is a peripheral write.
+   */
+  public boolean isPeripheralStore();
+
+  /**
+   * @return true, if this {@code Operator} is a register file write access;
+   */
+  public boolean isRegfileStore();
+
+  /**
+   * @return true, if this {@code Operator} is a register file read access;
+   */
+  public boolean isRegfileLoad();
+
+  /**
+   * @return true, if this {@code Operator} is a register file access;
+   */
+  default public boolean isRegfileAccess() {
+    return isRegfileLoad() || isRegfileStore();
+  }
+
+  /**
+   * @return true, if this {@code Operator} generates a status flag
+   */
+  public boolean isControlFlow();
+
+  /**
+   * @return true, if this {@link Operator} is not implemented by a dedicated
+   *         Verilog module
+   */
+  public boolean isNative();
+>>>>>>> fbeca38617a8da2d8fb8d24c93ac67d4008f4a55
+
+}
+
+/*
+ * Copyright (c) 2016, Embedded Systems and Applications Group, Department of
+ * Computer Science, TU Darmstadt, All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 1. Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer. 2. Redistributions in
+ * binary form must reproduce the above copyright notice, this list of
+ * conditions and the following disclaimer in the documentation and/or other
+ * materials provided with the distribution. 3. Neither the name of the
+ * institute nor the names of its contributors may be used to endorse or promote
+ * products derived from this software without specific prior written
+ * permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE INSTITUTE AND CONTRIBUTORS ``AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE INSTITUTE OR CONTRIBUTORS BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ **********************************************************************************************************************/

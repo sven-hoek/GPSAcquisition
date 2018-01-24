@@ -1,0 +1,150 @@
+CBoxWrapper(date, ccntwidth, contextmemorywidth, contextmemorysize, nrOfOutputs, evaluationblocks, memoryslots, branchSelection,branchselectionwidth, status_inputs,additionalOutputs,additionalOutputAssignments,addrWidth,additionalOutputConnections,statusIns,branchSelectionBypass,stallcapability,branchselection)
+::= <<
+
+/*
+Author: Lukas J. Jung
+Date: §date§
+Version: 2.0 (changed to String templates)
+Version History: 1.0 debugged and simulated
+		 1.0 layout & concept
+*/
+
+`default_nettype wire
+
+
+module CBoxWrapper (
+input wire 			CLK_I,§if(stallcapability)§
+input wire			EN_I,§endif§
+§status_inputs§
+input wire [§evaluationblocks§-1:0] CONTEXT_WR_EN_I, // nr of evaluationblocks + cboxwrapper
+input wire [§ccntwidth§-1:0]	CONTEXT_WR_ADDR_I,
+input wire [§contextmemorywidth§-1:0]	CONTEXT_DATA_I,
+input wire [§ccntwidth§-1:0]	CCNT_I,
+§if(nrOfOutputs)§
+output reg [§nrOfOutputs§-1:0]			PREDICATION_O
+§else§
+output reg 			PREDICATION_O §endif§ §if(branchselection)§, 
+output reg			BRANCH_SELECTION_O§endif§);
+
+integer i;
+
+// Condition memory - stores intermediate and conjuncted status'
+reg [§memoryslots§-1:0] memory; // TODO - BRAM?
+
+§if(branchselectionwidth && branchselection)§
+(* ram_style = "block" *)  reg [§branchselectionwidth§-1:0] contextmemory [§contextmemorysize§-1:0];
+reg [§branchselectionwidth§-1:0] contextmemoryout;
+wire [§branchselectionwidth§-1:0] w_mux_out;
+assign w_mux_out = contextmemoryout [§branchselectionwidth§-1:0];
+
+// contextmanagment
+always@(posedge CLK_I) begin
+  if(CONTEXT_WR_EN_I[§evaluationblocks§-1]) begin
+     contextmemory[CONTEXT_WR_ADDR_I] <= CONTEXT_DATA_I [§branchselectionwidth§-1:0];
+  end
+  contextmemoryout <= contextmemory[CCNT_I];
+end
+
+§endif§
+
+wire w_wr_en  [§evaluationblocks§-1:0];
+wire [§addrWidth§-1:0] w_wr_addr_positive[§evaluationblocks§-1:0];
+wire [§addrWidth§-1:0] w_wr_addr_negative[§evaluationblocks§-1:0];
+wire [§addrWidth§-1:0] w_rd_addr_or_positive[§evaluationblocks§-1:0];
+wire [§addrWidth§-1:0] w_rd_addr_or_negative[§evaluationblocks§-1:0];
+wire [§addrWidth§-1:0] w_rd_addr_predication[§evaluationblocks§-1:0];
+
+§additionalOutputs§
+
+wire w_reg_in_positive [§evaluationblocks§-1:0];
+wire w_reg_in_negative [§evaluationblocks§-1:0];
+
+reg w_reg_or_positive[§evaluationblocks§-1:0];
+reg w_reg_or_negative[§evaluationblocks§-1:0];
+reg w_reg_predication[§evaluationblocks§-1:0];
+
+
+
+
+genvar n;
+generate
+    for (n=0; n<§evaluationblocks§; n=n+1) begin : generatedEvaluationBlocks
+    CBox #(
+	.id(n)
+	)
+	 cBox(
+	.CLK_I(CLK_I),
+	.EN_I(EN_I),
+	.CCNT_I(CCNT_I), §statusIns§
+	.CONTEXT_DATA_I(CONTEXT_DATA_I),
+	.CONTEXT_WR_ADDR_I(CONTEXT_WR_ADDR_I),
+	.CONTEXT_WR_EN_I(CONTEXT_WR_EN_I[n]),
+	.w_reg_in_positive(w_reg_in_positive[n]),
+	.w_reg_in_negative(w_reg_in_negative[n]),
+	.w_reg_predication(w_reg_predication[n]),
+	.w_reg_or_positive(w_reg_or_positive[n]),
+	.w_reg_or_negative(w_reg_or_negative[n]),
+	.w_rd_addr_or_positive(w_rd_addr_or_positive[n]),
+	.w_rd_addr_or_negative(w_rd_addr_or_negative[n]),
+	.w_rd_addr_predication(w_rd_addr_predication[n]),
+	§if(nrOfOutputs)§
+	§additionalOutputConnections§
+	§endif§
+	.w_wr_addr_negative(w_wr_addr_negative[n]),
+	.w_wr_addr_positive(w_wr_addr_positive[n]),
+	.w_wr_en(w_wr_en[n])       
+        );
+end 
+endgenerate
+
+
+
+
+
+// condition memory managment
+always@(posedge CLK_I) begin
+	for(i = 0; i < §evaluationblocks§; i=i+1) begin	
+		if(w_wr_en[i]§if(stallcapability)§ && EN_I§endif§) begin // BEHAVIOR
+    			memory[w_wr_addr_positive[i]] <= w_reg_in_positive[i];
+    			memory[w_wr_addr_negative[i]] <= w_reg_in_negative[i];
+  		end
+	end
+end // close always
+
+// TODO - redesign for arbitrary swtiching
+always@(*) begin
+  for(i = 0; i < §evaluationblocks§; i=i+1) begin	
+    w_reg_predication[i] = memory[w_rd_addr_predication[i]];
+    PREDICATION_O§if(nrOfOutputs)§[0+i*§nrOfOutputs§/§evaluationblocks§]§endif§ = w_reg_predication[i];
+    §additionalOutputAssignments§
+    w_reg_or_positive[i] = memory[w_rd_addr_or_positive[i]];
+    w_reg_or_negative[i] = memory[w_rd_addr_or_negative[i]]; 
+  end
+
+§if(branchselection)§
+§if(branchselectionwidth)§
+(* full_case *)
+case(w_mux_out) 
+§branchSelection§
+ endcase 
+§else§
+§branchSelectionBypass§
+§endif§
+§endif§
+end
+
+
+endmodule
+>>
+
+CBoxReadPortAssign(i,nrOfOutputsPerCBox)
+::= <<
+PREDICATION_O[§i§+i*§nrOfOutputsPerCBox§] = memory[w_rd_addr_predication§i§[i]];
+>>
+
+CBoxReadPort(i,evaluationblocks,addrWidth)
+::= <<
+wire [§addrWidth§-1:0] w_rd_addr_predication§i§[§evaluationblocks§-1:0];
+>>
+
+

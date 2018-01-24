@@ -1,0 +1,30 @@
+{
+  "name" : "tComp4",
+	"composition" : "tCGRA_4.json",
+	"runCounterWidth" : 16,
+	"cycleCounterWidth" : 32,
+	"parameterBufferSize" : 4, 
+	"constBufferSize" : 32,
+	"constBufferPEs" :
+	{
+		"pe0" : true,
+		"pe1" : true,
+		"pe2" : true,
+		"pe3" : true	
+	},
+	"IDTableSize" : 256,
+	"actorCount" : 4,
+	"sensorCount" : 4,
+	"logs" : 
+	{
+		"logSize0" : 32,
+		"logSize1" : 16,
+		"logSize2" : 16,
+		"logSize3" : 16	
+	},
+	"ocmDataWidth" : 64,
+	"ocmBufferSize" : 512,
+	"globalLogContextSize" : 256,
+	"ocmOutputContextSize" : 256,
+	"parameterBufferExpectedParameterCount" : 3
+}

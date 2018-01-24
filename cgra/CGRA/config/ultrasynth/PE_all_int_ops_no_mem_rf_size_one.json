@@ -1,0 +1,23 @@
+{
+	"name" : "PE_TYPE_INT_All_NO_MEM",
+	"ADD" : {"energy": 1.100000,"duration": 1},
+	"SUB" : {"energy": 1.100000,"duration": 1},
+  "MUL" : {"energy": 4.400000,"duration": 2},
+	"OR" : {"energy": 1.100000,"duration": 1},
+	"AND" : {"energy": 1.100000,"duration": 1},
+	"XOR" : {"energy": 1.100000,"duration": 1},
+	"SHL" : {"energy": 1.100000,"duration": 1},
+	"SHR" : {"energy": 1.100000,"duration": 1},
+	"USHR" : {"energy": 1.100000,"duration": 1},
+	"LOAD" : {"energy": 2.200000,"duration": 1},
+	"STORE" : {"energy": 1.100000,"duration": 1},
+	"IFEQ" : {"energy": 1.100000,"duration": 1},
+	"IFNE" : {"energy": 1.100000,"duration": 1},
+	"IFGE" : {"energy": 1.100000,"duration": 1},
+	"IFGT" : {"energy": 1.100000,"duration": 1},
+	"IFLE" : {"energy": 1.100000,"duration": 1},
+	"IFLT" : {"energy": 1.100000,"duration": 1},
+	"NOP" : {"energy": 1.100000,"duration": 1},
+	"Regfile_size" : 1,
+	"rom_size" : 16
+}

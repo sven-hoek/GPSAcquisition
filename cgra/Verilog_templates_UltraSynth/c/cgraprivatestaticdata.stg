@@ -1,0 +1,90 @@
+cgraprivatestaticdata(
+	static_params, static_param_id_offset, runtime_param_id_offset,
+	host_result_id_offset, integration_step_size_id_offset, integration_step_size_id_length,
+	static_parameter_count, runtime_parameter_count, host_result_count, runtime_id_ranges,
+	host_result_id_ranges, runtime_params, requires_host_result_ranges
+)
+::= <<
+#include "cgraprivatestaticdata.h"
+
+// Offsets into the ID context of the CGRA which performs the mapping
+// of incoming addresses to the respective register file and PE.
+// These are offsets to the CGRA internal IDs.
+#define CGRA_INTERNAL_ID_OFFSET_STATIC_PARAMETERS §static_param_id_offset§
+#define CGRA_INTERNAL_ID_OFFSET_RUNTIME_PARAMETERS §runtime_param_id_offset§
+#define CGRA_INTERNAL_ID_OFFSET_HOST_RESULTS §host_result_id_offset§
+
+// Following the offsets ther are *_COUNT parameters of the respective type
+#define CGRA_STATIC_PARAMETER_COUNT §static_parameter_count§
+#define CGRA_RUNTIME_PARAMETER_COUNT §runtime_parameter_count§
+#define CGRA_HOST_RESULT_COUNT §host_result_count§
+
+// Defines for individual run time parameters
+#define CGRA_INTERNAL_ID_OFFSET_INT_STEP_SIZE §integration_step_size_id_offset§ 
+#define CGRA_INTERNAL_ID_LENGTH_INT_STEP_SIZE §integration_step_size_id_length§
+
+const uint32_t cgra_static_parameters[CGRA_STATIC_PARAMETER_COUNT * CGRA_PARAMETER_SIZE] =
+{
+	§static_params§
+};
+
+const uint32_t cgra_runtime_parameters[CGRA_RUNTIME_PARAMETER_COUNT * CGRA_PARAMETER_SIZE] =
+{
+	§runtime_params§
+};
+
+const CgraIdRange cgra_runtime_parameter_ranges[CGRA_RUNTIME_PARAMETER_COUNT] =
+{
+	§runtime_id_ranges§
+};
+
+const CgraIdRangeMap cgra_runtime_parameter_id_map =
+{
+	.ranges = cgra_runtime_parameter_ranges,
+	.size = CGRA_RUNTIME_PARAMETER_COUNT,
+};
+
+§if(requires_host_result_ranges)§
+const CgraIdRange cgra_host_result_parameter_ranges[CGRA_HOST_RESULT_COUNT] =
+{
+	§host_result_id_ranges§
+};
+§endif§
+
+const CgraIdRangeMap cgra_host_result_parameter_id_map =
+{
+	.ranges = §if(requires_host_result_ranges)§ cgra_host_result_parameter_ranges §else§ 0 §endif§,
+	.size = CGRA_HOST_RESULT_COUNT,
+};
+
+const CgraIdRange cgra_integration_step_size_id_range = 
+{
+	.lower_id = CGRA_INTERNAL_ID_OFFSET_INT_STEP_SIZE,
+	.upper_id = CGRA_INTERNAL_ID_OFFSET_INT_STEP_SIZE + CGRA_INTERNAL_ID_LENGTH_INT_STEP_SIZE,
+};
+
+const CgraIdRange cgra_static_parameter_id_range = 
+{
+	.lower_id = CGRA_INTERNAL_ID_OFFSET_STATIC_PARAMETERS,
+	.upper_id = CGRA_INTERNAL_ID_OFFSET_STATIC_PARAMETERS + CGRA_STATIC_PARAMETER_COUNT,
+};
+
+const CgraIdRange cgra_runtime_parameter_id_range = 
+{
+	.lower_id = CGRA_INTERNAL_ID_OFFSET_RUNTIME_PARAMETERS,
+	.upper_id = CGRA_INTERNAL_ID_OFFSET_RUNTIME_PARAMETERS + CGRA_RUNTIME_PARAMETER_COUNT,
+};
+
+const CgraIdRange cgra_host_result_id_range = 
+{
+	.lower_id = CGRA_INTERNAL_ID_OFFSET_HOST_RESULTS,
+	.upper_id = CGRA_INTERNAL_ID_OFFSET_HOST_RESULTS + CGRA_HOST_RESULT_COUNT,
+};
+
+>>
+
+range(lower_id, upper_id)
+::= <<
+{ .lower_id = §lower_id§, .upper_id = §upper_id§ },
+
+>>

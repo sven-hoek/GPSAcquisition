@@ -1,0 +1,10 @@
+actorif_defs(actorContextWidth, actorIDWidth)
+::= <<
+`ifndef INCLUDE_ACTOR
+  `define INCLUDE_ACTOR
+ 
+  `define ACTOR_CONTEXT_WIDTH {actorContextWidth}
+  `define ACTOR_ID_WIDTH {actorIDWidth}
+  
+`endif // INCLUDE_ACTOR
+>>

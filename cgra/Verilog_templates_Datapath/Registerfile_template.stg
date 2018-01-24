@@ -1,0 +1,57 @@
+Registerfile(date,declaration,regfile_size,regfile_addr_width_write,regfile_addr_width_read,regfile_word_width,ID,mem,codeConstantsInReadAddress, stallcapability ) ::= <<
+
+/*
+Author: Dennis L. Wolf
+Date: §date§
+Version: 2.0 (changed to String Template Interface - reduced to one template)
+Version History: 1.2 Code Review and Cleanup
+		 1.1 debugged and simulated
+		 1.0 layout & concept
+
+Comments: Combinatorial read. Sequential write. 2 read port - one direct out, one to load variable to the PEs ALU. If 
+					the PE has memory accessing operation, there is a third read port to load data for memory stores.
+
+entries: §if(regfile_size)§§regfile_size§§else§1§endif§
+*/
+
+
+`include "cgra.vh" 
+
+`default_nettype wire
+
+§declaration§
+
+ 
+// Registerfile
+reg signed [§regfile_word_width§-1:0] memory §if(regfile_size)§[§regfile_size§-1:0]§endif§;
+
+// sequential write
+always@(posedge CLK_I) begin
+if (WR_PORT_EN_I §if(stallcapability)§ && EN_I §endif§) begin
+§if(regfile_size)§
+  memory[WR_PORT_ADDR_I] <=  WR_PORT_DATA_I; 
+§else§
+  memory <=  WR_PORT_DATA_I; 
+§endif§
+ end
+end 
+
+//combinatorial reads
+§if(codeConstantsInReadAddress)§
+wire [§regfile_word_width§-1:0] const_direct_o_w, const_mux_o_w;
+assign const_direct_o_w ={{ §regfile_word_width§-§regfile_addr_width_read§+1{RD_PORT_DIRECT_ADDR_I[§regfile_addr_width_read§-2]}},RD_PORT_DIRECT_ADDR_I[§regfile_addr_width_read§-2:0]};
+assign const_mux_o_w    ={{ §regfile_word_width§-§regfile_addr_width_read§+1{RD_PORT_MUX_ADDR_I[§regfile_addr_width_read§-2]}},RD_PORT_MUX_ADDR_I[§regfile_addr_width_read§-2:0]};
+§if(mem)§
+wire [§regfile_word_width§-1:0] const_mem_o_w;
+assign const_mem_o_w  ={{ §regfile_word_width§-§regfile_addr_width_read§+1{RD_PORT_MEM_ADDR_I[§regfile_addr_width_read§-2]}},RD_PORT_MEM_ADDR_I[§regfile_addr_width_read§-2:0]};
+§endif§
+assign RD_PORT_DIRECT_O =RD_PORT_DIRECT_ADDR_I[§regfile_addr_width_read§-1]?const_direct_o_w : memory§if(regfile_size)§[RD_PORT_DIRECT_ADDR_I[§regfile_addr_width_read§-2:0]]§endif§;
+assign RD_PORT_MUX_O    =RD_PORT_MUX_ADDR_I[§regfile_addr_width_read§-1]?const_mux_o_w : memory§if(regfile_size)§[RD_PORT_MUX_ADDR_I[§regfile_addr_width_read§-2:0]]§endif§; §if(mem)§
+assign RD_PORT_MEM_O    =RD_PORT_MEM_ADDR_I[§regfile_addr_width_read§-1]?const_mem_o_w : memory§if(regfile_size)§[RD_PORT_MEM_ADDR_I[§regfile_addr_width_read§-2:0]]§endif§; §endif§
+§else§
+assign RD_PORT_DIRECT_O = memory§if(regfile_size)§[RD_PORT_DIRECT_ADDR_I]§endif§;
+assign RD_PORT_MUX_O    = memory§if(regfile_size)§[RD_PORT_MUX_ADDR_I]§endif§; §if(mem)§
+assign RD_PORT_MEM_O    = memory§if(regfile_size)§[RD_PORT_MEM_ADDR_I]§endif§; §endif§
+§endif§
+endmodule
+>>

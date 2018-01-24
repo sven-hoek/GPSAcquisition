@@ -1,0 +1,29 @@
+{
+	"name" : "ultrasynth4",
+	"composition" : "CGRA_4_comp.json",
+	"runCounterWidth" : 16,
+	"cycleCounterWidth" : 32,
+	"parameterBufferSize" : 4, 
+	"parameterBufferExpectedParameterCount" : 3,
+	"IDTableSize" : 256,
+	"actorCount" : 4,
+	"sensorCount" : 4,
+	"ocmDataWidth" : 64,
+	"ocmBufferSize" : 512,
+	"globalLogContextSize" : 256,
+	"ocmOutputContextSize" : 256,
+	"constBufferPEs" :
+	{
+		"pe0" : true,
+		"pe1" : true,
+		"pe2" : true,
+		"pe3" : true	
+	},
+	"logs" : 
+	{
+		"logSize0" : 32,
+		"logSize1" : 16,
+		"logSize2" : 16,
+		"logSize3" : 16	
+	}
+}

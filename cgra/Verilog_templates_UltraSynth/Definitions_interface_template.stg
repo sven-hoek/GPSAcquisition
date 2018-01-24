@@ -1,0 +1,102 @@
+definitions(idWidth, peIDs, otherIDs, singleRegIDs, singleRegIdWidth, targetIdWidth, peLogSelectionBit, otherIdWidth, offsetWidth)
+::= <<
+
+`ifndef AXI_DEFS
+`define AXI_DEFS
+
+  // Addressing the a Ultrasynth composition is done in a three stage process:
+  // 1.   The highest two bits are encoding the type of offset based write:
+  //        1. PE
+  //        2. Parameter  
+  //        3. Other      (e.g. CCU context, CBox contexts, ... )
+  //        4. A single register
+  // 2.1  When writing to a single register we use the remaining bits of the address to identify the target within the CGRA.
+  // 2.2  When writing anything else we first have to narrow down the target.
+  // 4.   The bits following the general decode bits are then used to refine the either the target selection or to modify 
+  //      how the transaction is treated internally (e.g. if a parameter write is writing parameters which have to be counted)
+  // 5.   The lowest bits are used to encode the offset of the transaction (e.g. the first context address to write or the 
+  //      the first ID context address to use during a parameter write).
+  //
+  // 6.   The address composition looks like this, split by '|':
+  //      general target selection bits (2 bits) | 
+  //      ID or modification bits (maximum out of all the required ID widths) | 
+  //      offset bits (maximum out of context address and IDC address width)
+
+  `define   SYSTEM_ADDR_WIDTH 32
+
+  // The amount of lower bits required to use the Ultrasynth specific address in the host processor environment
+  `define   ULTRASYNTH_SYSTEM_ADDR_OFFSET 2
+
+  //
+  // We define the Ultrasynth address range by specifying important bit positions:
+  //
+
+  // If targeting a single register we have a different ID width biased by ADDR_CONTROL_LOW.
+  `define   SINGLE_REG_ID_WIDTH §singleRegIdWidth§ 
+  `define   SINGLE_REG_ID_LOW 0
+  `define   SINGLE_REG_ID_HIGH `SINGLE_REG_ID_WIDTH - 1
+
+  // Encodes the specific target of the transaction.
+  // This width is the length of the whole block. 
+  // Depending on the general target selection bits we have to use the more specific bit ranges further down.
+  // Biased by ADDR_CONTROL_LOW
+  `define   TARGET_ID_WIDTH §targetIdWidth§
+  `define   TARGET_ID_LOW 0
+  `define   TARGET_ID_HIGH `TARGET_ID_WIDTH - 1
+
+  // Encodes the general target (PE related, Parameter related, Other related)
+  // Biased by ADDR_CONTROL_LOW
+  `define   GENERAL_TARGET_SELECTION_WIDTH 2
+  `define   GENERAL_TARGET_SELECTION_LOW `TARGET_ID_HIGH + 1
+  `define   GENERAL_TARGET_SELECTION_HIGH `GENERAL_TARGET_SELECTION_LOW + `GENERAL_TARGET_SELECTION_WIDTH - 1
+
+  // These are the general target IDs
+  `define   GENERAL_TARGET_PE 0
+  `define   GENERAL_TARGET_PARAMETER 1
+  `define   GENERAL_TARGET_OTHER 2
+  `define   GENERAL_TARGET_SINGLE_REG 3
+
+  // How the specific id range is interpreted when writing to a PE (or its Log context)
+  // Biased by TARGET_ID_LOW
+  `define   PE_LOG_SELECTION_BIT §peLogSelectionBit§
+
+  // How the specific id range is interpreted when writing a parameter
+  // Biased by TARGET_ID_LOW
+  `define   COUNT_PARAMETERS_BIT 0
+
+  // How the specific id range is interpreted when writing anything else
+  // Biased by TARGET_ID_LOW
+  `define   OTHER_ID_WIDTH §otherIdWidth§
+
+  // The following offsets are biased by the least significant bit of the address 
+  // (excluding lowest two bits of the actual system address, 
+  // which are required only to facilitate a 4 byte offset for any transfer)
+  // These are the lower bits of the address
+  `define   ADDR_OFFSET_WIDTH §offsetWidth§
+  `define   ADDR_OFFSET_LOW 0
+  `define   ADDR_OFFSET_HIGH `ADDR_OFFSET_WIDTH - 1
+
+  // As the upper components of the address define the how the transaction target is selected we call this
+  // the "Control" part of any Ultrasynth address. (the higher bits of the address)
+  `define   ADDR_CONTROL_WIDTH /* single/offset bit 1 + */ `GENERAL_TARGET_SELECTION_WIDTH + `TARGET_ID_WIDTH
+  `define   ADDR_CONTROL_LOW `ADDR_OFFSET_WIDTH
+  `define   ADDR_CONTROL_HIGH `ADDR_CONTROL_LOW + `ADDR_CONTROL_WIDTH - 1
+
+  // The actual address width as seen by a Ultrasynth composition
+  `define   ULTRASYNTH_ADDR_WIDTH `ADDR_OFFSET_WIDTH + `ADDR_CONTROL_WIDTH
+
+  // PE IDs and the corresponding Log IDs, biased by TARGET_ID_LOW
+  §peIDs§
+
+  // Other IDs, biased by TARGET_ID_LOW
+  §otherIDs§
+
+  // Single register transaction IDs, biased by the least significant bit
+  §singleRegIDs§
+
+  `define   MASTER_DATA_WIDTH 64
+  `define   SLAVE_DATA_WIDTH 32
+  
+`endif // AXI_DEFS
+
+>>
