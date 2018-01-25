@@ -1,0 +1,9 @@
+{
+	"name" : "Cache",
+	"size" : 64,
+	"sets" : 4,
+	"wordsperline" : 8,
+	"wrAlloc" : true,
+	"wrBack" : true,
+	"extMemoryAccTicks" : 10
+}

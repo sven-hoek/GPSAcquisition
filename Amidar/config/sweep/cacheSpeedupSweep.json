@@ -1,0 +1,13 @@
+{
+"parameter" :
+    {
+    "benchmarkScale" : [6]
+    },
+"application" :
+    [
+
+        
+        "de/amidar/cacheBench/jpeg/Jpeg"
+    ]
+
+}

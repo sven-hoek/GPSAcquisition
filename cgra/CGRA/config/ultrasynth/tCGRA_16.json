@@ -1,0 +1,31 @@
+ {
+"name" : "CGRA16_pe",
+"PEs" : 
+	{
+	"0" : "tPE_all.json",
+	"1" : "tPE_all.json",
+	"2" : "tPE_all.json",
+	"3" : "tPE_all.json",
+	"4" : "tPE_all.json",
+	"5" : "tPE_all.json",
+	"6" : "tPE_all.json",
+	"7" : "tPE_all.json",
+	"8" : "tPE_all.json",
+	"9" : "tPE_all.json",
+	"10" : "tPE_all.json",
+	"11" : "tPE_all.json",
+	"12" : "tPE_all.json",
+	"13" : "tPE_all.json",
+	"14" : "tPE_all.json",
+	"15" : "tPE_all.json"
+	},
+
+"Context_memory_size" : 1024,
+"Interconnect" : "Interconnect_16_pe_mesh.json",
+"CBox_slots" : 2048,
+"CBox_evaluation_blocks" :1,
+"CBOX_output_ports_per_evaluation_blocks" : 1,
+"Pipelined" : false,
+"SecondRFOutput2ALU" : false,
+"Branch_selection_mode" : "default"
+}

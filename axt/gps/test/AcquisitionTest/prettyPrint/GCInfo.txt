@@ -1,0 +1,3447 @@
+STATICFIELDS
+
+Number of Bytes needed by static fields: 96
+BitMap: 09E00000040282000000006000000000000000000000000000000000000000000000000000000047807000000040000FFFFFFFFFFFFFFFFFFFFFE0000000000130000003FFFE010001F00000010004E04000000000000FE20008402006005FF0
+______________________________________________________________________________________________________________________________
+| Numeration| SourceClass                                               | FieldName                                | Type     |
+|=============================================================================================================================|
+| #0        | java/lang/Integer                                         | serialVersionUID                         | Primitive|
+| #1        | java/lang/Integer                                         | serialVersionUID                         | Primitive|
+| #2        | java/lang/Integer                                         | MIN_VALUE                                | Primitive|
+| #3        | java/lang/Integer                                         | MAX_VALUE                                | Primitive|
+| #4        | java/lang/Integer                                         | TYPE                                     | Reference|
+| #5        | java/lang/Integer                                         | MIN_CACHE                                | Primitive|
+| #6        | java/lang/Integer                                         | MAX_CACHE                                | Primitive|
+| #7        | java/lang/Integer                                         | intCache                                 | Reference|
+| #8        | java/lang/Integer                                         | sizeTable                                | Reference|
+| #9        | java/lang/Integer                                         | DigitTens                                | Reference|
+| #10       | java/lang/Integer                                         | DigitOnes                                | Reference|
+| #11       | java/lang/IllegalMonitorStateException                    | serialVersionUID                         | Primitive|
+| #12       | java/lang/IllegalMonitorStateException                    | serialVersionUID                         | Primitive|
+| #13       | java/util/Vector                                          | serialVersionUID                         | Primitive|
+| #14       | java/util/Vector                                          | serialVersionUID                         | Primitive|
+| #15       | java/util/Collections$ReverseComparator                   | serialVersionUID                         | Primitive|
+| #16       | java/util/Collections$ReverseComparator                   | serialVersionUID                         | Primitive|
+| #17       | gnu/regexp/RETokenEnd                                     | serialVersionUID                         | Primitive|
+| #18       | gnu/regexp/RETokenEnd                                     | serialVersionUID                         | Primitive|
+| #19       | java/util/Arrays$ArrayList                                | serialVersionUID                         | Primitive|
+| #20       | java/util/Arrays$ArrayList                                | serialVersionUID                         | Primitive|
+| #21       | gnu/regexp/CharIndexedInputStream                         | BUFFER_INCREMENT                         | Primitive|
+| #22       | gnu/regexp/CharIndexedInputStream                         | UNKNOWN                                  | Primitive|
+| #23       | gnu/regexp/RETokenPOSIX                                   | serialVersionUID                         | Primitive|
+| #24       | gnu/regexp/RETokenPOSIX                                   | serialVersionUID                         | Primitive|
+| #25       | gnu/regexp/RETokenPOSIX                                   | ALNUM                                    | Primitive|
+| #26       | gnu/regexp/RETokenPOSIX                                   | ALPHA                                    | Primitive|
+| #27       | gnu/regexp/RETokenPOSIX                                   | BLANK                                    | Primitive|
+| #28       | gnu/regexp/RETokenPOSIX                                   | CNTRL                                    | Primitive|
+| #29       | gnu/regexp/RETokenPOSIX                                   | DIGIT                                    | Primitive|
+| #30       | gnu/regexp/RETokenPOSIX                                   | GRAPH                                    | Primitive|
+| #31       | gnu/regexp/RETokenPOSIX                                   | LOWER                                    | Primitive|
+| #32       | gnu/regexp/RETokenPOSIX                                   | PRINT                                    | Primitive|
+| #33       | gnu/regexp/RETokenPOSIX                                   | PUNCT                                    | Primitive|
+| #34       | gnu/regexp/RETokenPOSIX                                   | SPACE                                    | Primitive|
+| #35       | gnu/regexp/RETokenPOSIX                                   | UPPER                                    | Primitive|
+| #36       | gnu/regexp/RETokenPOSIX                                   | XDIGIT                                   | Primitive|
+| #37       | gnu/regexp/RETokenPOSIX                                   | s_nameTable                              | Reference|
+| #38       | java/util/Collections$SynchronizedMap$1                   | serialVersionUID                         | Primitive|
+| #39       | java/util/Collections$SynchronizedMap$1                   | serialVersionUID                         | Primitive|
+| #40       | java/util/Collections$SingletonMap                        | serialVersionUID                         | Primitive|
+| #41       | java/util/Collections$SingletonMap                        | serialVersionUID                         | Primitive|
+| #42       | java/util/Collections$SingletonSet                        | serialVersionUID                         | Primitive|
+| #43       | java/util/Collections$SingletonSet                        | serialVersionUID                         | Primitive|
+| #44       | gnu/regexp/CharIndexedStringBuffer                        | serialVersionUID                         | Primitive|
+| #45       | gnu/regexp/CharIndexedStringBuffer                        | serialVersionUID                         | Primitive|
+| #46       | java/io/File                                              | pathSeparator                            | Reference|
+| #47       | java/io/File                                              | pathSeparatorChar                        | Primitive|
+| #48       | java/io/File                                              | separator                                | Reference|
+| #49       | java/io/File                                              | separatorChar                            | Primitive|
+| #50       | java/lang/InternalError                                   | serialVersionUID                         | Primitive|
+| #51       | java/lang/InternalError                                   | serialVersionUID                         | Primitive|
+| #52       | gnu/regexp/CharIndexedCharArray                           | serialVersionUID                         | Primitive|
+| #53       | gnu/regexp/CharIndexedCharArray                           | serialVersionUID                         | Primitive|
+| #54       | java/lang/StrictMath                                      | rand                                     | Reference|
+| #55       | java/lang/StrictMath                                      | E                                        | Primitive|
+| #56       | java/lang/StrictMath                                      | E                                        | Primitive|
+| #57       | java/lang/StrictMath                                      | PI                                       | Primitive|
+| #58       | java/lang/StrictMath                                      | PI                                       | Primitive|
+| #59       | java/lang/StrictMath                                      | TWO_16                                   | Primitive|
+| #60       | java/lang/StrictMath                                      | TWO_16                                   | Primitive|
+| #61       | java/lang/StrictMath                                      | TWO_20                                   | Primitive|
+| #62       | java/lang/StrictMath                                      | TWO_20                                   | Primitive|
+| #63       | java/lang/StrictMath                                      | TWO_24                                   | Primitive|
+| #64       | java/lang/StrictMath                                      | TWO_24                                   | Primitive|
+| #65       | java/lang/StrictMath                                      | TWO_27                                   | Primitive|
+| #66       | java/lang/StrictMath                                      | TWO_27                                   | Primitive|
+| #67       | java/lang/StrictMath                                      | TWO_28                                   | Primitive|
+| #68       | java/lang/StrictMath                                      | TWO_28                                   | Primitive|
+| #69       | java/lang/StrictMath                                      | TWO_29                                   | Primitive|
+| #70       | java/lang/StrictMath                                      | TWO_29                                   | Primitive|
+| #71       | java/lang/StrictMath                                      | TWO_31                                   | Primitive|
+| #72       | java/lang/StrictMath                                      | TWO_31                                   | Primitive|
+| #73       | java/lang/StrictMath                                      | TWO_49                                   | Primitive|
+| #74       | java/lang/StrictMath                                      | TWO_49                                   | Primitive|
+| #75       | java/lang/StrictMath                                      | TWO_52                                   | Primitive|
+| #76       | java/lang/StrictMath                                      | TWO_52                                   | Primitive|
+| #77       | java/lang/StrictMath                                      | TWO_54                                   | Primitive|
+| #78       | java/lang/StrictMath                                      | TWO_54                                   | Primitive|
+| #79       | java/lang/StrictMath                                      | TWO_57                                   | Primitive|
+| #80       | java/lang/StrictMath                                      | TWO_57                                   | Primitive|
+| #81       | java/lang/StrictMath                                      | TWO_60                                   | Primitive|
+| #82       | java/lang/StrictMath                                      | TWO_60                                   | Primitive|
+| #83       | java/lang/StrictMath                                      | TWO_64                                   | Primitive|
+| #84       | java/lang/StrictMath                                      | TWO_64                                   | Primitive|
+| #85       | java/lang/StrictMath                                      | TWO_66                                   | Primitive|
+| #86       | java/lang/StrictMath                                      | TWO_66                                   | Primitive|
+| #87       | java/lang/StrictMath                                      | TWO_1023                                 | Primitive|
+| #88       | java/lang/StrictMath                                      | TWO_1023                                 | Primitive|
+| #89       | java/lang/StrictMath                                      | TWO_OVER_PI                              | Reference|
+| #90       | java/lang/StrictMath                                      | PI_OVER_TWO                              | Reference|
+| #91       | java/lang/StrictMath                                      | PI_L                                     | Primitive|
+| #92       | java/lang/StrictMath                                      | PI_L                                     | Primitive|
+| #93       | java/lang/StrictMath                                      | PIO2_1                                   | Primitive|
+| #94       | java/lang/StrictMath                                      | PIO2_1                                   | Primitive|
+| #95       | java/lang/StrictMath                                      | PIO2_1L                                  | Primitive|
+| #96       | java/lang/StrictMath                                      | PIO2_1L                                  | Primitive|
+| #97       | java/lang/StrictMath                                      | PIO2_2                                   | Primitive|
+| #98       | java/lang/StrictMath                                      | PIO2_2                                   | Primitive|
+| #99       | java/lang/StrictMath                                      | PIO2_2L                                  | Primitive|
+| #100      | java/lang/StrictMath                                      | PIO2_2L                                  | Primitive|
+| #101      | java/lang/StrictMath                                      | PIO2_3                                   | Primitive|
+| #102      | java/lang/StrictMath                                      | PIO2_3                                   | Primitive|
+| #103      | java/lang/StrictMath                                      | PIO2_3L                                  | Primitive|
+| #104      | java/lang/StrictMath                                      | PIO2_3L                                  | Primitive|
+| #105      | java/lang/StrictMath                                      | SQRT_1_5                                 | Primitive|
+| #106      | java/lang/StrictMath                                      | SQRT_1_5                                 | Primitive|
+| #107      | java/lang/StrictMath                                      | SQRT_2                                   | Primitive|
+| #108      | java/lang/StrictMath                                      | SQRT_2                                   | Primitive|
+| #109      | java/lang/StrictMath                                      | SQRT_3                                   | Primitive|
+| #110      | java/lang/StrictMath                                      | SQRT_3                                   | Primitive|
+| #111      | java/lang/StrictMath                                      | EXP_LIMIT_H                              | Primitive|
+| #112      | java/lang/StrictMath                                      | EXP_LIMIT_H                              | Primitive|
+| #113      | java/lang/StrictMath                                      | EXP_LIMIT_L                              | Primitive|
+| #114      | java/lang/StrictMath                                      | EXP_LIMIT_L                              | Primitive|
+| #115      | java/lang/StrictMath                                      | CP                                       | Primitive|
+| #116      | java/lang/StrictMath                                      | CP                                       | Primitive|
+| #117      | java/lang/StrictMath                                      | CP_H                                     | Primitive|
+| #118      | java/lang/StrictMath                                      | CP_H                                     | Primitive|
+| #119      | java/lang/StrictMath                                      | CP_L                                     | Primitive|
+| #120      | java/lang/StrictMath                                      | CP_L                                     | Primitive|
+| #121      | java/lang/StrictMath                                      | LN2                                      | Primitive|
+| #122      | java/lang/StrictMath                                      | LN2                                      | Primitive|
+| #123      | java/lang/StrictMath                                      | LN2_H                                    | Primitive|
+| #124      | java/lang/StrictMath                                      | LN2_H                                    | Primitive|
+| #125      | java/lang/StrictMath                                      | LN2_L                                    | Primitive|
+| #126      | java/lang/StrictMath                                      | LN2_L                                    | Primitive|
+| #127      | java/lang/StrictMath                                      | INV_LN2                                  | Primitive|
+| #128      | java/lang/StrictMath                                      | INV_LN2                                  | Primitive|
+| #129      | java/lang/StrictMath                                      | INV_LN2_H                                | Primitive|
+| #130      | java/lang/StrictMath                                      | INV_LN2_H                                | Primitive|
+| #131      | java/lang/StrictMath                                      | INV_LN2_L                                | Primitive|
+| #132      | java/lang/StrictMath                                      | INV_LN2_L                                | Primitive|
+| #133      | java/lang/StrictMath                                      | LG1                                      | Primitive|
+| #134      | java/lang/StrictMath                                      | LG1                                      | Primitive|
+| #135      | java/lang/StrictMath                                      | LG2                                      | Primitive|
+| #136      | java/lang/StrictMath                                      | LG2                                      | Primitive|
+| #137      | java/lang/StrictMath                                      | LG3                                      | Primitive|
+| #138      | java/lang/StrictMath                                      | LG3                                      | Primitive|
+| #139      | java/lang/StrictMath                                      | LG4                                      | Primitive|
+| #140      | java/lang/StrictMath                                      | LG4                                      | Primitive|
+| #141      | java/lang/StrictMath                                      | LG5                                      | Primitive|
+| #142      | java/lang/StrictMath                                      | LG5                                      | Primitive|
+| #143      | java/lang/StrictMath                                      | LG6                                      | Primitive|
+| #144      | java/lang/StrictMath                                      | LG6                                      | Primitive|
+| #145      | java/lang/StrictMath                                      | LG7                                      | Primitive|
+| #146      | java/lang/StrictMath                                      | LG7                                      | Primitive|
+| #147      | java/lang/StrictMath                                      | L1                                       | Primitive|
+| #148      | java/lang/StrictMath                                      | L1                                       | Primitive|
+| #149      | java/lang/StrictMath                                      | L2                                       | Primitive|
+| #150      | java/lang/StrictMath                                      | L2                                       | Primitive|
+| #151      | java/lang/StrictMath                                      | L3                                       | Primitive|
+| #152      | java/lang/StrictMath                                      | L3                                       | Primitive|
+| #153      | java/lang/StrictMath                                      | L4                                       | Primitive|
+| #154      | java/lang/StrictMath                                      | L4                                       | Primitive|
+| #155      | java/lang/StrictMath                                      | L5                                       | Primitive|
+| #156      | java/lang/StrictMath                                      | L5                                       | Primitive|
+| #157      | java/lang/StrictMath                                      | L6                                       | Primitive|
+| #158      | java/lang/StrictMath                                      | L6                                       | Primitive|
+| #159      | java/lang/StrictMath                                      | P1                                       | Primitive|
+| #160      | java/lang/StrictMath                                      | P1                                       | Primitive|
+| #161      | java/lang/StrictMath                                      | P2                                       | Primitive|
+| #162      | java/lang/StrictMath                                      | P2                                       | Primitive|
+| #163      | java/lang/StrictMath                                      | P3                                       | Primitive|
+| #164      | java/lang/StrictMath                                      | P3                                       | Primitive|
+| #165      | java/lang/StrictMath                                      | P4                                       | Primitive|
+| #166      | java/lang/StrictMath                                      | P4                                       | Primitive|
+| #167      | java/lang/StrictMath                                      | P5                                       | Primitive|
+| #168      | java/lang/StrictMath                                      | P5                                       | Primitive|
+| #169      | java/lang/StrictMath                                      | DP_H                                     | Primitive|
+| #170      | java/lang/StrictMath                                      | DP_H                                     | Primitive|
+| #171      | java/lang/StrictMath                                      | DP_L                                     | Primitive|
+| #172      | java/lang/StrictMath                                      | DP_L                                     | Primitive|
+| #173      | java/lang/StrictMath                                      | OVT                                      | Primitive|
+| #174      | java/lang/StrictMath                                      | OVT                                      | Primitive|
+| #175      | java/lang/StrictMath                                      | S1                                       | Primitive|
+| #176      | java/lang/StrictMath                                      | S1                                       | Primitive|
+| #177      | java/lang/StrictMath                                      | S2                                       | Primitive|
+| #178      | java/lang/StrictMath                                      | S2                                       | Primitive|
+| #179      | java/lang/StrictMath                                      | S3                                       | Primitive|
+| #180      | java/lang/StrictMath                                      | S3                                       | Primitive|
+| #181      | java/lang/StrictMath                                      | S4                                       | Primitive|
+| #182      | java/lang/StrictMath                                      | S4                                       | Primitive|
+| #183      | java/lang/StrictMath                                      | S5                                       | Primitive|
+| #184      | java/lang/StrictMath                                      | S5                                       | Primitive|
+| #185      | java/lang/StrictMath                                      | S6                                       | Primitive|
+| #186      | java/lang/StrictMath                                      | S6                                       | Primitive|
+| #187      | java/lang/StrictMath                                      | C1                                       | Primitive|
+| #188      | java/lang/StrictMath                                      | C1                                       | Primitive|
+| #189      | java/lang/StrictMath                                      | C2                                       | Primitive|
+| #190      | java/lang/StrictMath                                      | C2                                       | Primitive|
+| #191      | java/lang/StrictMath                                      | C3                                       | Primitive|
+| #192      | java/lang/StrictMath                                      | C3                                       | Primitive|
+| #193      | java/lang/StrictMath                                      | C4                                       | Primitive|
+| #194      | java/lang/StrictMath                                      | C4                                       | Primitive|
+| #195      | java/lang/StrictMath                                      | C5                                       | Primitive|
+| #196      | java/lang/StrictMath                                      | C5                                       | Primitive|
+| #197      | java/lang/StrictMath                                      | C6                                       | Primitive|
+| #198      | java/lang/StrictMath                                      | C6                                       | Primitive|
+| #199      | java/lang/StrictMath                                      | T0                                       | Primitive|
+| #200      | java/lang/StrictMath                                      | T0                                       | Primitive|
+| #201      | java/lang/StrictMath                                      | T1                                       | Primitive|
+| #202      | java/lang/StrictMath                                      | T1                                       | Primitive|
+| #203      | java/lang/StrictMath                                      | T2                                       | Primitive|
+| #204      | java/lang/StrictMath                                      | T2                                       | Primitive|
+| #205      | java/lang/StrictMath                                      | T3                                       | Primitive|
+| #206      | java/lang/StrictMath                                      | T3                                       | Primitive|
+| #207      | java/lang/StrictMath                                      | T4                                       | Primitive|
+| #208      | java/lang/StrictMath                                      | T4                                       | Primitive|
+| #209      | java/lang/StrictMath                                      | T5                                       | Primitive|
+| #210      | java/lang/StrictMath                                      | T5                                       | Primitive|
+| #211      | java/lang/StrictMath                                      | T6                                       | Primitive|
+| #212      | java/lang/StrictMath                                      | T6                                       | Primitive|
+| #213      | java/lang/StrictMath                                      | T7                                       | Primitive|
+| #214      | java/lang/StrictMath                                      | T7                                       | Primitive|
+| #215      | java/lang/StrictMath                                      | T8                                       | Primitive|
+| #216      | java/lang/StrictMath                                      | T8                                       | Primitive|
+| #217      | java/lang/StrictMath                                      | T9                                       | Primitive|
+| #218      | java/lang/StrictMath                                      | T9                                       | Primitive|
+| #219      | java/lang/StrictMath                                      | T10                                      | Primitive|
+| #220      | java/lang/StrictMath                                      | T10                                      | Primitive|
+| #221      | java/lang/StrictMath                                      | T11                                      | Primitive|
+| #222      | java/lang/StrictMath                                      | T11                                      | Primitive|
+| #223      | java/lang/StrictMath                                      | T12                                      | Primitive|
+| #224      | java/lang/StrictMath                                      | T12                                      | Primitive|
+| #225      | java/lang/StrictMath                                      | PS0                                      | Primitive|
+| #226      | java/lang/StrictMath                                      | PS0                                      | Primitive|
+| #227      | java/lang/StrictMath                                      | PS1                                      | Primitive|
+| #228      | java/lang/StrictMath                                      | PS1                                      | Primitive|
+| #229      | java/lang/StrictMath                                      | PS2                                      | Primitive|
+| #230      | java/lang/StrictMath                                      | PS2                                      | Primitive|
+| #231      | java/lang/StrictMath                                      | PS3                                      | Primitive|
+| #232      | java/lang/StrictMath                                      | PS3                                      | Primitive|
+| #233      | java/lang/StrictMath                                      | PS4                                      | Primitive|
+| #234      | java/lang/StrictMath                                      | PS4                                      | Primitive|
+| #235      | java/lang/StrictMath                                      | PS5                                      | Primitive|
+| #236      | java/lang/StrictMath                                      | PS5                                      | Primitive|
+| #237      | java/lang/StrictMath                                      | QS1                                      | Primitive|
+| #238      | java/lang/StrictMath                                      | QS1                                      | Primitive|
+| #239      | java/lang/StrictMath                                      | QS2                                      | Primitive|
+| #240      | java/lang/StrictMath                                      | QS2                                      | Primitive|
+| #241      | java/lang/StrictMath                                      | QS3                                      | Primitive|
+| #242      | java/lang/StrictMath                                      | QS3                                      | Primitive|
+| #243      | java/lang/StrictMath                                      | QS4                                      | Primitive|
+| #244      | java/lang/StrictMath                                      | QS4                                      | Primitive|
+| #245      | java/lang/StrictMath                                      | ATAN_0_5H                                | Primitive|
+| #246      | java/lang/StrictMath                                      | ATAN_0_5H                                | Primitive|
+| #247      | java/lang/StrictMath                                      | ATAN_0_5L                                | Primitive|
+| #248      | java/lang/StrictMath                                      | ATAN_0_5L                                | Primitive|
+| #249      | java/lang/StrictMath                                      | ATAN_1_5H                                | Primitive|
+| #250      | java/lang/StrictMath                                      | ATAN_1_5H                                | Primitive|
+| #251      | java/lang/StrictMath                                      | ATAN_1_5L                                | Primitive|
+| #252      | java/lang/StrictMath                                      | ATAN_1_5L                                | Primitive|
+| #253      | java/lang/StrictMath                                      | AT0                                      | Primitive|
+| #254      | java/lang/StrictMath                                      | AT0                                      | Primitive|
+| #255      | java/lang/StrictMath                                      | AT1                                      | Primitive|
+| #256      | java/lang/StrictMath                                      | AT1                                      | Primitive|
+| #257      | java/lang/StrictMath                                      | AT2                                      | Primitive|
+| #258      | java/lang/StrictMath                                      | AT2                                      | Primitive|
+| #259      | java/lang/StrictMath                                      | AT3                                      | Primitive|
+| #260      | java/lang/StrictMath                                      | AT3                                      | Primitive|
+| #261      | java/lang/StrictMath                                      | AT4                                      | Primitive|
+| #262      | java/lang/StrictMath                                      | AT4                                      | Primitive|
+| #263      | java/lang/StrictMath                                      | AT5                                      | Primitive|
+| #264      | java/lang/StrictMath                                      | AT5                                      | Primitive|
+| #265      | java/lang/StrictMath                                      | AT6                                      | Primitive|
+| #266      | java/lang/StrictMath                                      | AT6                                      | Primitive|
+| #267      | java/lang/StrictMath                                      | AT7                                      | Primitive|
+| #268      | java/lang/StrictMath                                      | AT7                                      | Primitive|
+| #269      | java/lang/StrictMath                                      | AT8                                      | Primitive|
+| #270      | java/lang/StrictMath                                      | AT8                                      | Primitive|
+| #271      | java/lang/StrictMath                                      | AT9                                      | Primitive|
+| #272      | java/lang/StrictMath                                      | AT9                                      | Primitive|
+| #273      | java/lang/StrictMath                                      | AT10                                     | Primitive|
+| #274      | java/lang/StrictMath                                      | AT10                                     | Primitive|
+| #275      | de/amidar/HashMapInt                                      | DEFAULT_CAPACITY                         | Primitive|
+| #276      | de/amidar/HashMapInt                                      | DEFAULT_LOAD_FACTOR                      | Primitive|
+| #277      | gnu/regexp/REException                                    | serialVersionUID                         | Primitive|
+| #278      | gnu/regexp/REException                                    | serialVersionUID                         | Primitive|
+| #279      | gnu/regexp/REException                                    | REG_BADRPT                               | Primitive|
+| #280      | gnu/regexp/REException                                    | REG_BADBR                                | Primitive|
+| #281      | gnu/regexp/REException                                    | REG_EBRACE                               | Primitive|
+| #282      | gnu/regexp/REException                                    | REG_EBRACK                               | Primitive|
+| #283      | gnu/regexp/REException                                    | REG_ERANGE                               | Primitive|
+| #284      | gnu/regexp/REException                                    | REG_ECTYPE                               | Primitive|
+| #285      | gnu/regexp/REException                                    | REG_EPAREN                               | Primitive|
+| #286      | gnu/regexp/REException                                    | REG_ESUBREG                              | Primitive|
+| #287      | gnu/regexp/REException                                    | REG_EEND                                 | Primitive|
+| #288      | gnu/regexp/REException                                    | REG_ESCAPE                               | Primitive|
+| #289      | gnu/regexp/REException                                    | REG_BADPAT                               | Primitive|
+| #290      | gnu/regexp/REException                                    | REG_ESIZE                                | Primitive|
+| #291      | gnu/regexp/REException                                    | REG_ESPACE                               | Primitive|
+| #292      | java/io/BufferedInputStream                               | DEFAULT_BUFFER_SIZE                      | Primitive|
+| #293      | java/util/NoSuchElementException                          | serialVersionUID                         | Primitive|
+| #294      | java/util/NoSuchElementException                          | serialVersionUID                         | Primitive|
+| #295      | java/lang/ArrayIndexOutOfBoundsException                  | serialVersionUID                         | Primitive|
+| #296      | java/lang/ArrayIndexOutOfBoundsException                  | serialVersionUID                         | Primitive|
+| #297      | gnu/regexp/RETokenAny                                     | serialVersionUID                         | Primitive|
+| #298      | gnu/regexp/RETokenAny                                     | serialVersionUID                         | Primitive|
+| #299      | java/lang/IllegalStateException                           | serialVersionUID                         | Primitive|
+| #300      | java/lang/IllegalStateException                           | serialVersionUID                         | Primitive|
+| #301      | java/lang/Double                                          | serialVersionUID                         | Primitive|
+| #302      | java/lang/Double                                          | serialVersionUID                         | Primitive|
+| #303      | java/lang/Double                                          | MAX_VALUE                                | Primitive|
+| #304      | java/lang/Double                                          | MAX_VALUE                                | Primitive|
+| #305      | java/lang/Double                                          | MIN_VALUE                                | Primitive|
+| #306      | java/lang/Double                                          | MIN_VALUE                                | Primitive|
+| #307      | java/lang/Double                                          | NEGATIVE_INFINITY                        | Primitive|
+| #308      | java/lang/Double                                          | NEGATIVE_INFINITY                        | Primitive|
+| #309      | java/lang/Double                                          | POSITIVE_INFINITY                        | Primitive|
+| #310      | java/lang/Double                                          | POSITIVE_INFINITY                        | Primitive|
+| #311      | java/lang/Double                                          | NaN                                      | Primitive|
+| #312      | java/lang/Double                                          | NaN                                      | Primitive|
+| #313      | java/lang/Double                                          | TYPE                                     | Reference|
+| #314      | java/util/AbstractMap                                     | KEYS                                     | Primitive|
+| #315      | java/util/AbstractMap                                     | VALUES                                   | Primitive|
+| #316      | java/util/AbstractMap                                     | ENTRIES                                  | Primitive|
+| #317      | java/lang/System                                          | in                                       | Reference|
+| #318      | java/lang/System                                          | out                                      | Reference|
+| #319      | java/lang/System                                          | err                                      | Reference|
+| #320      | java/lang/System                                          | dummy                                    | Reference|
+| #321      | de/amidar/HashMapIdentity                                 | DEFAULT_CAPACITY                         | Primitive|
+| #322      | de/amidar/HashMapIdentity                                 | DEFAULT_LOAD_FACTOR                      | Primitive|
+| #323      | java/lang/UnsupportedOperationException                   | serialVersionUID                         | Primitive|
+| #324      | java/lang/UnsupportedOperationException                   | serialVersionUID                         | Primitive|
+| #325      | gnu/regexp/CharUnit                                       | serialVersionUID                         | Primitive|
+| #326      | gnu/regexp/CharUnit                                       | serialVersionUID                         | Primitive|
+| #327      | java/lang/Boolean                                         | serialVersionUID                         | Primitive|
+| #328      | java/lang/Boolean                                         | serialVersionUID                         | Primitive|
+| #329      | java/lang/Boolean                                         | TRUE                                     | Reference|
+| #330      | java/lang/Boolean                                         | FALSE                                    | Reference|
+| #331      | java/lang/Boolean                                         | TYPE                                     | Reference|
+| #332      | java/util/Collections$SingletonList                       | serialVersionUID                         | Primitive|
+| #333      | java/util/Collections$SingletonList                       | serialVersionUID                         | Primitive|
+| #334      | gnu/regexp/RETokenRepeated                                | serialVersionUID                         | Primitive|
+| #335      | gnu/regexp/RETokenRepeated                                | serialVersionUID                         | Primitive|
+| #336      | gnu/regexp/RETokenBackRef                                 | serialVersionUID                         | Primitive|
+| #337      | gnu/regexp/RETokenBackRef                                 | serialVersionUID                         | Primitive|
+| #338      | java/lang/StackOverflowError                              | serialVersionUID                         | Primitive|
+| #339      | java/lang/StackOverflowError                              | serialVersionUID                         | Primitive|
+| #340      | java/util/Collections$EmptySet                            | serialVersionUID                         | Primitive|
+| #341      | java/util/Collections$EmptySet                            | serialVersionUID                         | Primitive|
+| #342      | gnu/regexp/REMatchEnumeration                             | serialVersionUID                         | Primitive|
+| #343      | gnu/regexp/REMatchEnumeration                             | serialVersionUID                         | Primitive|
+| #344      | gnu/regexp/REMatchEnumeration                             | YES                                      | Primitive|
+| #345      | gnu/regexp/REMatchEnumeration                             | MAYBE                                    | Primitive|
+| #346      | gnu/regexp/REMatchEnumeration                             | NO                                       | Primitive|
+| #347      | gnu/regexp/RETokenEndSub                                  | serialVersionUID                         | Primitive|
+| #348      | gnu/regexp/RETokenEndSub                                  | serialVersionUID                         | Primitive|
+| #349      | java/lang/NullPointerException                            | serialVersionUID                         | Primitive|
+| #350      | java/lang/NullPointerException                            | serialVersionUID                         | Primitive|
+| #351      | java/io/IOException                                       | serialVersionUID                         | Primitive|
+| #352      | java/io/IOException                                       | serialVersionUID                         | Primitive|
+| #353      | gnu/regexp/IntPair                                        | serialVersionUID                         | Primitive|
+| #354      | gnu/regexp/IntPair                                        | serialVersionUID                         | Primitive|
+| #355      | java/lang/StringIndexOutOfBoundsException                 | serialVersionUID                         | Primitive|
+| #356      | java/lang/StringIndexOutOfBoundsException                 | serialVersionUID                         | Primitive|
+| #357      | java/util/Collections$SynchronizedCollection              | serialVersionUID                         | Primitive|
+| #358      | java/util/Collections$SynchronizedCollection              | serialVersionUID                         | Primitive|
+| #359      | java/lang/Number                                          | serialVersionUID                         | Primitive|
+| #360      | java/lang/Number                                          | serialVersionUID                         | Primitive|
+| #361      | java/lang/Number                                          | digits                                   | Reference|
+| #362      | java/lang/VirtualMachineError                             | serialVersionUID                         | Primitive|
+| #363      | java/lang/VirtualMachineError                             | serialVersionUID                         | Primitive|
+| #364      | gnu/regexp/REMatch                                        | serialVersionUID                         | Primitive|
+| #365      | gnu/regexp/REMatch                                        | serialVersionUID                         | Primitive|
+| #366      | java/lang/IndexOutOfBoundsException                       | serialVersionUID                         | Primitive|
+| #367      | java/lang/IndexOutOfBoundsException                       | serialVersionUID                         | Primitive|
+| #368      | java/lang/IllegalArgumentException                        | serialVersionUID                         | Primitive|
+| #369      | java/lang/IllegalArgumentException                        | serialVersionUID                         | Primitive|
+| #370      | java/util/Collections$CopiesList                          | serialVersionUID                         | Primitive|
+| #371      | java/util/Collections$CopiesList                          | serialVersionUID                         | Primitive|
+| #372      | java/util/Collections$UnmodifiableList                    | serialVersionUID                         | Primitive|
+| #373      | java/util/Collections$UnmodifiableList                    | serialVersionUID                         | Primitive|
+| #374      | java/lang/Long                                            | serialVersionUID                         | Primitive|
+| #375      | java/lang/Long                                            | serialVersionUID                         | Primitive|
+| #376      | java/lang/Long                                            | MIN_VALUE                                | Primitive|
+| #377      | java/lang/Long                                            | MIN_VALUE                                | Primitive|
+| #378      | java/lang/Long                                            | MAX_VALUE                                | Primitive|
+| #379      | java/lang/Long                                            | MAX_VALUE                                | Primitive|
+| #380      | java/lang/Long                                            | TYPE                                     | Reference|
+| #381      | java/lang/Character$UnicodeBlock                          | BASIC_LATIN                              | Reference|
+| #382      | java/lang/Character$UnicodeBlock                          | LATIN_1_SUPPLEMENT                       | Reference|
+| #383      | java/lang/Character$UnicodeBlock                          | LATIN_EXTENDED_A                         | Reference|
+| #384      | java/lang/Character$UnicodeBlock                          | LATIN_EXTENDED_B                         | Reference|
+| #385      | java/lang/Character$UnicodeBlock                          | IPA_EXTENSIONS                           | Reference|
+| #386      | java/lang/Character$UnicodeBlock                          | SPACING_MODIFIER_LETTERS                 | Reference|
+| #387      | java/lang/Character$UnicodeBlock                          | COMBINING_DIACRITICAL_MARKS              | Reference|
+| #388      | java/lang/Character$UnicodeBlock                          | GREEK                                    | Reference|
+| #389      | java/lang/Character$UnicodeBlock                          | CYRILLIC                                 | Reference|
+| #390      | java/lang/Character$UnicodeBlock                          | ARMENIAN                                 | Reference|
+| #391      | java/lang/Character$UnicodeBlock                          | HEBREW                                   | Reference|
+| #392      | java/lang/Character$UnicodeBlock                          | ARABIC                                   | Reference|
+| #393      | java/lang/Character$UnicodeBlock                          | SYRIAC                                   | Reference|
+| #394      | java/lang/Character$UnicodeBlock                          | THAANA                                   | Reference|
+| #395      | java/lang/Character$UnicodeBlock                          | DEVANAGARI                               | Reference|
+| #396      | java/lang/Character$UnicodeBlock                          | BENGALI                                  | Reference|
+| #397      | java/lang/Character$UnicodeBlock                          | GURMUKHI                                 | Reference|
+| #398      | java/lang/Character$UnicodeBlock                          | GUJARATI                                 | Reference|
+| #399      | java/lang/Character$UnicodeBlock                          | ORIYA                                    | Reference|
+| #400      | java/lang/Character$UnicodeBlock                          | TAMIL                                    | Reference|
+| #401      | java/lang/Character$UnicodeBlock                          | TELUGU                                   | Reference|
+| #402      | java/lang/Character$UnicodeBlock                          | KANNADA                                  | Reference|
+| #403      | java/lang/Character$UnicodeBlock                          | MALAYALAM                                | Reference|
+| #404      | java/lang/Character$UnicodeBlock                          | SINHALA                                  | Reference|
+| #405      | java/lang/Character$UnicodeBlock                          | THAI                                     | Reference|
+| #406      | java/lang/Character$UnicodeBlock                          | LAO                                      | Reference|
+| #407      | java/lang/Character$UnicodeBlock                          | TIBETAN                                  | Reference|
+| #408      | java/lang/Character$UnicodeBlock                          | MYANMAR                                  | Reference|
+| #409      | java/lang/Character$UnicodeBlock                          | GEORGIAN                                 | Reference|
+| #410      | java/lang/Character$UnicodeBlock                          | HANGUL_JAMO                              | Reference|
+| #411      | java/lang/Character$UnicodeBlock                          | ETHIOPIC                                 | Reference|
+| #412      | java/lang/Character$UnicodeBlock                          | CHEROKEE                                 | Reference|
+| #413      | java/lang/Character$UnicodeBlock                          | UNIFIED_CANADIAN_ABORIGINAL_SYLLABICS    | Reference|
+| #414      | java/lang/Character$UnicodeBlock                          | OGHAM                                    | Reference|
+| #415      | java/lang/Character$UnicodeBlock                          | RUNIC                                    | Reference|
+| #416      | java/lang/Character$UnicodeBlock                          | KHMER                                    | Reference|
+| #417      | java/lang/Character$UnicodeBlock                          | MONGOLIAN                                | Reference|
+| #418      | java/lang/Character$UnicodeBlock                          | LATIN_EXTENDED_ADDITIONAL                | Reference|
+| #419      | java/lang/Character$UnicodeBlock                          | GREEK_EXTENDED                           | Reference|
+| #420      | java/lang/Character$UnicodeBlock                          | GENERAL_PUNCTUATION                      | Reference|
+| #421      | java/lang/Character$UnicodeBlock                          | SUPERSCRIPTS_AND_SUBSCRIPTS              | Reference|
+| #422      | java/lang/Character$UnicodeBlock                          | CURRENCY_SYMBOLS                         | Reference|
+| #423      | java/lang/Character$UnicodeBlock                          | COMBINING_MARKS_FOR_SYMBOLS              | Reference|
+| #424      | java/lang/Character$UnicodeBlock                          | LETTERLIKE_SYMBOLS                       | Reference|
+| #425      | java/lang/Character$UnicodeBlock                          | NUMBER_FORMS                             | Reference|
+| #426      | java/lang/Character$UnicodeBlock                          | ARROWS                                   | Reference|
+| #427      | java/lang/Character$UnicodeBlock                          | MATHEMATICAL_OPERATORS                   | Reference|
+| #428      | java/lang/Character$UnicodeBlock                          | MISCELLANEOUS_TECHNICAL                  | Reference|
+| #429      | java/lang/Character$UnicodeBlock                          | CONTROL_PICTURES                         | Reference|
+| #430      | java/lang/Character$UnicodeBlock                          | OPTICAL_CHARACTER_RECOGNITION            | Reference|
+| #431      | java/lang/Character$UnicodeBlock                          | ENCLOSED_ALPHANUMERICS                   | Reference|
+| #432      | java/lang/Character$UnicodeBlock                          | BOX_DRAWING                              | Reference|
+| #433      | java/lang/Character$UnicodeBlock                          | BLOCK_ELEMENTS                           | Reference|
+| #434      | java/lang/Character$UnicodeBlock                          | GEOMETRIC_SHAPES                         | Reference|
+| #435      | java/lang/Character$UnicodeBlock                          | MISCELLANEOUS_SYMBOLS                    | Reference|
+| #436      | java/lang/Character$UnicodeBlock                          | DINGBATS                                 | Reference|
+| #437      | java/lang/Character$UnicodeBlock                          | BRAILLE_PATTERNS                         | Reference|
+| #438      | java/lang/Character$UnicodeBlock                          | CJK_RADICALS_SUPPLEMENT                  | Reference|
+| #439      | java/lang/Character$UnicodeBlock                          | KANGXI_RADICALS                          | Reference|
+| #440      | java/lang/Character$UnicodeBlock                          | IDEOGRAPHIC_DESCRIPTION_CHARACTERS       | Reference|
+| #441      | java/lang/Character$UnicodeBlock                          | CJK_SYMBOLS_AND_PUNCTUATION              | Reference|
+| #442      | java/lang/Character$UnicodeBlock                          | HIRAGANA                                 | Reference|
+| #443      | java/lang/Character$UnicodeBlock                          | KATAKANA                                 | Reference|
+| #444      | java/lang/Character$UnicodeBlock                          | BOPOMOFO                                 | Reference|
+| #445      | java/lang/Character$UnicodeBlock                          | HANGUL_COMPATIBILITY_JAMO                | Reference|
+| #446      | java/lang/Character$UnicodeBlock                          | KANBUN                                   | Reference|
+| #447      | java/lang/Character$UnicodeBlock                          | BOPOMOFO_EXTENDED                        | Reference|
+| #448      | java/lang/Character$UnicodeBlock                          | ENCLOSED_CJK_LETTERS_AND_MONTHS          | Reference|
+| #449      | java/lang/Character$UnicodeBlock                          | CJK_COMPATIBILITY                        | Reference|
+| #450      | java/lang/Character$UnicodeBlock                          | CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A       | Reference|
+| #451      | java/lang/Character$UnicodeBlock                          | CJK_UNIFIED_IDEOGRAPHS                   | Reference|
+| #452      | java/lang/Character$UnicodeBlock                          | YI_SYLLABLES                             | Reference|
+| #453      | java/lang/Character$UnicodeBlock                          | YI_RADICALS                              | Reference|
+| #454      | java/lang/Character$UnicodeBlock                          | HANGUL_SYLLABLES                         | Reference|
+| #455      | java/lang/Character$UnicodeBlock                          | SURROGATES_AREA                          | Reference|
+| #456      | java/lang/Character$UnicodeBlock                          | PRIVATE_USE_AREA                         | Reference|
+| #457      | java/lang/Character$UnicodeBlock                          | CJK_COMPATIBILITY_IDEOGRAPHS             | Reference|
+| #458      | java/lang/Character$UnicodeBlock                          | ALPHABETIC_PRESENTATION_FORMS            | Reference|
+| #459      | java/lang/Character$UnicodeBlock                          | ARABIC_PRESENTATION_FORMS_A              | Reference|
+| #460      | java/lang/Character$UnicodeBlock                          | COMBINING_HALF_MARKS                     | Reference|
+| #461      | java/lang/Character$UnicodeBlock                          | CJK_COMPATIBILITY_FORMS                  | Reference|
+| #462      | java/lang/Character$UnicodeBlock                          | SMALL_FORM_VARIANTS                      | Reference|
+| #463      | java/lang/Character$UnicodeBlock                          | ARABIC_PRESENTATION_FORMS_B              | Reference|
+| #464      | java/lang/Character$UnicodeBlock                          | HALFWIDTH_AND_FULLWIDTH_FORMS            | Reference|
+| #465      | java/lang/Character$UnicodeBlock                          | SPECIALS                                 | Reference|
+| #466      | java/lang/Character$UnicodeBlock                          | sets                                     | Reference|
+| #467      | java/lang/IncompatibleClassChangeError                    | serialVersionUID                         | Primitive|
+| #468      | java/lang/IncompatibleClassChangeError                    | serialVersionUID                         | Primitive|
+| #469      | java/lang/NegativeArraySizeException                      | serialVersionUID                         | Primitive|
+| #470      | java/lang/NegativeArraySizeException                      | serialVersionUID                         | Primitive|
+| #471      | java/lang/StackTraceElement                               | serialVersionUID                         | Primitive|
+| #472      | java/lang/StackTraceElement                               | serialVersionUID                         | Primitive|
+| #473      | java/util/Random                                          | serialVersionUID                         | Primitive|
+| #474      | java/util/Random                                          | serialVersionUID                         | Primitive|
+| #475      | java/lang/Error                                           | serialVersionUID                         | Primitive|
+| #476      | java/lang/Error                                           | serialVersionUID                         | Primitive|
+| #477      | java/util/ConcurrentModificationException                 | serialVersionUID                         | Primitive|
+| #478      | java/util/ConcurrentModificationException                 | serialVersionUID                         | Primitive|
+| #479      | gnu/regexp/RETokenWordBoundary                            | serialVersionUID                         | Primitive|
+| #480      | gnu/regexp/RETokenWordBoundary                            | serialVersionUID                         | Primitive|
+| #481      | gnu/regexp/RETokenWordBoundary                            | BEGIN                                    | Primitive|
+| #482      | gnu/regexp/RETokenWordBoundary                            | END                                      | Primitive|
+| #483      | java/util/ArrayList                                       | serialVersionUID                         | Primitive|
+| #484      | java/util/ArrayList                                       | serialVersionUID                         | Primitive|
+| #485      | java/util/ArrayList                                       | DEFAULT_CAPACITY                         | Primitive|
+| #486      | gnu/regexp/RETokenRange                                   | serialVersionUID                         | Primitive|
+| #487      | gnu/regexp/RETokenRange                                   | serialVersionUID                         | Primitive|
+| #488      | gnu/regexp/REToken                                        | serialVersionUID                         | Primitive|
+| #489      | gnu/regexp/REToken                                        | serialVersionUID                         | Primitive|
+| #490      | java/util/Collections$UnmodifiableMap$UnmodifiableEntrySet| serialVersionUID                         | Primitive|
+| #491      | java/util/Collections$UnmodifiableMap$UnmodifiableEntrySet| serialVersionUID                         | Primitive|
+| #492      | java/util/regex/Pattern                                   | serialVersionUID                         | Primitive|
+| #493      | java/util/regex/Pattern                                   | serialVersionUID                         | Primitive|
+| #494      | java/util/regex/Pattern                                   | CANON_EQ                                 | Primitive|
+| #495      | java/util/regex/Pattern                                   | CASE_INSENSITIVE                         | Primitive|
+| #496      | java/util/regex/Pattern                                   | COMMENTS                                 | Primitive|
+| #497      | java/util/regex/Pattern                                   | DOTALL                                   | Primitive|
+| #498      | java/util/regex/Pattern                                   | MULTILINE                                | Primitive|
+| #499      | java/util/regex/Pattern                                   | UNICODE_CASE                             | Primitive|
+| #500      | java/util/regex/Pattern                                   | UNIX_LINES                               | Primitive|
+| #501      | java/lang/Throwable                                       | serialVersionUID                         | Primitive|
+| #502      | java/lang/Throwable                                       | serialVersionUID                         | Primitive|
+| #503      | java/io/UnsupportedEncodingException                      | serialVersionUID                         | Primitive|
+| #504      | java/io/UnsupportedEncodingException                      | serialVersionUID                         | Primitive|
+| #505      | java/util/Collections$UnmodifiableCollection              | serialVersionUID                         | Primitive|
+| #506      | java/util/Collections$UnmodifiableCollection              | serialVersionUID                         | Primitive|
+| #507      | java/util/Locale                                          | serialVersionUID                         | Primitive|
+| #508      | java/util/Locale                                          | serialVersionUID                         | Primitive|
+| #509      | java/lang/Exception                                       | serialVersionUID                         | Primitive|
+| #510      | java/lang/Exception                                       | serialVersionUID                         | Primitive|
+| #511      | de/amidar/scheduler/Scheduler                             | instance                                 | Reference|
+| #512      | gnu/regexp/RESyntax                                       | serialVersionUID                         | Primitive|
+| #513      | gnu/regexp/RESyntax                                       | serialVersionUID                         | Primitive|
+| #514      | gnu/regexp/RESyntax                                       | DEFAULT_LINE_SEPARATOR                   | Reference|
+| #515      | gnu/regexp/RESyntax                                       | SYNTAX_IS_FINAL                          | Reference|
+| #516      | gnu/regexp/RESyntax                                       | RE_BACKSLASH_ESCAPE_IN_LISTS             | Primitive|
+| #517      | gnu/regexp/RESyntax                                       | RE_BK_PLUS_QM                            | Primitive|
+| #518      | gnu/regexp/RESyntax                                       | RE_CHAR_CLASSES                          | Primitive|
+| #519      | gnu/regexp/RESyntax                                       | RE_CONTEXT_INDEP_ANCHORS                 | Primitive|
+| #520      | gnu/regexp/RESyntax                                       | RE_CONTEXT_INDEP_OPS                     | Primitive|
+| #521      | gnu/regexp/RESyntax                                       | RE_CONTEXT_INVALID_OPS                   | Primitive|
+| #522      | gnu/regexp/RESyntax                                       | RE_DOT_NEWLINE                           | Primitive|
+| #523      | gnu/regexp/RESyntax                                       | RE_DOT_NOT_NULL                          | Primitive|
+| #524      | gnu/regexp/RESyntax                                       | RE_INTERVALS                             | Primitive|
+| #525      | gnu/regexp/RESyntax                                       | RE_LIMITED_OPS                           | Primitive|
+| #526      | gnu/regexp/RESyntax                                       | RE_NEWLINE_ALT                           | Primitive|
+| #527      | gnu/regexp/RESyntax                                       | RE_NO_BK_BRACES                          | Primitive|
+| #528      | gnu/regexp/RESyntax                                       | RE_NO_BK_PARENS                          | Primitive|
+| #529      | gnu/regexp/RESyntax                                       | RE_NO_BK_REFS                            | Primitive|
+| #530      | gnu/regexp/RESyntax                                       | RE_NO_BK_VBAR                            | Primitive|
+| #531      | gnu/regexp/RESyntax                                       | RE_NO_EMPTY_RANGES                       | Primitive|
+| #532      | gnu/regexp/RESyntax                                       | RE_UNMATCHED_RIGHT_PAREN_ORD             | Primitive|
+| #533      | gnu/regexp/RESyntax                                       | RE_HAT_LISTS_NOT_NEWLINE                 | Primitive|
+| #534      | gnu/regexp/RESyntax                                       | RE_STINGY_OPS                            | Primitive|
+| #535      | gnu/regexp/RESyntax                                       | RE_CHAR_CLASS_ESCAPES                    | Primitive|
+| #536      | gnu/regexp/RESyntax                                       | RE_PURE_GROUPING                         | Primitive|
+| #537      | gnu/regexp/RESyntax                                       | RE_LOOKAHEAD                             | Primitive|
+| #538      | gnu/regexp/RESyntax                                       | RE_STRING_ANCHORS                        | Primitive|
+| #539      | gnu/regexp/RESyntax                                       | RE_COMMENTS                              | Primitive|
+| #540      | gnu/regexp/RESyntax                                       | RE_CHAR_CLASS_ESC_IN_LISTS               | Primitive|
+| #541      | gnu/regexp/RESyntax                                       | BIT_TOTAL                                | Primitive|
+| #542      | gnu/regexp/RESyntax                                       | RE_SYNTAX_AWK                            | Reference|
+| #543      | gnu/regexp/RESyntax                                       | RE_SYNTAX_ED                             | Reference|
+| #544      | gnu/regexp/RESyntax                                       | RE_SYNTAX_EGREP                          | Reference|
+| #545      | gnu/regexp/RESyntax                                       | RE_SYNTAX_EMACS                          | Reference|
+| #546      | gnu/regexp/RESyntax                                       | RE_SYNTAX_GREP                           | Reference|
+| #547      | gnu/regexp/RESyntax                                       | RE_SYNTAX_POSIX_AWK                      | Reference|
+| #548      | gnu/regexp/RESyntax                                       | RE_SYNTAX_POSIX_BASIC                    | Reference|
+| #549      | gnu/regexp/RESyntax                                       | RE_SYNTAX_POSIX_EGREP                    | Reference|
+| #550      | gnu/regexp/RESyntax                                       | RE_SYNTAX_POSIX_EXTENDED                 | Reference|
+| #551      | gnu/regexp/RESyntax                                       | RE_SYNTAX_POSIX_MINIMAL_BASIC            | Reference|
+| #552      | gnu/regexp/RESyntax                                       | RE_SYNTAX_POSIX_MINIMAL_EXTENDED         | Reference|
+| #553      | gnu/regexp/RESyntax                                       | RE_SYNTAX_SED                            | Reference|
+| #554      | gnu/regexp/RESyntax                                       | RE_SYNTAX_PERL4                          | Reference|
+| #555      | gnu/regexp/RESyntax                                       | RE_SYNTAX_PERL4_S                        | Reference|
+| #556      | gnu/regexp/RESyntax                                       | RE_SYNTAX_PERL5                          | Reference|
+| #557      | gnu/regexp/RESyntax                                       | RE_SYNTAX_PERL5_S                        | Reference|
+| #558      | gnu/regexp/RESyntax                                       | RE_SYNTAX_JAVA_1_4                       | Reference|
+| #559      | java/util/regex/PatternSyntaxException                    | serialVersionUID                         | Primitive|
+| #560      | java/util/regex/PatternSyntaxException                    | serialVersionUID                         | Primitive|
+| #561      | gnu/regexp/RETokenStart                                   | serialVersionUID                         | Primitive|
+| #562      | gnu/regexp/RETokenStart                                   | serialVersionUID                         | Primitive|
+| #563      | java/lang/String$CaseInsensitiveComparator                | serialVersionUID                         | Primitive|
+| #564      | java/lang/String$CaseInsensitiveComparator                | serialVersionUID                         | Primitive|
+| #565      | gnu/regexp/RE                                             | serialVersionUID                         | Primitive|
+| #566      | gnu/regexp/RE                                             | serialVersionUID                         | Primitive|
+| #567      | gnu/regexp/RE                                             | VERSION                                  | Reference|
+| #568      | gnu/regexp/RE                                             | REG_ICASE                                | Primitive|
+| #569      | gnu/regexp/RE                                             | REG_DOT_NEWLINE                          | Primitive|
+| #570      | gnu/regexp/RE                                             | REG_MULTILINE                            | Primitive|
+| #571      | gnu/regexp/RE                                             | REG_NOTBOL                               | Primitive|
+| #572      | gnu/regexp/RE                                             | REG_NOTEOL                               | Primitive|
+| #573      | gnu/regexp/RE                                             | REG_ANCHORINDEX                          | Primitive|
+| #574      | gnu/regexp/RE                                             | REG_NO_INTERPOLATE                       | Primitive|
+| #575      | java/lang/NumberFormatException                           | serialVersionUID                         | Primitive|
+| #576      | java/lang/NumberFormatException                           | serialVersionUID                         | Primitive|
+| #577      | java/util/BitSet                                          | serialVersionUID                         | Primitive|
+| #578      | java/util/BitSet                                          | serialVersionUID                         | Primitive|
+| #579      | java/util/BitSet                                          | LONG_MASK                                | Primitive|
+| #580      | java/util/Collections$EmptyMap                            | serialVersionUID                         | Primitive|
+| #581      | java/util/Collections$EmptyMap                            | serialVersionUID                         | Primitive|
+| #582      | java/util/Collections                                     | LARGE_LIST_SIZE                          | Primitive|
+| #583      | java/util/Collections                                     | EMPTY_SET                                | Reference|
+| #584      | java/util/Collections                                     | EMPTY_LIST                               | Reference|
+| #585      | java/util/Collections                                     | EMPTY_MAP                                | Reference|
+| #586      | java/util/Collections                                     | rcInstance                               | Reference|
+| #587      | java/util/Collections                                     | defaultRandom                            | Reference|
+| #588      | java/util/Collections$SynchronizedMap                     | serialVersionUID                         | Primitive|
+| #589      | java/util/Collections$SynchronizedMap                     | serialVersionUID                         | Primitive|
+| #590      | java/lang/RuntimeException                                | serialVersionUID                         | Primitive|
+| #591      | java/lang/RuntimeException                                | serialVersionUID                         | Primitive|
+| #592      | java/util/Collections$SynchronizedSet                     | serialVersionUID                         | Primitive|
+| #593      | java/util/Collections$SynchronizedSet                     | serialVersionUID                         | Primitive|
+| #594      | java/util/Collections$SynchronizedSortedMap               | serialVersionUID                         | Primitive|
+| #595      | java/util/Collections$SynchronizedSortedMap               | serialVersionUID                         | Primitive|
+| #596      | java/lang/IllegalAccessError                              | serialVersionUID                         | Primitive|
+| #597      | java/lang/IllegalAccessError                              | serialVersionUID                         | Primitive|
+| #598      | java/util/Collections$EmptyList                           | serialVersionUID                         | Primitive|
+| #599      | java/util/Collections$EmptyList                           | serialVersionUID                         | Primitive|
+| #600      | java/lang/InterruptedException                            | serialVersionUID                         | Primitive|
+| #601      | java/lang/InterruptedException                            | serialVersionUID                         | Primitive|
+| #602      | java/util/HashMap                                         | DEFAULT_CAPACITY                         | Primitive|
+| #603      | java/util/HashMap                                         | DEFAULT_LOAD_FACTOR                      | Primitive|
+| #604      | java/util/HashMap                                         | serialVersionUID                         | Primitive|
+| #605      | java/util/HashMap                                         | serialVersionUID                         | Primitive|
+| #606      | java/util/Collections$UnmodifiableSortedSet               | serialVersionUID                         | Primitive|
+| #607      | java/util/Collections$UnmodifiableSortedSet               | serialVersionUID                         | Primitive|
+| #608      | java/lang/Float                                           | serialVersionUID                         | Primitive|
+| #609      | java/lang/Float                                           | serialVersionUID                         | Primitive|
+| #610      | java/lang/Float                                           | MAX_VALUE                                | Primitive|
+| #611      | java/lang/Float                                           | MIN_VALUE                                | Primitive|
+| #612      | java/lang/Float                                           | NEGATIVE_INFINITY                        | Primitive|
+| #613      | java/lang/Float                                           | POSITIVE_INFINITY                        | Primitive|
+| #614      | java/lang/Float                                           | NaN                                      | Primitive|
+| #615      | java/lang/Float                                           | TYPE                                     | Reference|
+| #616      | java/util/Collections$SynchronizedRandomAccessList        | serialVersionUID                         | Primitive|
+| #617      | java/util/Collections$SynchronizedRandomAccessList        | serialVersionUID                         | Primitive|
+| #618      | java/util/Collections$UnmodifiableSortedMap               | serialVersionUID                         | Primitive|
+| #619      | java/util/Collections$UnmodifiableSortedMap               | serialVersionUID                         | Primitive|
+| #620      | java/lang/StringBuffer                                    | serialVersionUID                         | Primitive|
+| #621      | java/lang/StringBuffer                                    | serialVersionUID                         | Primitive|
+| #622      | java/lang/StringBuffer                                    | DEFAULT_CAPACITY                         | Primitive|
+| #623      | gnu/regexp/RETokenOneOf                                   | serialVersionUID                         | Primitive|
+| #624      | gnu/regexp/RETokenOneOf                                   | serialVersionUID                         | Primitive|
+| #625      | java/lang/Short                                           | serialVersionUID                         | Primitive|
+| #626      | java/lang/Short                                           | serialVersionUID                         | Primitive|
+| #627      | java/lang/Short                                           | MIN_VALUE                                | Primitive|
+| #628      | java/lang/Short                                           | MAX_VALUE                                | Primitive|
+| #629      | java/lang/Short                                           | TYPE                                     | Reference|
+| #630      | java/lang/String                                          | serialVersionUID                         | Primitive|
+| #631      | java/lang/String                                          | serialVersionUID                         | Primitive|
+| #632      | java/lang/String                                          | upperExpand                              | Reference|
+| #633      | java/lang/String                                          | upperSpecial                             | Reference|
+| #634      | java/lang/String                                          | CASE_INSENSITIVE_ORDER                   | Reference|
+| #635      | java/lang/Character                                       | serialVersionUID                         | Primitive|
+| #636      | java/lang/Character                                       | serialVersionUID                         | Primitive|
+| #637      | java/lang/Character                                       | MIN_RADIX                                | Primitive|
+| #638      | java/lang/Character                                       | MAX_RADIX                                | Primitive|
+| #639      | java/lang/Character                                       | MIN_VALUE                                | Primitive|
+| #640      | java/lang/Character                                       | MAX_VALUE                                | Primitive|
+| #641      | java/lang/Character                                       | TYPE                                     | Reference|
+| #642      | java/lang/Character                                       | UPPERCASE_LETTER                         | Primitive|
+| #643      | java/lang/Character                                       | LOWERCASE_LETTER                         | Primitive|
+| #644      | java/lang/Character                                       | TITLECASE_LETTER                         | Primitive|
+| #645      | java/lang/Character                                       | NON_SPACING_MARK                         | Primitive|
+| #646      | java/lang/Character                                       | COMBINING_SPACING_MARK                   | Primitive|
+| #647      | java/lang/Character                                       | ENCLOSING_MARK                           | Primitive|
+| #648      | java/lang/Character                                       | DECIMAL_DIGIT_NUMBER                     | Primitive|
+| #649      | java/lang/Character                                       | LETTER_NUMBER                            | Primitive|
+| #650      | java/lang/Character                                       | OTHER_NUMBER                             | Primitive|
+| #651      | java/lang/Character                                       | SPACE_SEPARATOR                          | Primitive|
+| #652      | java/lang/Character                                       | LINE_SEPARATOR                           | Primitive|
+| #653      | java/lang/Character                                       | PARAGRAPH_SEPARATOR                      | Primitive|
+| #654      | java/lang/Character                                       | CONTROL                                  | Primitive|
+| #655      | java/lang/Character                                       | FORMAT                                   | Primitive|
+| #656      | java/lang/Character                                       | SURROGATE                                | Primitive|
+| #657      | java/lang/Character                                       | PRIVATE_USE                              | Primitive|
+| #658      | java/lang/Character                                       | UNASSIGNED                               | Primitive|
+| #659      | java/lang/Character                                       | MODIFIER_LETTER                          | Primitive|
+| #660      | java/lang/Character                                       | OTHER_LETTER                             | Primitive|
+| #661      | java/lang/Character                                       | CONNECTOR_PUNCTUATION                    | Primitive|
+| #662      | java/lang/Character                                       | DASH_PUNCTUATION                         | Primitive|
+| #663      | java/lang/Character                                       | START_PUNCTUATION                        | Primitive|
+| #664      | java/lang/Character                                       | END_PUNCTUATION                          | Primitive|
+| #665      | java/lang/Character                                       | INITIAL_QUOTE_PUNCTUATION                | Primitive|
+| #666      | java/lang/Character                                       | FINAL_QUOTE_PUNCTUATION                  | Primitive|
+| #667      | java/lang/Character                                       | OTHER_PUNCTUATION                        | Primitive|
+| #668      | java/lang/Character                                       | MATH_SYMBOL                              | Primitive|
+| #669      | java/lang/Character                                       | CURRENCY_SYMBOL                          | Primitive|
+| #670      | java/lang/Character                                       | MODIFIER_SYMBOL                          | Primitive|
+| #671      | java/lang/Character                                       | OTHER_SYMBOL                             | Primitive|
+| #672      | java/lang/Character                                       | DIRECTIONALITY_UNDEFINED                 | Primitive|
+| #673      | java/lang/Character                                       | DIRECTIONALITY_LEFT_TO_RIGHT             | Primitive|
+| #674      | java/lang/Character                                       | DIRECTIONALITY_RIGHT_TO_LEFT             | Primitive|
+| #675      | java/lang/Character                                       | DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC      | Primitive|
+| #676      | java/lang/Character                                       | DIRECTIONALITY_EUROPEAN_NUMBER           | Primitive|
+| #677      | java/lang/Character                                       | DIRECTIONALITY_EUROPEAN_NUMBER_SEPARATOR | Primitive|
+| #678      | java/lang/Character                                       | DIRECTIONALITY_EUROPEAN_NUMBER_TERMINATOR| Primitive|
+| #679      | java/lang/Character                                       | DIRECTIONALITY_ARABIC_NUMBER             | Primitive|
+| #680      | java/lang/Character                                       | DIRECTIONALITY_COMMON_NUMBER_SEPARATOR   | Primitive|
+| #681      | java/lang/Character                                       | DIRECTIONALITY_NONSPACING_MARK           | Primitive|
+| #682      | java/lang/Character                                       | DIRECTIONALITY_BOUNDARY_NEUTRAL          | Primitive|
+| #683      | java/lang/Character                                       | DIRECTIONALITY_PARAGRAPH_SEPARATOR       | Primitive|
+| #684      | java/lang/Character                                       | DIRECTIONALITY_SEGMENT_SEPARATOR         | Primitive|
+| #685      | java/lang/Character                                       | DIRECTIONALITY_WHITESPACE                | Primitive|
+| #686      | java/lang/Character                                       | DIRECTIONALITY_OTHER_NEUTRALS            | Primitive|
+| #687      | java/lang/Character                                       | DIRECTIONALITY_LEFT_TO_RIGHT_EMBEDDING   | Primitive|
+| #688      | java/lang/Character                                       | DIRECTIONALITY_LEFT_TO_RIGHT_OVERRIDE    | Primitive|
+| #689      | java/lang/Character                                       | DIRECTIONALITY_RIGHT_TO_LEFT_EMBEDDING   | Primitive|
+| #690      | java/lang/Character                                       | DIRECTIONALITY_RIGHT_TO_LEFT_OVERRIDE    | Primitive|
+| #691      | java/lang/Character                                       | DIRECTIONALITY_POP_DIRECTIONAL_FORMAT    | Primitive|
+| #692      | java/lang/Character                                       | blocks                                   | Reference|
+| #693      | java/lang/Character                                       | data                                     | Reference|
+| #694      | java/lang/Character                                       | numValue                                 | Reference|
+| #695      | java/lang/Character                                       | upper                                    | Reference|
+| #696      | java/lang/Character                                       | lower                                    | Reference|
+| #697      | java/lang/Character                                       | direction                                | Reference|
+| #698      | java/lang/Character                                       | title                                    | Reference|
+| #699      | java/lang/Character                                       | TYPE_MASK                                | Primitive|
+| #700      | java/lang/Character                                       | NO_BREAK_MASK                            | Primitive|
+| #701      | java/lang/Character                                       | MIRROR_MASK                              | Primitive|
+| #702      | de/amidar/AmidarSystem                                    | peripherals                              | Reference|
+| #703      | de/amidar/AmidarSystem                                    | AXT_THREAD_WRAPPER_AMTI_ADDRESS          | Primitive|
+| #704      | de/amidar/AmidarSystem                                    | HW_PERI_ROM_ADDRESS                      | Primitive|
+| #705      | de/amidar/AmidarSystem                                    | HW_HEAP_ADDRESS_BASE                     | Primitive|
+| #706      | de/amidar/AmidarSystem                                    | HEAP_HANDLETABLE_OFFSET_REGISTER         | Primitive|
+| #707      | de/amidar/AmidarSystem                                    | HEAP_PERITABLE_OFFSET_REGISTER           | Primitive|
+| #708      | de/amidar/AmidarSystem                                    | HEAP_HEAP_BASE_REGISTER                  | Primitive|
+| #709      | de/amidar/AmidarSystem                                    | HEAP_FREE_HEAP_OFFSET_REGISTER           | Primitive|
+| #710      | de/amidar/AmidarSystem                                    | HEAP_NEXT_HEAP_OFFSET_REGISTER           | Primitive|
+| #711      | de/amidar/AmidarSystem                                    | HW_HANDLETABLE_ENTRY_WIDTH               | Primitive|
+| #712      | de/amidar/AmidarSystem                                    | bmpWidth                                 | Primitive|
+| #713      | de/amidar/AmidarSystem                                    | bmpHeight                                | Primitive|
+| #714      | java/lang/ClassNotFoundException                          | serialVersionUID                         | Primitive|
+| #715      | java/lang/ClassNotFoundException                          | serialVersionUID                         | Primitive|
+| #716      | java/io/PrintWriter                                       | line_separator                           | Reference|
+| #717      | java/util/Collections$UnmodifiableMap                     | serialVersionUID                         | Primitive|
+| #718      | java/util/Collections$UnmodifiableMap                     | serialVersionUID                         | Primitive|
+| #719      | java/util/Collections$UnmodifiableSet                     | serialVersionUID                         | Primitive|
+| #720      | java/util/Collections$UnmodifiableSet                     | serialVersionUID                         | Primitive|
+| #721      | java/lang/Math                                            | rand                                     | Reference|
+| #722      | java/lang/Math                                            | E                                        | Primitive|
+| #723      | java/lang/Math                                            | E                                        | Primitive|
+| #724      | java/lang/Math                                            | PI                                       | Primitive|
+| #725      | java/lang/Math                                            | PI                                       | Primitive|
+| #726      | java/lang/Byte                                            | serialVersionUID                         | Primitive|
+| #727      | java/lang/Byte                                            | serialVersionUID                         | Primitive|
+| #728      | java/lang/Byte                                            | MIN_VALUE                                | Primitive|
+| #729      | java/lang/Byte                                            | MAX_VALUE                                | Primitive|
+| #730      | java/lang/Byte                                            | TYPE                                     | Reference|
+| #731      | gnu/regexp/CharIndexedString                              | serialVersionUID                         | Primitive|
+| #732      | gnu/regexp/CharIndexedString                              | serialVersionUID                         | Primitive|
+| #733      | java/lang/CloneNotSupportedException                      | serialVersionUID                         | Primitive|
+| #734      | java/lang/CloneNotSupportedException                      | serialVersionUID                         | Primitive|
+| #735      | java/util/Collections$UnmodifiableRandomAccessList        | serialVersionUID                         | Primitive|
+| #736      | java/util/Collections$UnmodifiableRandomAccessList        | serialVersionUID                         | Primitive|
+| #737      | java/lang/LinkageError                                    | serialVersionUID                         | Primitive|
+| #738      | java/lang/LinkageError                                    | serialVersionUID                         | Primitive|
+| #739      | gnu/regexp/RETokenChar                                    | serialVersionUID                         | Primitive|
+| #740      | gnu/regexp/RETokenChar                                    | serialVersionUID                         | Primitive|
+| #741      | java/lang/Class                                           | classes                                  | Reference|
+| #742      | java/lang/Class                                           | nameToClassMap                           | Reference|
+| #743      | java/util/Collections$SynchronizedSortedSet               | serialVersionUID                         | Primitive|
+| #744      | java/util/Collections$SynchronizedSortedSet               | serialVersionUID                         | Primitive|
+| #745      | de/amidar/FrameStack                                      | CALLERCONTEXT_WORDS                      | Primitive|
+| #746      | de/amidar/FrameStack                                      | ENTRYTYPE_EMPTY                          | Primitive|
+| #747      | de/amidar/FrameStack                                      | ENTRYTYPE_META                           | Primitive|
+| #748      | de/amidar/FrameStack                                      | ENTRYTYPE_REF                            | Primitive|
+| #749      | de/amidar/FrameStack                                      | ENTRYTYPE_VALUE                          | Primitive|
+| #750      | java/util/Collections$SynchronizedList                    | serialVersionUID                         | Primitive|
+| #751      | java/util/Collections$SynchronizedList                    | serialVersionUID                         | Primitive|
+| #752      | gnu/regexp/CharIndexed                                    | OUT_OF_BOUNDS                            | Primitive|
+| #753      | gnu/java/lang/CharData                                    | SOURCE                                   | Reference|
+| #754      | gnu/java/lang/CharData                                    | SHIFT                                    | Primitive|
+| #755      | gnu/java/lang/CharData                                    | BLOCKS                                   | Reference|
+| #756      | gnu/java/lang/CharData                                    | DATA                                     | Reference|
+| #757      | gnu/java/lang/CharData                                    | NUM_VALUE                                | Reference|
+| #758      | gnu/java/lang/CharData                                    | UPPER                                    | Reference|
+| #759      | gnu/java/lang/CharData                                    | LOWER                                    | Reference|
+| #760      | gnu/java/lang/CharData                                    | DIRECTION                                | Reference|
+| #761      | gnu/java/lang/CharData                                    | TITLE                                    | Reference|
+| #762      | gnu/java/lang/CharData                                    | UPPER_SPECIAL                            | Reference|
+| #763      | gnu/java/lang/CharData                                    | UPPER_EXPAND                             | Reference|
+
+
+GCClassInfo
+
+RMTI finalize: 11
+
+ClassName: java/lang/Object CTI: 0
+
+Number static fields: 0
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: java/util/HashMap$3 CTI: 1
+
+Number static fields: 0
+Offset to bitmap: 96
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | this$0   | Reference|
+
+
+ClassName: java/util/HashMap$2 CTI: 2
+
+Number static fields: 0
+Offset to bitmap: 97
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | this$0   | Reference|
+
+
+ClassName: java/lang/Integer CTI: 3
+
+Number static fields: 11
+Offset to bitmap: 0
+BitMap in hex: 00
+Finalizer empty: true
+BitMap useless: true
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | value    | Primitive|
+
+
+ClassName: java/lang/IllegalMonitorStateException CTI: 4
+
+Number static fields: 2
+Offset to bitmap: 98
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: java/util/Vector CTI: 5
+
+Number static fields: 2
+Offset to bitmap: 99
+BitMap in hex: 40
+Finalizer empty: true
+BitMap useless: false
+__________________________________________
+| Numeration| FieldName        | Type     |
+|=========================================|
+| #0        | modCount         | Primitive|
+| #1        | elementData      | Reference|
+| #2        | elementCount     | Primitive|
+| #3        | capacityIncrement| Primitive|
+
+
+ClassName: java/util/AbstractMap$2 CTI: 6
+
+Number static fields: 0
+Offset to bitmap: 100
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | this$0   | Reference|
+
+
+ClassName: java/util/Collections$ReverseComparator CTI: 7
+
+Number static fields: 2
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: java/util/HashMap$1 CTI: 8
+
+Number static fields: 0
+Offset to bitmap: 101
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | this$0   | Reference|
+
+
+ClassName: java/util/Collections$UnmodifiableListIterator CTI: 9
+
+Number static fields: 0
+Offset to bitmap: 102
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | i        | Reference|
+| #1        | li       | Reference|
+
+
+ClassName: gnu/regexp/RETokenEnd CTI: 10
+
+Number static fields: 2
+Offset to bitmap: 103
+BitMap in hex: D0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | next     | Reference|
+| #1        | uncle    | Reference|
+| #2        | subIndex | Primitive|
+| #3        | newline  | Reference|
+
+
+ClassName: java/util/AbstractList$SubList CTI: 11
+
+Number static fields: 0
+Offset to bitmap: 104
+BitMap in hex: 40
+Finalizer empty: true
+BitMap useless: false
+____________________________________
+| Numeration| FieldName  | Type     |
+|===================================|
+| #0        | modCount   | Primitive|
+| #1        | backingList| Reference|
+| #2        | offset     | Primitive|
+| #3        | size       | Primitive|
+
+
+ClassName: java/io/OutputStreamWriter CTI: 12
+
+Number static fields: 0
+Offset to bitmap: 105
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | lock     | Reference|
+| #1        | out      | Reference|
+
+
+ClassName: java/util/AbstractMap$1 CTI: 13
+
+Number static fields: 0
+Offset to bitmap: 106
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | this$0   | Reference|
+
+
+ClassName: java/util/AbstractList$RandomAccessSubList CTI: 14
+
+Number static fields: 0
+Offset to bitmap: 107
+BitMap in hex: 40
+Finalizer empty: true
+BitMap useless: false
+____________________________________
+| Numeration| FieldName  | Type     |
+|===================================|
+| #0        | modCount   | Primitive|
+| #1        | backingList| Reference|
+| #2        | offset     | Primitive|
+| #3        | size       | Primitive|
+
+
+ClassName: java/util/Arrays$ArrayList CTI: 15
+
+Number static fields: 2
+Offset to bitmap: 108
+BitMap in hex: 40
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | modCount | Primitive|
+| #1        | a        | Reference|
+
+
+ClassName: java/io/PrintStream CTI: 16
+
+Number static fields: 0
+Offset to bitmap: 109
+BitMap in hex: 90
+Finalizer empty: true
+BitMap useless: false
+_______________________________________
+| Numeration| FieldName     | Type     |
+|======================================|
+| #0        | out           | Reference|
+| #1        | error_occurred| Primitive|
+| #2        | auto_flush    | Primitive|
+| #3        | pw            | Reference|
+| #4        | closed        | Primitive|
+
+
+ClassName: gnu/regexp/CharIndexedInputStream CTI: 17
+
+Number static fields: 2
+Offset to bitmap: 110
+BitMap in hex: 84
+Finalizer empty: true
+BitMap useless: false
+___________________________________
+| Numeration| FieldName | Type     |
+|==================================|
+| #0        | br        | Reference|
+| #1        | index     | Primitive|
+| #2        | bufsize   | Primitive|
+| #3        | end       | Primitive|
+| #4        | cached    | Primitive|
+| #5        | lookBehind| Reference|
+
+
+ClassName: gnu/regexp/RETokenPOSIX CTI: 18
+
+Number static fields: 15
+Offset to bitmap: 111
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | next     | Reference|
+| #1        | uncle    | Reference|
+| #2        | subIndex | Primitive|
+| #3        | type     | Primitive|
+| #4        | insens   | Primitive|
+| #5        | negated  | Primitive|
+
+
+ClassName: java/util/Arrays CTI: 19
+
+Number static fields: 0
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: java/util/AbstractList$1 CTI: 20
+
+Number static fields: 0
+Offset to bitmap: 112
+BitMap in hex: 08
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | pos      | Primitive|
+| #1        | size     | Primitive|
+| #2        | last     | Primitive|
+| #3        | knownMod | Primitive|
+| #4        | this$0   | Reference|
+
+
+ClassName: java/util/Collections$SynchronizedMap$1 CTI: 21
+
+Number static fields: 2
+Offset to bitmap: 113
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | c        | Reference|
+| #1        | mutex    | Reference|
+| #2        | this$0   | Reference|
+
+
+ClassName: java/io/FilterOutputStream CTI: 22
+
+Number static fields: 0
+Offset to bitmap: 114
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | out      | Reference|
+
+
+ClassName: java/util/Collections$SingletonMap CTI: 23
+
+Number static fields: 2
+Offset to bitmap: 115
+BitMap in hex: F8
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | keys     | Reference|
+| #1        | values   | Reference|
+| #2        | k        | Reference|
+| #3        | v        | Reference|
+| #4        | entries  | Reference|
+
+
+ClassName: java/util/AbstractList$2 CTI: 24
+
+Number static fields: 0
+Offset to bitmap: 116
+BitMap in hex: 04
+Finalizer empty: true
+BitMap useless: false
+_____________________________________
+| Numeration| FieldName   | Type     |
+|====================================|
+| #0        | knownMod    | Primitive|
+| #1        | position    | Primitive|
+| #2        | lastReturned| Primitive|
+| #3        | size        | Primitive|
+| #4        | val$index   | Primitive|
+| #5        | this$0      | Reference|
+
+
+ClassName: java/io/NullPrintStream CTI: 25
+
+Number static fields: 0
+Offset to bitmap: 117
+BitMap in hex: 90
+Finalizer empty: true
+BitMap useless: false
+_______________________________________
+| Numeration| FieldName     | Type     |
+|======================================|
+| #0        | out           | Reference|
+| #1        | error_occurred| Primitive|
+| #2        | auto_flush    | Primitive|
+| #3        | pw            | Reference|
+| #4        | closed        | Primitive|
+
+
+ClassName: java/util/Collections$SingletonSet CTI: 26
+
+Number static fields: 2
+Offset to bitmap: 118
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | element  | Reference|
+
+
+ClassName: gnu/regexp/CharIndexedStringBuffer CTI: 27
+
+Number static fields: 2
+Offset to bitmap: 119
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | s        | Reference|
+| #1        | anchor   | Primitive|
+
+
+ClassName: java/io/ObjectInputStream CTI: 28
+
+Number static fields: 0
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: java/io/File CTI: 29
+
+Number static fields: 4
+Offset to bitmap: 120
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | fileName | Reference|
+
+
+ClassName: java/lang/Thread CTI: 30
+
+Number static fields: 0
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: java/lang/InternalError CTI: 31
+
+Number static fields: 2
+Offset to bitmap: 121
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: gnu/regexp/CharIndexedCharArray CTI: 32
+
+Number static fields: 2
+Offset to bitmap: 122
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | s        | Reference|
+| #1        | anchor   | Primitive|
+
+
+ClassName: java/lang/StrictMath CTI: 33
+
+Number static fields: 221
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: java/util/Collections$SingletonMap$1 CTI: 34
+
+Number static fields: 0
+Offset to bitmap: 123
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | key      | Reference|
+| #1        | value    | Reference|
+| #2        | this$0   | Reference|
+
+
+ClassName: de/amidar/HashMapInt CTI: 35
+
+Number static fields: 2
+Offset to bitmap: 124
+BitMap in hex: 20
+Finalizer empty: true
+BitMap useless: false
+___________________________________
+| Numeration| FieldName | Type     |
+|==================================|
+| #0        | threshold | Primitive|
+| #1        | loadFactor| Primitive|
+| #2        | buckets   | Reference|
+| #3        | modCount  | Primitive|
+| #4        | size      | Primitive|
+
+
+ClassName: gnu/regexp/REException CTI: 36
+
+Number static fields: 15
+Offset to bitmap: 125
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+| #3        | type         | Primitive|
+| #4        | pos          | Primitive|
+
+
+ClassName: java/io/BufferedInputStream CTI: 37
+
+Number static fields: 1
+Offset to bitmap: 126
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+___________________________________
+| Numeration| FieldName | Type     |
+|==================================|
+| #0        | in        | Reference|
+| #1        | buf       | Reference|
+| #2        | count     | Primitive|
+| #3        | pos       | Primitive|
+| #4        | markpos   | Primitive|
+| #5        | marklimit | Primitive|
+| #6        | bufferSize| Primitive|
+
+
+ClassName: java/util/NoSuchElementException CTI: 38
+
+Number static fields: 2
+Offset to bitmap: 127
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: java/lang/ArrayIndexOutOfBoundsException CTI: 39
+
+Number static fields: 2
+Offset to bitmap: 128
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: gnu/regexp/RETokenAny CTI: 40
+
+Number static fields: 2
+Offset to bitmap: 129
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | next     | Reference|
+| #1        | uncle    | Reference|
+| #2        | subIndex | Primitive|
+| #3        | newline  | Primitive|
+| #4        | matchNull| Primitive|
+
+
+ClassName: java/lang/IllegalStateException CTI: 41
+
+Number static fields: 2
+Offset to bitmap: 130
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: java/util/Collections$1 CTI: 42
+
+Number static fields: 0
+Offset to bitmap: 131
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | val$i    | Reference|
+
+
+ClassName: java/util/Collections$SynchronizedMap$1SynchronizedMapEntry CTI: 43
+
+Number static fields: 0
+Offset to bitmap: 132
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | e        | Reference|
+| #1        | this$0   | Reference|
+
+
+ClassName: java/lang/Double CTI: 44
+
+Number static fields: 13
+Offset to bitmap: 0
+BitMap in hex: 00
+Finalizer empty: true
+BitMap useless: true
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | value    | Primitive|
+| #1        | value    | Primitive|
+
+
+ClassName: java/util/Collections$SynchronizedMap$1$1 CTI: 45
+
+Number static fields: 0
+Offset to bitmap: 133
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | mutex    | Reference|
+| #1        | i        | Reference|
+| #2        | this$1   | Reference|
+
+
+ClassName: java/util/AbstractMap CTI: 46
+
+Number static fields: 3
+Offset to bitmap: 134
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | keys     | Reference|
+| #1        | values   | Reference|
+
+
+ClassName: java/lang/System CTI: 47
+
+Number static fields: 4
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: de/amidar/HashMapIdentity CTI: 48
+
+Number static fields: 2
+Offset to bitmap: 135
+BitMap in hex: 20
+Finalizer empty: true
+BitMap useless: false
+___________________________________
+| Numeration| FieldName | Type     |
+|==================================|
+| #0        | threshold | Primitive|
+| #1        | loadFactor| Primitive|
+| #2        | buckets   | Reference|
+| #3        | modCount  | Primitive|
+| #4        | size      | Primitive|
+
+
+ClassName: de/amidar/BitOperations CTI: 49
+
+Number static fields: 0
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: java/lang/UnsupportedOperationException CTI: 50
+
+Number static fields: 2
+Offset to bitmap: 136
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: gnu/regexp/CharUnit CTI: 51
+
+Number static fields: 2
+Offset to bitmap: 0
+BitMap in hex: 00
+Finalizer empty: true
+BitMap useless: true
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | ch       | Primitive|
+| #1        | bk       | Primitive|
+
+
+ClassName: java/lang/Boolean CTI: 52
+
+Number static fields: 5
+Offset to bitmap: 0
+BitMap in hex: 00
+Finalizer empty: true
+BitMap useless: true
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | value    | Primitive|
+
+
+ClassName: java/util/regex/Matcher CTI: 53
+
+Number static fields: 0
+Offset to bitmap: 137
+BitMap in hex: C8
+Finalizer empty: true
+BitMap useless: false
+_______________________________________
+| Numeration| FieldName     | Type     |
+|======================================|
+| #0        | pattern       | Reference|
+| #1        | input         | Reference|
+| #2        | position      | Primitive|
+| #3        | appendPosition| Primitive|
+| #4        | match         | Reference|
+
+
+ClassName: java/util/Collections$SingletonList CTI: 54
+
+Number static fields: 2
+Offset to bitmap: 138
+BitMap in hex: 40
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | modCount | Primitive|
+| #1        | element  | Reference|
+
+
+ClassName: gnu/regexp/RETokenRepeated CTI: 55
+
+Number static fields: 2
+Offset to bitmap: 139
+BitMap in hex: D0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | next     | Reference|
+| #1        | uncle    | Reference|
+| #2        | subIndex | Primitive|
+| #3        | token    | Reference|
+| #4        | min      | Primitive|
+| #5        | max      | Primitive|
+| #6        | stingy   | Primitive|
+
+
+ClassName: gnu/regexp/RETokenBackRef CTI: 56
+
+Number static fields: 2
+Offset to bitmap: 140
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | next     | Reference|
+| #1        | uncle    | Reference|
+| #2        | subIndex | Primitive|
+| #3        | num      | Primitive|
+| #4        | insens   | Primitive|
+
+
+ClassName: java/lang/StackOverflowError CTI: 57
+
+Number static fields: 2
+Offset to bitmap: 141
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: java/util/Collections$EmptySet CTI: 58
+
+Number static fields: 2
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: java/util/HashMap$HashEntry CTI: 59
+
+Number static fields: 0
+Offset to bitmap: 142
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | key      | Reference|
+| #1        | value    | Reference|
+| #2        | next     | Reference|
+
+
+ClassName: de/amidar/HashMapInt$HashEntryInt CTI: 60
+
+Number static fields: 0
+Offset to bitmap: 143
+BitMap in hex: 60
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | key      | Primitive|
+| #1        | value    | Reference|
+| #2        | next     | Reference|
+
+
+ClassName: gnu/regexp/REMatchEnumeration CTI: 61
+
+Number static fields: 5
+Offset to bitmap: 144
+BitMap in hex: 70
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | more     | Primitive|
+| #1        | match    | Reference|
+| #2        | expr     | Reference|
+| #3        | input    | Reference|
+| #4        | eflags   | Primitive|
+| #5        | index    | Primitive|
+
+
+ClassName: gnu/regexp/RETokenEndSub CTI: 62
+
+Number static fields: 2
+Offset to bitmap: 145
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | next     | Reference|
+| #1        | uncle    | Reference|
+| #2        | subIndex | Primitive|
+
+
+ClassName: java/lang/NullPointerException CTI: 63
+
+Number static fields: 2
+Offset to bitmap: 146
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: java/io/IOException CTI: 64
+
+Number static fields: 2
+Offset to bitmap: 147
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: gnu/regexp/IntPair CTI: 65
+
+Number static fields: 2
+Offset to bitmap: 0
+BitMap in hex: 00
+Finalizer empty: true
+BitMap useless: true
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | first    | Primitive|
+| #1        | second   | Primitive|
+
+
+ClassName: java/lang/StringIndexOutOfBoundsException CTI: 66
+
+Number static fields: 2
+Offset to bitmap: 148
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: java/util/Collections$UnmodifiableMap$UnmodifiableEntrySet$1 CTI: 67
+
+Number static fields: 0
+Offset to bitmap: 149
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | i        | Reference|
+| #1        | this$0   | Reference|
+
+
+ClassName: java/util/Collections$SynchronizedCollection CTI: 68
+
+Number static fields: 2
+Offset to bitmap: 150
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | c        | Reference|
+| #1        | mutex    | Reference|
+
+
+ClassName: java/lang/Number CTI: 69
+
+Number static fields: 3
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: java/lang/VirtualMachineError CTI: 70
+
+Number static fields: 2
+Offset to bitmap: 151
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: de/amidar/scheduler/Monitor CTI: 71
+
+Number static fields: 0
+Offset to bitmap: 152
+BitMap in hex: B0
+Finalizer empty: true
+BitMap useless: false
+_______________________________________
+| Numeration| FieldName     | Type     |
+|======================================|
+| #0        | ownerThread   | Reference|
+| #1        | lockCount     | Primitive|
+| #2        | waitingThreads| Reference|
+| #3        | blockedThreads| Reference|
+
+
+ClassName: gnu/regexp/REMatch CTI: 72
+
+Number static fields: 2
+Offset to bitmap: 153
+BitMap in hex: 87
+Finalizer empty: true
+BitMap useless: false
+____________________________________
+| Numeration| FieldName  | Type     |
+|===================================|
+| #0        | matchedText| Reference|
+| #1        | eflags     | Primitive|
+| #2        | offset     | Primitive|
+| #3        | anchor     | Primitive|
+| #4        | index      | Primitive|
+| #5        | start      | Reference|
+| #6        | end        | Reference|
+| #7        | next       | Reference|
+
+
+ClassName: java/lang/IndexOutOfBoundsException CTI: 73
+
+Number static fields: 2
+Offset to bitmap: 154
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: java/lang/IllegalArgumentException CTI: 74
+
+Number static fields: 2
+Offset to bitmap: 155
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: java/util/Collections$CopiesList CTI: 75
+
+Number static fields: 2
+Offset to bitmap: 156
+BitMap in hex: 20
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | modCount | Primitive|
+| #1        | n        | Primitive|
+| #2        | element  | Reference|
+
+
+ClassName: java/util/Collections$UnmodifiableList CTI: 76
+
+Number static fields: 2
+Offset to bitmap: 157
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | c        | Reference|
+| #1        | list     | Reference|
+
+
+ClassName: java/lang/Long CTI: 77
+
+Number static fields: 7
+Offset to bitmap: 0
+BitMap in hex: 00
+Finalizer empty: true
+BitMap useless: true
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | value    | Primitive|
+| #1        | value    | Primitive|
+
+
+ClassName: java/lang/Character$UnicodeBlock CTI: 78
+
+Number static fields: 86
+Offset to bitmap: 158
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | name     | Reference|
+| #1        | start    | Primitive|
+| #2        | end      | Primitive|
+
+
+ClassName: java/io/OutputStream CTI: 79
+
+Number static fields: 0
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: java/lang/IncompatibleClassChangeError CTI: 80
+
+Number static fields: 2
+Offset to bitmap: 159
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: java/util/Collections$SynchronizedIterator CTI: 81
+
+Number static fields: 0
+Offset to bitmap: 160
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | mutex    | Reference|
+| #1        | i        | Reference|
+
+
+ClassName: java/lang/NegativeArraySizeException CTI: 82
+
+Number static fields: 2
+Offset to bitmap: 161
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: java/util/AbstractList CTI: 83
+
+Number static fields: 0
+Offset to bitmap: 0
+BitMap in hex: 00
+Finalizer empty: true
+BitMap useless: true
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | modCount | Primitive|
+
+
+ClassName: java/lang/StackTraceElement CTI: 84
+
+Number static fields: 2
+Offset to bitmap: 162
+BitMap in hex: B0
+Finalizer empty: true
+BitMap useless: false
+_______________________________________
+| Numeration| FieldName     | Type     |
+|======================================|
+| #0        | fileName      | Reference|
+| #1        | lineNumber    | Primitive|
+| #2        | declaringClass| Reference|
+| #3        | methodName    | Reference|
+| #4        | isNative      | Primitive|
+
+
+ClassName: java/util/Random CTI: 85
+
+Number static fields: 2
+Offset to bitmap: 0
+BitMap in hex: 00
+Finalizer empty: true
+BitMap useless: true
+_____________________________________________
+| Numeration| FieldName           | Type     |
+|============================================|
+| #0        | haveNextNextGaussian| Primitive|
+| #1        | nextNextGaussian    | Primitive|
+| #2        | nextNextGaussian    | Primitive|
+| #3        | seed                | Primitive|
+| #4        | seed                | Primitive|
+
+
+ClassName: java/lang/Error CTI: 86
+
+Number static fields: 2
+Offset to bitmap: 163
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: java/util/ConcurrentModificationException CTI: 87
+
+Number static fields: 2
+Offset to bitmap: 164
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: gnu/regexp/RETokenWordBoundary CTI: 88
+
+Number static fields: 4
+Offset to bitmap: 165
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | next     | Reference|
+| #1        | uncle    | Reference|
+| #2        | subIndex | Primitive|
+| #3        | negated  | Primitive|
+| #4        | where    | Primitive|
+
+
+ClassName: java/io/Writer CTI: 89
+
+Number static fields: 0
+Offset to bitmap: 166
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | lock     | Reference|
+
+
+ClassName: java/util/ArrayList CTI: 90
+
+Number static fields: 3
+Offset to bitmap: 167
+BitMap in hex: 20
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | modCount | Primitive|
+| #1        | size     | Primitive|
+| #2        | data     | Reference|
+
+
+ClassName: java/io/ObjectOutputStream CTI: 91
+
+Number static fields: 0
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: gnu/regexp/RETokenRange CTI: 92
+
+Number static fields: 2
+Offset to bitmap: 168
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | next     | Reference|
+| #1        | uncle    | Reference|
+| #2        | subIndex | Primitive|
+| #3        | lo       | Primitive|
+| #4        | hi       | Primitive|
+| #5        | insens   | Primitive|
+
+
+ClassName: de/amidar/HashMapIdentity$HashEntryIdentity CTI: 93
+
+Number static fields: 0
+Offset to bitmap: 169
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | key      | Reference|
+| #1        | value    | Reference|
+| #2        | next     | Reference|
+
+
+ClassName: gnu/regexp/REToken CTI: 94
+
+Number static fields: 2
+Offset to bitmap: 170
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | next     | Reference|
+| #1        | uncle    | Reference|
+| #2        | subIndex | Primitive|
+
+
+ClassName: java/util/Collections$UnmodifiableMap$UnmodifiableEntrySet CTI: 95
+
+Number static fields: 2
+Offset to bitmap: 171
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | c        | Reference|
+
+
+ClassName: java/util/regex/Pattern CTI: 96
+
+Number static fields: 9
+Offset to bitmap: 172
+BitMap in hex: A0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | regex    | Reference|
+| #1        | flags    | Primitive|
+| #2        | re       | Reference|
+
+
+ClassName: java/util/Collections$UnmodifiableMap$UnmodifiableEntrySet$1$1 CTI: 97
+
+Number static fields: 0
+Offset to bitmap: 173
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | val$e    | Reference|
+| #1        | this$1   | Reference|
+
+
+ClassName: java/lang/Throwable CTI: 98
+
+Number static fields: 2
+Offset to bitmap: 174
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: java/util/AbstractMap$BasicMapEntry CTI: 99
+
+Number static fields: 0
+Offset to bitmap: 175
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | key      | Reference|
+| #1        | value    | Reference|
+
+
+ClassName: java/io/UnsupportedEncodingException CTI: 100
+
+Number static fields: 2
+Offset to bitmap: 176
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: java/util/AbstractCollection CTI: 101
+
+Number static fields: 0
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: java/util/AbstractMap$1$1 CTI: 102
+
+Number static fields: 0
+Offset to bitmap: 177
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+_____________________________________
+| Numeration| FieldName   | Type     |
+|====================================|
+| #0        | map_iterator| Reference|
+| #1        | this$1      | Reference|
+
+
+ClassName: java/util/Collections$UnmodifiableCollection CTI: 103
+
+Number static fields: 2
+Offset to bitmap: 178
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | c        | Reference|
+
+
+ClassName: java/util/Locale CTI: 104
+
+Number static fields: 2
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: gps/test/AcquisitionTest CTI: 105
+
+Number static fields: 0
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: java/lang/Exception CTI: 106
+
+Number static fields: 2
+Offset to bitmap: 179
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: de/amidar/scheduler/Scheduler CTI: 107
+
+Number static fields: 1
+Offset to bitmap: 180
+BitMap in hex: BC
+Finalizer empty: true
+BitMap useless: false
+____________________________________
+| Numeration| FieldName  | Type     |
+|===================================|
+| #0        | frameStack | Reference|
+| #1        | wrapperAmti| Primitive|
+| #2        | state      | Reference|
+| #3        | threads    | Reference|
+| #4        | freeThreads| Reference|
+| #5        | monitors   | Reference|
+
+
+ClassName: java/util/HashMap$HashIterator CTI: 108
+
+Number static fields: 0
+Offset to bitmap: 181
+BitMap in hex: 0E
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | type     | Primitive|
+| #1        | knownMod | Primitive|
+| #2        | count    | Primitive|
+| #3        | idx      | Primitive|
+| #4        | last     | Reference|
+| #5        | next     | Reference|
+| #6        | this$0   | Reference|
+
+
+ClassName: gnu/regexp/RESyntax CTI: 109
+
+Number static fields: 47
+Offset to bitmap: 182
+BitMap in hex: A0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | bits         | Reference|
+| #1        | isFinal      | Primitive|
+| #2        | lineSeparator| Reference|
+
+
+ClassName: java/util/regex/PatternSyntaxException CTI: 110
+
+Number static fields: 2
+Offset to bitmap: 183
+BitMap in hex: F8
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+| #3        | desc         | Reference|
+| #4        | pattern      | Reference|
+| #5        | index        | Primitive|
+
+
+ClassName: gps/acquisition/Acquisition CTI: 111
+
+Number static fields: 0
+Offset to bitmap: 184
+BitMap in hex: 02A0
+Finalizer empty: true
+BitMap useless: false
+__________________________________________
+| Numeration| FieldName        | Type     |
+|=========================================|
+| #0        | nSamples         | Primitive|
+| #1        | samplingFrequency| Primitive|
+| #2        | frequencyStep    | Primitive|
+| #3        | minFrequency     | Primitive|
+| #4        | maxFrequency     | Primitive|
+| #5        | nFrequencies     | Primitive|
+| #6        | frequencies      | Reference|
+| #7        | gamma            | Primitive|
+| #8        | samples          | Reference|
+| #9        | samplesIndex     | Primitive|
+| #10       | codes            | Reference|
+| #11       | codesIndex       | Primitive|
+| #12       | dopplerShift     | Primitive|
+| #13       | codeShift        | Primitive|
+
+
+ClassName: gnu/regexp/RETokenStart CTI: 112
+
+Number static fields: 2
+Offset to bitmap: 186
+BitMap in hex: D0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | next     | Reference|
+| #1        | uncle    | Reference|
+| #2        | subIndex | Primitive|
+| #3        | newline  | Reference|
+
+
+ClassName: java/lang/String$CaseInsensitiveComparator CTI: 113
+
+Number static fields: 2
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: gnu/regexp/RE CTI: 114
+
+Number static fields: 10
+Offset to bitmap: 187
+BitMap in hex: D8
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | next         | Reference|
+| #1        | uncle        | Reference|
+| #2        | subIndex     | Primitive|
+| #3        | firstToken   | Reference|
+| #4        | lastToken    | Reference|
+| #5        | numSubs      | Primitive|
+| #6        | minimumLength| Primitive|
+
+
+ClassName: de/amidar/scheduler/SchedulerThread CTI: 115
+
+Number static fields: 0
+Offset to bitmap: 188
+BitMap in hex: 0800
+Finalizer empty: true
+BitMap useless: false
+_________________________________________
+| Numeration| FieldName       | Type     |
+|========================================|
+| #0        | isReady         | Primitive|
+| #1        | priority        | Primitive|
+| #2        | amti            | Primitive|
+| #3        | pc              | Primitive|
+| #4        | monitorObject   | Reference|
+| #5        | hasWaitTimeout  | Primitive|
+| #6        | waitTimeout_low | Primitive|
+| #7        | waitTimeout_high| Primitive|
+| #8        | isStarted       | Primitive|
+
+
+ClassName: java/lang/NumberFormatException CTI: 116
+
+Number static fields: 2
+Offset to bitmap: 190
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: java/util/BitSet CTI: 117
+
+Number static fields: 3
+Offset to bitmap: 191
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | bits     | Reference|
+
+
+ClassName: java/util/Collections$EmptyMap CTI: 118
+
+Number static fields: 2
+Offset to bitmap: 192
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | keys     | Reference|
+| #1        | values   | Reference|
+
+
+ClassName: java/util/Collections CTI: 119
+
+Number static fields: 6
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: java/util/Collections$SynchronizedMap CTI: 120
+
+Number static fields: 2
+Offset to bitmap: 193
+BitMap in hex: F8
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | m        | Reference|
+| #1        | mutex    | Reference|
+| #2        | entries  | Reference|
+| #3        | keys     | Reference|
+| #4        | values   | Reference|
+
+
+ClassName: java/lang/RuntimeException CTI: 121
+
+Number static fields: 2
+Offset to bitmap: 194
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: java/util/Collections$SynchronizedSet CTI: 122
+
+Number static fields: 2
+Offset to bitmap: 195
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | c        | Reference|
+| #1        | mutex    | Reference|
+
+
+ClassName: java/util/Collections$SynchronizedSortedMap CTI: 123
+
+Number static fields: 2
+Offset to bitmap: 196
+BitMap in hex: FC
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | m        | Reference|
+| #1        | mutex    | Reference|
+| #2        | entries  | Reference|
+| #3        | keys     | Reference|
+| #4        | values   | Reference|
+| #5        | sm       | Reference|
+
+
+ClassName: java/lang/IllegalAccessError CTI: 124
+
+Number static fields: 2
+Offset to bitmap: 197
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: java/util/Collections$EmptyList CTI: 125
+
+Number static fields: 2
+Offset to bitmap: 0
+BitMap in hex: 00
+Finalizer empty: true
+BitMap useless: true
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | modCount | Primitive|
+
+
+ClassName: java/util/AbstractSet CTI: 126
+
+Number static fields: 0
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: java/lang/InterruptedException CTI: 127
+
+Number static fields: 2
+Offset to bitmap: 198
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: java/util/HashMap CTI: 128
+
+Number static fields: 4
+Offset to bitmap: 199
+BitMap in hex: C9
+Finalizer empty: true
+BitMap useless: false
+___________________________________
+| Numeration| FieldName | Type     |
+|==================================|
+| #0        | keys      | Reference|
+| #1        | values    | Reference|
+| #2        | threshold | Primitive|
+| #3        | loadFactor| Primitive|
+| #4        | buckets   | Reference|
+| #5        | modCount  | Primitive|
+| #6        | size      | Primitive|
+| #7        | entries   | Reference|
+
+
+ClassName: java/util/Collections$UnmodifiableSortedSet CTI: 129
+
+Number static fields: 2
+Offset to bitmap: 200
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | c        | Reference|
+| #1        | ss       | Reference|
+
+
+ClassName: java/lang/reflect/Array CTI: 130
+
+Number static fields: 0
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: java/io/FileInputStream CTI: 131
+
+Number static fields: 0
+Offset to bitmap: 201
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | file     | Reference|
+
+
+ClassName: de/amidar/HashMapInt$HashIterator CTI: 132
+
+Number static fields: 0
+Offset to bitmap: 202
+BitMap in hex: 1C
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | knownMod | Primitive|
+| #1        | count    | Primitive|
+| #2        | idx      | Primitive|
+| #3        | last     | Reference|
+| #4        | next     | Reference|
+| #5        | this$0   | Reference|
+
+
+ClassName: java/lang/Float CTI: 133
+
+Number static fields: 8
+Offset to bitmap: 0
+BitMap in hex: 00
+Finalizer empty: true
+BitMap useless: true
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | value    | Primitive|
+
+
+ClassName: java/util/Collections$SynchronizedRandomAccessList CTI: 134
+
+Number static fields: 2
+Offset to bitmap: 203
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | c        | Reference|
+| #1        | mutex    | Reference|
+| #2        | list     | Reference|
+
+
+ClassName: java/util/Collections$UnmodifiableSortedMap CTI: 135
+
+Number static fields: 2
+Offset to bitmap: 204
+BitMap in hex: F8
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | m        | Reference|
+| #1        | entries  | Reference|
+| #2        | keys     | Reference|
+| #3        | values   | Reference|
+| #4        | sm       | Reference|
+
+
+ClassName: java/lang/StringBuffer CTI: 136
+
+Number static fields: 3
+Offset to bitmap: 205
+BitMap in hex: 40
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | count    | Primitive|
+| #1        | value    | Reference|
+| #2        | shared   | Primitive|
+
+
+ClassName: gnu/regexp/RETokenOneOf CTI: 137
+
+Number static fields: 2
+Offset to bitmap: 206
+BitMap in hex: D0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | next     | Reference|
+| #1        | uncle    | Reference|
+| #2        | subIndex | Primitive|
+| #3        | options  | Reference|
+| #4        | negative | Primitive|
+
+
+ClassName: de/amidar/HashMapIdentity$HashIterator CTI: 138
+
+Number static fields: 0
+Offset to bitmap: 207
+BitMap in hex: 1C
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | knownMod | Primitive|
+| #1        | count    | Primitive|
+| #2        | idx      | Primitive|
+| #3        | last     | Reference|
+| #4        | next     | Reference|
+| #5        | this$0   | Reference|
+
+
+ClassName: java/lang/Short CTI: 139
+
+Number static fields: 5
+Offset to bitmap: 0
+BitMap in hex: 00
+Finalizer empty: true
+BitMap useless: true
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | value    | Primitive|
+
+
+ClassName: java/io/InputStream CTI: 140
+
+Number static fields: 0
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: java/util/Collections$SynchronizedListIterator CTI: 141
+
+Number static fields: 0
+Offset to bitmap: 208
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | mutex    | Reference|
+| #1        | i        | Reference|
+| #2        | li       | Reference|
+
+
+ClassName: java/lang/String CTI: 142
+
+Number static fields: 5
+Offset to bitmap: 209
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+_______________________________________
+| Numeration| FieldName     | Type     |
+|======================================|
+| #0        | value         | Reference|
+| #1        | cachedHashCode| Primitive|
+| #2        | count         | Primitive|
+| #3        | offset        | Primitive|
+
+
+ClassName: java/lang/Character CTI: 143
+
+Number static fields: 67
+Offset to bitmap: 0
+BitMap in hex: 00
+Finalizer empty: true
+BitMap useless: true
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | value    | Primitive|
+
+
+ClassName: de/amidar/AmidarSystem CTI: 144
+
+Number static fields: 12
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: java/lang/ClassNotFoundException CTI: 145
+
+Number static fields: 2
+Offset to bitmap: 210
+BitMap in hex: F0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+| #3        | ex           | Reference|
+
+
+ClassName: java/io/PrintWriter CTI: 146
+
+Number static fields: 1
+Offset to bitmap: 211
+BitMap in hex: 90
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | lock     | Reference|
+| #1        | autoflush| Primitive|
+| #2        | error    | Primitive|
+| #3        | out      | Reference|
+
+
+ClassName: java/util/Collections$UnmodifiableMap CTI: 147
+
+Number static fields: 2
+Offset to bitmap: 212
+BitMap in hex: F0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | m        | Reference|
+| #1        | entries  | Reference|
+| #2        | keys     | Reference|
+| #3        | values   | Reference|
+
+
+ClassName: java/io/FilterInputStream CTI: 148
+
+Number static fields: 0
+Offset to bitmap: 213
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | in       | Reference|
+
+
+ClassName: java/util/AbstractList$SubList$1 CTI: 149
+
+Number static fields: 0
+Offset to bitmap: 214
+BitMap in hex: 90
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | i        | Reference|
+| #1        | position | Primitive|
+| #2        | val$index| Primitive|
+| #3        | this$0   | Reference|
+
+
+ClassName: java/util/Collections$UnmodifiableSet CTI: 150
+
+Number static fields: 2
+Offset to bitmap: 215
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | c        | Reference|
+
+
+ClassName: java/util/AbstractMap$2$1 CTI: 151
+
+Number static fields: 0
+Offset to bitmap: 216
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+_____________________________________
+| Numeration| FieldName   | Type     |
+|====================================|
+| #0        | map_iterator| Reference|
+| #1        | this$1      | Reference|
+
+
+ClassName: java/lang/Math CTI: 152
+
+Number static fields: 5
+Offset to bitmap: 0
+BitMap in hex: 
+Finalizer empty: true
+BitMap useless: true
+_____________________________
+| Numeration| FieldName| Type|
+|============================|
+
+
+ClassName: java/lang/Byte CTI: 153
+
+Number static fields: 5
+Offset to bitmap: 0
+BitMap in hex: 00
+Finalizer empty: true
+BitMap useless: true
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | value    | Primitive|
+
+
+ClassName: java/util/Vector$1 CTI: 154
+
+Number static fields: 0
+Offset to bitmap: 217
+BitMap in hex: 40
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | i        | Primitive|
+| #1        | this$0   | Reference|
+
+
+ClassName: java/util/Collections$UnmodifiableIterator CTI: 155
+
+Number static fields: 0
+Offset to bitmap: 218
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | i        | Reference|
+
+
+ClassName: gnu/regexp/CharIndexedString CTI: 156
+
+Number static fields: 2
+Offset to bitmap: 219
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | s        | Reference|
+| #1        | anchor   | Primitive|
+| #2        | len      | Primitive|
+
+
+ClassName: java/util/Collections$SingletonSet$1 CTI: 157
+
+Number static fields: 0
+Offset to bitmap: 220
+BitMap in hex: 40
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | hasNext  | Primitive|
+| #1        | this$0   | Reference|
+
+
+ClassName: java/lang/CloneNotSupportedException CTI: 158
+
+Number static fields: 2
+Offset to bitmap: 221
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: java/util/Collections$UnmodifiableRandomAccessList CTI: 159
+
+Number static fields: 2
+Offset to bitmap: 222
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | c        | Reference|
+| #1        | list     | Reference|
+
+
+ClassName: java/lang/LinkageError CTI: 160
+
+Number static fields: 2
+Offset to bitmap: 223
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+______________________________________
+| Numeration| FieldName    | Type     |
+|=====================================|
+| #0        | detailMessage| Reference|
+| #1        | cause        | Reference|
+| #2        | stackTrace   | Reference|
+
+
+ClassName: gnu/regexp/RETokenChar CTI: 161
+
+Number static fields: 2
+Offset to bitmap: 224
+BitMap in hex: D0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | next     | Reference|
+| #1        | uncle    | Reference|
+| #2        | subIndex | Primitive|
+| #3        | ch       | Reference|
+| #4        | insens   | Primitive|
+
+
+ClassName: java/lang/Class CTI: 162
+
+Number static fields: 2
+Offset to bitmap: 225
+BitMap in hex: C0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | instance | Reference|
+| #1        | className| Reference|
+| #2        | cti      | Primitive|
+
+
+ClassName: java/lang/Character$Subset CTI: 163
+
+Number static fields: 0
+Offset to bitmap: 226
+BitMap in hex: 80
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | name     | Reference|
+
+
+ClassName: java/util/Collections$SynchronizedSortedSet CTI: 164
+
+Number static fields: 2
+Offset to bitmap: 227
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | c        | Reference|
+| #1        | mutex    | Reference|
+| #2        | ss       | Reference|
+
+
+ClassName: de/amidar/FrameStack CTI: 165
+
+Number static fields: 5
+Offset to bitmap: 0
+BitMap in hex: 0000
+Finalizer empty: true
+BitMap useless: true
+_____________________________________________
+| Numeration| FieldName           | Type     |
+|============================================|
+| #0        | threadSlots         | Primitive|
+| #1        | wordsPerThread      | Primitive|
+| #2        | localsForInitializer| Primitive|
+| #3        | unused3             | Primitive|
+| #4        | threadSelect        | Primitive|
+| #5        | localsPointer       | Primitive|
+| #6        | stackPointer        | Primitive|
+| #7        | callercontextPointer| Primitive|
+| #8        | maxPointer          | Primitive|
+| #9        | overflow            | Primitive|
+| #10       | unused10            | Primitive|
+| #11       | unused11            | Primitive|
+| #12       | stackAddressSelect  | Primitive|
+| #13       | stackData           | Primitive|
+| #14       | stackMeta           | Primitive|
+
+
+ClassName: java/util/Collections$SynchronizedList CTI: 166
+
+Number static fields: 2
+Offset to bitmap: 228
+BitMap in hex: E0
+Finalizer empty: true
+BitMap useless: false
+__________________________________
+| Numeration| FieldName| Type     |
+|=================================|
+| #0        | c        | Reference|
+| #1        | mutex    | Reference|
+| #2        | list     | Reference|
+
+
+SPECIAL CTIS
+
+_______________________________________________
+| Name                          | CTI| Existent|
+|==============================================|
+| [Z                            | 187| y       |
+| [C                            | 188| y       |
+| [F                            | 189| y       |
+| [D                            | 192| y       |
+| [B                            | 193| y       |
+| [S                            | 194| y       |
+| [I                            | 195| y       |
+| [J                            | 196| y       |
+| java/lang/ref/SoftReference   | 167| n       |
+| java/lang/ref/WeakReference   | 167| n       |
+| java/lang/ref/PhantomReference| 167| n       |
+
+
+GCInfo Format
+Size of GCInfo format: 600 Byte
+
+GCInfoHeader
+
+00000258
+00000000
+
+SpecialCTIs 
+00A700A7
+00A70000
+00BB00BC
+00BD00C0
+00C100C2
+00C300C4
+
+CTI to Bitmaps Offset
+C0008060
+8061C000
+80628063
+8064C000
+80658066
+80678068
+8069806A
+806B806C
+806D806E
+806FC000
+80708071
+80728073
+80748075
+80768077
+C0008078
+C0008079
+807AC000
+807B807C
+807D807E
+807F8080
+80818082
+80838084
+C0008085
+8086C000
+8087C000
+8088C000
+C0008089
+808A808B
+808C808D
+C000808E
+808F8090
+80918092
+8093C000
+80948095
+8096C000
+80978098
+8099809A
+809B809C
+809DC000
+809EC000
+809F80A0
+80A1C000
+80A2C000
+80A380A4
+80A580A6
+80A7C000
+80A880A9
+80AA80AB
+80AC80AD
+80AE80AF
+80B0C000
+80B180B2
+C000C000
+80B380B4
+80B580B6
+80B780B8
+80BAC000
+80BB80BC
+80BE80BF
+80C0C000
+80C180C2
+80C380C4
+80C5C000
+C00080C6
+80C780C8
+C00080C9
+80CAC000
+80CB80CC
+80CD80CE
+80CFC000
+C00080D0
+80D1C000
+C00080D2
+80D380D4
+80D580D6
+80D780D8
+C000C000
+80D980DA
+80DB80DC
+80DD80DE
+80DF80E0
+80E180E2
+80E3C000
+80E40000
+
+BitMaps
+09E00000
+04028200
+00000060
+00000000
+00000000
+00000000
+00000000
+00000000
+00000000
+00000047
+80700000
+0040000F
+FFFFFFFF
+FFFFFFFF
+FFFFE000
+00000001
+30000003
+FFFE0100
+01F00000
+010004E0
+40000000
+00000FE2
+00084020
+06005FF0
+8080E040
+8080C0D0
+40C08040
+409084C0
+08E080F8
+04908080
+80E080E0
+20E0C0E0
+E0C0E080
+C0E0C020
+E0C840D0
+C0E0E060
+70C0E0E0
+E0C0C0E0
+B087E0E0
+20C080E0
+C0E0B0E0
+E0C08020
+C0E0C080
+A0C0E0C0
+E0C080E0
+BC0EA0F8
+02A0D0D8
+0800E080
+C0F8E0C0
+FCE0E0C9
+C0801CE0
+F840D01C
+E080F090
+F0809080
+C0408080
+40E0C0E0
+D0C080E0
+E0000000

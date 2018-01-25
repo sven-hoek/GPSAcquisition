@@ -1,0 +1,39 @@
+{
+"parameter" : 
+	{
+	"UNROLL" : [4],
+	    "PREFETCHING"			: ["NONE", "LINEAR", "UNROLL"],
+	},
+"application" :
+	[
+		"de/amidar/cacheBench/adpcm/ADPCMencode_test",
+		"de/amidar/cacheBench/adpcm/ADPCMdecode_test",
+	
+        "de/amidar/cacheBench/crypto/AES_test",                    
+        "de/amidar/cacheBench/crypto/DES_test",
+        "de/amidar/cacheBench/crypto/Blowfish_test",
+        "de/amidar/cacheBench/crypto/IDEA_test",
+        "de/amidar/cacheBench/crypto/RC6_test",
+        "de/amidar/cacheBench/crypto/Serpent_test",
+        "de/amidar/cacheBench/crypto/Skipjack_test",
+        "de/amidar/cacheBench/crypto/Twofish_test",
+        "de/amidar/cacheBench/crypto/XTEA_test",
+        
+        "de/amidar/cacheBench/digests/BLAKE256_test",
+        "de/amidar/cacheBench/digests/CubeHash512_test",
+        "de/amidar/cacheBench/digests/ECOH256_test",
+        "de/amidar/cacheBench/digests/MD5_test",
+        "de/amidar/cacheBench/digests/RadioGatun32_test",
+        "de/amidar/cacheBench/digests/SHA1_test",
+        "de/amidar/cacheBench/digests/SHA256_test",
+        "de/amidar/cacheBench/digests/SIMD512_test",
+        
+        "de/amidar/cacheBench/filter/ContrastFilter_test",
+        "de/amidar/cacheBench/filter/GrayscaleFilter_test",
+        "de/amidar/cacheBench/filter/SobelFilter_test",
+        "de/amidar/cacheBench/filter/SwizzleFilter_test",
+        
+        "de/amidar/cacheBench/jpeg/Jpeg_test"
+	]
+
+}

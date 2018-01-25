@@ -1,0 +1,77 @@
+rom(rom_modules)
+::= <<
+`ifndef INCLUDE_CONSTBUF
+`define INCLUDE_CONSTBUF
+
+§rom_modules§
+
+`endif // INCLUDE_CONSTBUF
+>>
+
+rom_module(
+	declaration, data_width, rom_size, wide_width, rom_addr_width, uses_wide, uses_array
+)
+::= <<
+§declaration§
+
+(* ram_style = "block" *) reg [§data_width§-1:0] mem [§rom_size§-1:0];
+reg [§data_width§-1:0] mem_out;
+wire [§rom_addr_width§-1:0] initial_read_addr;
+
+§if(uses_wide)§
+reg [§wide_width§-1:0] reads_remaining; 
+reg [§rom_addr_width§-1:0] next_read_addr;
+§endif§
+
+// Initial address calculation
+// When reading from an array in this memory, treat RD_OFFSET as the array index.
+// Otherwise: add RD_ADDR_I (representing the base address, index into mem (see above), not a byte address) 
+//			  and RD_OFFSET_I (which is now the index to mem (see above), not a byte address)
+//
+// Note: as you can see it is not possible to combine RD_WIDE_I with RD_ARRAY_I in subsequent reads
+// where the array index (RD_OFFSET_I) is incremented one at a time. This problematic due to using the statically
+// known "data_width" instead of RD_WIDE_I to determine the actual offset.
+// It is implemented this way, as this seems to be how the operator implementation works. Nevertheless,
+// it is possible to reproduce the behaviour by using non indexed offset together with RD_WIDE_I, while incrementing
+// the given RD_OFFSET_I by the value of RD_WIDE_I elsewhere.
+assign initial_read_addr = 
+	§if(uses_array)§ RD_ARRAY_I ? RD_ADDR_I + RD_OFFSET_I * (§data_width§ / 8) : §endif§ RD_ADDR_I + RD_OFFSET_I;
+
+// Data output
+assign RD_DATA_O = mem_out;
+
+always @(posedge CLK_I) begin
+	if (RST_I) begin
+		mem_out <= 0;
+		§if(uses_wide)§
+		next_read_addr <= 0;
+		reads_remaining <= 0; §endif§
+	end else begin
+		if (WR_EN_I)
+			mem[WR_ADDR_I] <= WR_DATA_I;
+
+		if (RD_EN_I) begin
+			§if(uses_wide)§
+			if (reads_remaining == 0) begin
+				// Start a new read process
+				next_read_addr <= initial_read_addr + 1;
+				reads_remaining <= RD_WIDE_I;
+				mem_out <= mem[initial_read_addr];
+			end else begin
+				// Continue a already active read process
+				next_read_addr <= next_read_addr + 1;
+				reads_remaining <= reads_remaining - 1;
+				mem_out <= mem[next_read_addr];
+			end 
+			§else§
+			mem_out <= mem[initial_read_addr];
+			§endif§
+		end
+	end
+end
+
+endmodule
+
+>>
+
+

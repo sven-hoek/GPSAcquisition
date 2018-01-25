@@ -1,0 +1,2664 @@
+\documentclass[pstricks,border=12pt]{standalone}
+ \usepackage{pstricks-add}
+\usepackage{subscript}
+\usepackage{pst-node}
+\usepackage{pstricks}
+\newrgbcolor{lightgreen}{0.89 1 0.78}
+\newrgbcolor{lightblue}{0.67 0.86 1}
+\newrgbcolor{lightred}{1 0.86 0.67}
+\begin{document}
+\sffamily
+\begin{pspicture}[showgrid=false](-10.0,0)(104.0,137.0)
+\psframe[linewidth = 1.1pt](3.2,134.2)(7.8,134.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,130.2)(7.8,132.79999999999998)
+\rput[lb](3.3000000000000003,132.36666666666665){}
+\rput[lb](3.3000000000000003,131.9333333333333){}
+\rput[lb](3.3000000000000003,131.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](8.2,125.2)(12.8,130.2)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](8.2,134.2)(12.799999999999999,134.79999999999998)
+\rput(10.5,134.5){\large Out : 257 32:CONST:1\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](8.2,130.2)(12.799999999999999,132.79999999999998)
+\rput[lb](8.299999999999999,132.36666666666665){In0 : PE1.0 10:LOAD:0(ref}
+\rput[lb](8.299999999999999,131.9333333333333){In1 : PE1.258 32:CONST:2}
+\rput[lb](8.299999999999999,131.5){}
+\rput(10.5,130.85){\large 11:DMA-LOAD\normalsize}
+\psline[linewidth=3pt]{->}(10.5,134.0)(30.5,133.0)\psframe[linewidth = 1.1pt](13.2,134.2)(17.799999999999997,134.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,130.2)(17.799999999999997,132.79999999999998)
+\rput[lb](13.299999999999999,132.36666666666665){}
+\rput[lb](13.299999999999999,131.9333333333333){}
+\rput[lb](13.299999999999999,131.5){}
+\psframe[linewidth = 1.1pt](18.2,134.2)(22.799999999999997,134.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,130.2)(22.799999999999997,132.79999999999998)
+\rput[lb](18.3,132.36666666666665){}
+\rput[lb](18.3,131.9333333333333){}
+\rput[lb](18.3,131.5){}
+\psframe[linewidth = 1.1pt](23.2,134.2)(27.799999999999997,134.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,130.2)(27.799999999999997,132.79999999999998)
+\rput[lb](23.3,132.36666666666665){}
+\rput[lb](23.3,131.9333333333333){}
+\rput[lb](23.3,131.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](28.2,134.2)(32.8,134.79999999999998)
+\rput(30.5,134.5){\large Out : 1 9:LOAD:2\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](28.2,130.2)(32.8,132.79999999999998)
+\rput[lb](28.3,132.36666666666665){In0 : PE5.1 9:LOAD:2}
+\rput[lb](28.3,131.9333333333333){In1 : PE1.257 32:CONST:1}
+\rput[lb](28.3,131.5){}
+\rput(30.5,130.85){\large 32:IADD\normalsize$\rightarrow$ 0}
+\psline[linewidth=3pt]{->}(30.5,134.0)(35.5,133.0)\psframe[linewidth = 1.1pt](33.2,134.2)(37.800000000000004,134.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](33.2,130.2)(37.800000000000004,132.79999999999998)
+\rput[lb](33.300000000000004,132.36666666666665){}
+\rput[lb](33.300000000000004,131.9333333333333){}
+\rput[lb](33.300000000000004,131.5){}
+\rput(35.5,130.85){\large C9:LOAD:2\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt](38.2,134.2)(42.800000000000004,134.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](38.2,130.2)(42.800000000000004,132.79999999999998)
+\rput[lb](38.300000000000004,132.36666666666665){}
+\rput[lb](38.300000000000004,131.9333333333333){}
+\rput[lb](38.300000000000004,131.5){}
+\psframe[linewidth = 1.1pt](43.2,134.2)(47.800000000000004,134.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,130.2)(47.800000000000004,132.79999999999998)
+\rput[lb](43.300000000000004,132.36666666666665){}
+\rput[lb](43.300000000000004,131.9333333333333){}
+\rput[lb](43.300000000000004,131.5){}
+\psframe[linewidth = 1.1pt](48.2,134.2)(52.800000000000004,134.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,130.2)(52.800000000000004,132.79999999999998)
+\rput[lb](48.300000000000004,132.36666666666665){}
+\rput[lb](48.300000000000004,131.9333333333333){}
+\rput[lb](48.300000000000004,131.5){}
+\psframe[linewidth = 1.1pt](53.2,134.2)(57.800000000000004,134.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](53.2,130.2)(57.800000000000004,132.79999999999998)
+\rput[lb](53.300000000000004,132.36666666666665){}
+\rput[lb](53.300000000000004,131.9333333333333){}
+\rput[lb](53.300000000000004,131.5){}
+\psframe[linewidth = 1.1pt](58.2,134.2)(62.800000000000004,134.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,130.2)(62.800000000000004,132.79999999999998)
+\rput[lb](58.300000000000004,132.36666666666665){}
+\rput[lb](58.300000000000004,131.9333333333333){}
+\rput[lb](58.300000000000004,131.5){}
+\psframe[linewidth = 1.1pt](63.2,134.2)(67.8,134.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,130.2)(67.8,132.79999999999998)
+\rput[lb](63.300000000000004,132.36666666666665){}
+\rput[lb](63.300000000000004,131.9333333333333){}
+\rput[lb](63.300000000000004,131.5){}
+\psframe[linewidth = 1.1pt](68.2,134.2)(72.8,134.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,130.2)(72.8,132.79999999999998)
+\rput[lb](68.3,132.36666666666665){}
+\rput[lb](68.3,131.9333333333333){}
+\rput[lb](68.3,131.5){}
+\psframe[linewidth = 1.1pt](73.2,134.2)(77.8,134.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](73.2,130.2)(77.8,132.79999999999998)
+\rput[lb](73.3,132.36666666666665){}
+\rput[lb](73.3,131.9333333333333){}
+\rput[lb](73.3,131.5){}
+\psframe[linewidth = 1.1pt](78.2,134.2)(82.8,134.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,130.2)(82.8,132.79999999999998)
+\rput[lb](78.3,132.36666666666665){}
+\rput[lb](78.3,131.9333333333333){}
+\rput[lb](78.3,131.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,130.2)(87.8,130.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,132.2)(87.8,134.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,130.2)(92.8,130.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,132.2)(92.8,134.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,130.2)(97.8,130.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,132.2)(97.8,134.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,130.2)(102.8,130.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,132.2)(102.8,134.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,130.2)(2.8,134.8)
+\rput(1.5,132.5){\large0\normalsize}
+\psframe[linewidth = 1.1pt](3.2,129.2)(7.8,129.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,125.2)(7.8,127.8)
+\rput[lb](3.3000000000000003,127.36666666666667){}
+\rput[lb](3.3000000000000003,126.93333333333334){}
+\rput[lb](3.3000000000000003,126.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](8.2,129.2)(12.799999999999999,129.79999999999998)
+\rput(10.5,129.5){\large Out : 258 32:CONST:2\normalsize$\rightarrow$ 1}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](8.2,125.2)(12.799999999999999,127.8)
+\rput[lb](8.299999999999999,127.36666666666667){}
+\rput[lb](8.299999999999999,126.93333333333334){}
+\rput[lb](8.299999999999999,126.5){}
+\rput(10.5,125.85000000000001){\large 11:DMA-LOAD\normalsize$\rightarrow$ 1}
+\psline[linewidth=3pt]{->}(10.5,129.0)(30.5,128.0)\psframe[linewidth = 1.1pt](13.2,129.2)(17.799999999999997,129.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,125.2)(17.799999999999997,127.8)
+\rput[lb](13.299999999999999,127.36666666666667){}
+\rput[lb](13.299999999999999,126.93333333333334){}
+\rput[lb](13.299999999999999,126.5){}
+\psframe[linewidth = 1.1pt](18.2,129.2)(22.799999999999997,129.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,125.2)(22.799999999999997,127.8)
+\rput[lb](18.3,127.36666666666667){}
+\rput[lb](18.3,126.93333333333334){}
+\rput[lb](18.3,126.5){}
+\psframe[linewidth = 1.1pt](23.2,129.2)(27.799999999999997,129.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,125.2)(27.799999999999997,127.8)
+\rput[lb](23.3,127.36666666666667){}
+\rput[lb](23.3,126.93333333333334){}
+\rput[lb](23.3,126.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](28.2,129.2)(32.8,129.79999999999998)
+\rput(30.5,129.5){\large Out : 0 32:IADD\normalsize$\rightarrow$ 2}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](28.2,125.2)(32.8,127.8)
+\rput[lb](28.3,127.36666666666667){In0 : PE5.1 9:LOAD:2}
+\rput[lb](28.3,126.93333333333334){In1 : PE1.258 32:CONST:2}
+\rput[lb](28.3,126.5){}
+\rput(30.5,125.85000000000001){\large 58:IADD\normalsize$\rightarrow$ 2}
+\psline[linewidth=3pt]{->}(30.5,129.0)(35.5,128.0)\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](33.2,129.2)(37.800000000000004,129.79999999999998)
+\rput(35.5,129.5){\large Out : 0 9:LOAD:2\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](33.2,125.2)(37.800000000000004,127.8)
+\rput[lb](33.300000000000004,127.36666666666667){}
+\rput[lb](33.300000000000004,126.93333333333334){}
+\rput[lb](33.300000000000004,126.5){}
+\rput(35.5,125.85000000000001){\large C32:IADD\normalsize$\rightarrow$ 0}
+\psline[linewidth=3pt]{->}(35.5,129.0)(55.5,128.0)\psframe[linewidth = 1.1pt](38.2,129.2)(42.800000000000004,129.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](38.2,125.2)(42.800000000000004,127.8)
+\rput[lb](38.300000000000004,127.36666666666667){}
+\rput[lb](38.300000000000004,126.93333333333334){}
+\rput[lb](38.300000000000004,126.5){}
+\psframe[linewidth = 1.1pt](43.2,129.2)(47.800000000000004,129.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,125.2)(47.800000000000004,127.8)
+\rput[lb](43.300000000000004,127.36666666666667){}
+\rput[lb](43.300000000000004,126.93333333333334){}
+\rput[lb](43.300000000000004,126.5){}
+\psframe[linewidth = 1.1pt](48.2,129.2)(52.800000000000004,129.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,125.2)(52.800000000000004,127.8)
+\rput[lb](48.300000000000004,127.36666666666667){}
+\rput[lb](48.300000000000004,126.93333333333334){}
+\rput[lb](48.300000000000004,126.5){}
+\psframe[linewidth = 1.1pt](53.2,129.2)(57.800000000000004,129.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](53.2,125.2)(57.800000000000004,127.8)
+\rput[lb](53.300000000000004,127.36666666666667){}
+\rput[lb](53.300000000000004,126.93333333333334){}
+\rput[lb](53.300000000000004,126.5){}
+\rput(55.5,125.85000000000001){\large C9:LOAD:2\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt](58.2,129.2)(62.800000000000004,129.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,125.2)(62.800000000000004,127.8)
+\rput[lb](58.300000000000004,127.36666666666667){}
+\rput[lb](58.300000000000004,126.93333333333334){}
+\rput[lb](58.300000000000004,126.5){}
+\psframe[linewidth = 1.1pt](63.2,129.2)(67.8,129.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,125.2)(67.8,127.8)
+\rput[lb](63.300000000000004,127.36666666666667){}
+\rput[lb](63.300000000000004,126.93333333333334){}
+\rput[lb](63.300000000000004,126.5){}
+\psframe[linewidth = 1.1pt](68.2,129.2)(72.8,129.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,125.2)(72.8,127.8)
+\rput[lb](68.3,127.36666666666667){}
+\rput[lb](68.3,126.93333333333334){}
+\rput[lb](68.3,126.5){}
+\psframe[linewidth = 1.1pt](73.2,129.2)(77.8,129.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](73.2,125.2)(77.8,127.8)
+\rput[lb](73.3,127.36666666666667){}
+\rput[lb](73.3,126.93333333333334){}
+\rput[lb](73.3,126.5){}
+\psframe[linewidth = 1.1pt](78.2,129.2)(82.8,129.79999999999998)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,125.2)(82.8,127.8)
+\rput[lb](78.3,127.36666666666667){}
+\rput[lb](78.3,126.93333333333334){}
+\rput[lb](78.3,126.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,125.2)(87.8,125.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,127.2)(87.8,129.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,125.2)(92.8,125.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,127.2)(92.8,129.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,125.2)(97.8,125.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,127.2)(97.8,129.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,125.2)(102.8,125.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,127.2)(102.8,129.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,125.2)(2.8,129.8)
+\rput(1.5,127.5){\large1\normalsize}
+\psframe[linewidth = 1.1pt](3.2,124.2)(7.8,124.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,120.2)(7.8,122.8)
+\rput[lb](3.3000000000000003,122.36666666666667){}
+\rput[lb](3.3000000000000003,121.93333333333334){}
+\rput[lb](3.3000000000000003,121.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](8.2,124.2)(12.799999999999999,124.8)
+\rput(10.5,124.5){\large Out : 1 11:DMA-LOAD\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](8.2,120.2)(12.799999999999999,122.8)
+\rput[lb](8.299999999999999,122.36666666666667){}
+\rput[lb](8.299999999999999,121.93333333333334){}
+\rput[lb](8.299999999999999,121.5){}
+\psline[linewidth=3pt]{->}(10.5,124.0)(30.5,123.0)\psframe[linewidth = 1.1pt](13.2,124.2)(17.799999999999997,124.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,120.2)(17.799999999999997,122.8)
+\rput[lb](13.299999999999999,122.36666666666667){}
+\rput[lb](13.299999999999999,121.93333333333334){}
+\rput[lb](13.299999999999999,121.5){}
+\psframe[linewidth = 1.1pt](18.2,124.2)(22.799999999999997,124.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,120.2)(22.799999999999997,122.8)
+\rput[lb](18.3,122.36666666666667){}
+\rput[lb](18.3,121.93333333333334){}
+\rput[lb](18.3,121.5){}
+\psframe[linewidth = 1.1pt](23.2,124.2)(27.799999999999997,124.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,120.2)(27.799999999999997,122.8)
+\rput[lb](23.3,122.36666666666667){}
+\rput[lb](23.3,121.93333333333334){}
+\rput[lb](23.3,121.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](28.2,124.2)(32.8,124.8)
+\rput(30.5,124.5){\large Out : 2 58:IADD\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](28.2,120.2)(32.8,122.8)
+\rput[lb](28.3,122.36666666666667){In0 : PE5.1 9:LOAD:2}
+\rput[lb](28.3,121.93333333333334){In1 : PE1.1 11:DMA-LOAD}
+\rput[lb](28.3,121.5){}
+\rput(30.5,120.85000000000001){\large 14:IFGE\normalsize}
+\psline[linewidth=3pt]{->}(30.5,124.0)(50.5,123.0)\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](33.2,124.2)(37.800000000000004,124.8)
+\rput(35.5,124.5){\large Out : 0 32:IADD\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](33.2,120.2)(37.800000000000004,122.8)
+\rput[lb](33.300000000000004,122.36666666666667){}
+\rput[lb](33.300000000000004,121.93333333333334){}
+\rput[lb](33.300000000000004,121.5){}
+\psline[linewidth=3pt]{->}(35.5,124.0)(55.5,123.0)\psframe[linewidth = 1.1pt](38.2,124.2)(42.800000000000004,124.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](38.2,120.2)(42.800000000000004,122.8)
+\rput[lb](38.300000000000004,122.36666666666667){}
+\rput[lb](38.300000000000004,121.93333333333334){}
+\rput[lb](38.300000000000004,121.5){}
+\psframe[linewidth = 1.1pt](43.2,124.2)(47.800000000000004,124.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,120.2)(47.800000000000004,122.8)
+\rput[lb](43.300000000000004,122.36666666666667){}
+\rput[lb](43.300000000000004,121.93333333333334){}
+\rput[lb](43.300000000000004,121.5){}
+\psframe[linewidth = 1.1pt](48.2,124.2)(52.800000000000004,124.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](48.2,120.2)(52.800000000000004,122.8)
+\rput[lb](48.300000000000004,122.36666666666667){}
+\rput[lb](48.300000000000004,121.93333333333334){}
+\rput[lb](48.300000000000004,121.5){}
+\rput(50.5,120.85000000000001){\large C58:IADD\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt](53.2,124.2)(57.800000000000004,124.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](53.2,120.2)(57.800000000000004,122.8)
+\rput[lb](53.300000000000004,122.36666666666667){}
+\rput[lb](53.300000000000004,121.93333333333334){}
+\rput[lb](53.300000000000004,121.5){}
+\rput(55.5,120.85000000000001){\large C32:IADD\normalsize$\rightarrow$ 1}
+\psframe[linewidth = 1.1pt](58.2,124.2)(62.800000000000004,124.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,120.2)(62.800000000000004,122.8)
+\rput[lb](58.300000000000004,122.36666666666667){}
+\rput[lb](58.300000000000004,121.93333333333334){}
+\rput[lb](58.300000000000004,121.5){}
+\psframe[linewidth = 1.1pt](63.2,124.2)(67.8,124.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,120.2)(67.8,122.8)
+\rput[lb](63.300000000000004,122.36666666666667){}
+\rput[lb](63.300000000000004,121.93333333333334){}
+\rput[lb](63.300000000000004,121.5){}
+\psframe[linewidth = 1.1pt](68.2,124.2)(72.8,124.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,120.2)(72.8,122.8)
+\rput[lb](68.3,122.36666666666667){}
+\rput[lb](68.3,121.93333333333334){}
+\rput[lb](68.3,121.5){}
+\psframe[linewidth = 1.1pt](73.2,124.2)(77.8,124.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](73.2,120.2)(77.8,122.8)
+\rput[lb](73.3,122.36666666666667){}
+\rput[lb](73.3,121.93333333333334){}
+\rput[lb](73.3,121.5){}
+\psframe[linewidth = 1.1pt](78.2,124.2)(82.8,124.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,120.2)(82.8,122.8)
+\rput[lb](78.3,122.36666666666667){}
+\rput[lb](78.3,121.93333333333334){}
+\rput[lb](78.3,121.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](83.2,120.2)(87.8,120.8)
+\rput[lb](83.2,120.5){In1 : PE5 14:IF $\rightarrow$ 0}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,122.2)(87.8,124.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,120.2)(92.8,120.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,122.2)(92.8,124.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,120.2)(97.8,120.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,122.2)(97.8,124.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,120.2)(102.8,120.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,122.2)(102.8,124.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,120.2)(2.8,124.8)
+\rput(1.5,122.5){\large2\normalsize}
+\psframe[linewidth = 1.1pt](3.2,119.2)(7.8,119.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,115.2)(7.8,117.8)
+\rput[lb](3.3000000000000003,117.36666666666667){}
+\rput[lb](3.3000000000000003,116.93333333333334){}
+\rput[lb](3.3000000000000003,116.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](8.2,110.2)(12.8,115.2)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](8.2,119.2)(12.799999999999999,119.8)
+\rput(10.5,119.5){\large Out : 1 11:DMA-LOAD\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](8.2,115.2)(12.799999999999999,117.8)
+\rput[lb](8.299999999999999,117.36666666666667){In0 : PE1.0 10:LOAD:0(ref}
+\rput[lb](8.299999999999999,116.93333333333334){In1 : PE1.259 32:CONST:3}
+\rput[lb](8.299999999999999,116.5){}
+\rput(10.5,115.85000000000001){\large 24:DMA-LOAD\normalsize}
+\rput(12.569999999999999,115.43){\large 0\normalsize}
+\psline[linewidth=3pt]{->}(10.5,119.0)(30.5,118.0)\psframe[linewidth = 1.1pt](13.2,119.2)(17.799999999999997,119.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,115.2)(17.799999999999997,117.8)
+\rput[lb](13.299999999999999,117.36666666666667){}
+\rput[lb](13.299999999999999,116.93333333333334){}
+\rput[lb](13.299999999999999,116.5){}
+\psframe[linewidth = 1.1pt](18.2,119.2)(22.799999999999997,119.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,115.2)(22.799999999999997,117.8)
+\rput[lb](18.3,117.36666666666667){}
+\rput[lb](18.3,116.93333333333334){}
+\rput[lb](18.3,116.5){}
+\psframe[linewidth = 1.1pt](23.2,119.2)(27.799999999999997,119.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,115.2)(27.799999999999997,117.8)
+\rput[lb](23.3,117.36666666666667){}
+\rput[lb](23.3,116.93333333333334){}
+\rput[lb](23.3,116.5){}
+\psframe[linewidth = 1.1pt](28.2,119.2)(32.8,119.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](28.2,115.2)(32.8,117.8)
+\rput[lb](28.3,117.36666666666667){In0 : PE5.0 32:IADD}
+\rput[lb](28.3,116.93333333333334){In1 : PE1.1 11:DMA-LOAD}
+\rput[lb](28.3,116.5){}
+\rput(30.5,115.85000000000001){\large 40:IFGE\normalsize}
+\rput(32.57,115.43){\large 0\normalsize}
+\psframe[linewidth = 1.1pt](33.2,119.2)(37.800000000000004,119.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](33.2,115.2)(37.800000000000004,117.8)
+\rput[lb](33.300000000000004,117.36666666666667){}
+\rput[lb](33.300000000000004,116.93333333333334){}
+\rput[lb](33.300000000000004,116.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](38.2,110.2)(42.8,115.2)
+\psframe[linewidth = 1.1pt](38.2,119.2)(42.800000000000004,119.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](38.2,115.2)(42.800000000000004,117.8)
+\rput[lb](38.300000000000004,117.36666666666667){In0 : PE7.0 10:LOAD:0(ref}
+\rput[lb](38.300000000000004,116.93333333333334){In1 : PE7.256 20:CONST:0}
+\rput[lb](38.300000000000004,116.5){}
+\rput(40.5,115.85000000000001){\large 20:DMA-LOAD(ref\normalsize}
+\rput(42.57,115.43){\large 0\normalsize}
+\psframe[linewidth = 1.1pt](43.2,119.2)(47.800000000000004,119.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,115.2)(47.800000000000004,117.8)
+\rput[lb](43.300000000000004,117.36666666666667){}
+\rput[lb](43.300000000000004,116.93333333333334){}
+\rput[lb](43.300000000000004,116.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](48.2,119.2)(52.800000000000004,119.8)
+\rput(50.5,119.5){\large Out : 0 58:IADD\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,115.2)(52.800000000000004,117.8)
+\rput[lb](48.300000000000004,117.36666666666667){}
+\rput[lb](48.300000000000004,116.93333333333334){}
+\rput[lb](48.300000000000004,116.5){}
+\psline[linewidth=3pt]{->}(50.5,119.0)(55.5,118.0)\psframe[linewidth = 1.1pt](53.2,119.2)(57.800000000000004,119.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](53.2,115.2)(57.800000000000004,117.8)
+\rput[lb](53.300000000000004,117.36666666666667){}
+\rput[lb](53.300000000000004,116.93333333333334){}
+\rput[lb](53.300000000000004,116.5){}
+\rput(55.5,115.85000000000001){\large C58:IADD\normalsize$\rightarrow$ 2}
+\psframe[linewidth = 1.1pt](58.2,119.2)(62.800000000000004,119.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,115.2)(62.800000000000004,117.8)
+\rput[lb](58.300000000000004,117.36666666666667){}
+\rput[lb](58.300000000000004,116.93333333333334){}
+\rput[lb](58.300000000000004,116.5){}
+\psframe[linewidth = 1.1pt](63.2,119.2)(67.8,119.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,115.2)(67.8,117.8)
+\rput[lb](63.300000000000004,117.36666666666667){}
+\rput[lb](63.300000000000004,116.93333333333334){}
+\rput[lb](63.300000000000004,116.5){}
+\psframe[linewidth = 1.1pt](68.2,119.2)(72.8,119.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,115.2)(72.8,117.8)
+\rput[lb](68.3,117.36666666666667){}
+\rput[lb](68.3,116.93333333333334){}
+\rput[lb](68.3,116.5){}
+\psframe[linewidth = 1.1pt](73.2,119.2)(77.8,119.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](73.2,115.2)(77.8,117.8)
+\rput[lb](73.3,117.36666666666667){}
+\rput[lb](73.3,116.93333333333334){}
+\rput[lb](73.3,116.5){}
+\psframe[linewidth = 1.1pt](78.2,119.2)(82.8,119.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,115.2)(82.8,117.8)
+\rput[lb](78.3,117.36666666666667){}
+\rput[lb](78.3,116.93333333333334){}
+\rput[lb](78.3,116.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](83.2,115.2)(87.8,115.8)
+\rput[lb](83.2,115.5){In1 : PE5 40:IF $\rightarrow$ 1}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](83.2,117.2)(87.8,119.8)
+\rput(85.5,118.5){\large0: 14:IFGE\normalsize(0)}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,115.2)(92.8,115.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,117.2)(92.8,119.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,115.2)(97.8,115.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,117.2)(97.8,119.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,115.2)(102.8,115.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,117.2)(102.8,119.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,115.2)(2.8,119.8)
+\rput(1.5,117.5){\large3\normalsize}
+\psframe[linewidth = 1.1pt](3.2,114.2)(7.8,114.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,110.2)(7.8,112.8)
+\rput[lb](3.3000000000000003,112.36666666666667){}
+\rput[lb](3.3000000000000003,111.93333333333334){}
+\rput[lb](3.3000000000000003,111.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](8.2,114.2)(12.799999999999999,114.8)
+\rput(10.5,114.5){\large Out : 259 32:CONST:3\normalsize$\rightarrow$ 2}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](8.2,110.2)(12.799999999999999,112.8)
+\rput[lb](8.299999999999999,112.36666666666667){}
+\rput[lb](8.299999999999999,111.93333333333334){}
+\rput[lb](8.299999999999999,111.5){}
+\rput(10.5,110.85000000000001){\large 24:DMA-LOAD\normalsize$\rightarrow$ 2}
+\rput(12.569999999999999,110.43){\large 0\normalsize}
+\psline[linewidth=3pt]{->}(10.5,114.0)(30.5,113.0)\psframe[linewidth = 1.1pt](13.2,114.2)(17.799999999999997,114.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,110.2)(17.799999999999997,112.8)
+\rput[lb](13.299999999999999,112.36666666666667){}
+\rput[lb](13.299999999999999,111.93333333333334){}
+\rput[lb](13.299999999999999,111.5){}
+\psframe[linewidth = 1.1pt](18.2,114.2)(22.799999999999997,114.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,110.2)(22.799999999999997,112.8)
+\rput[lb](18.3,112.36666666666667){}
+\rput[lb](18.3,111.93333333333334){}
+\rput[lb](18.3,111.5){}
+\psframe[linewidth = 1.1pt](23.2,114.2)(27.799999999999997,114.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,110.2)(27.799999999999997,112.8)
+\rput[lb](23.3,112.36666666666667){}
+\rput[lb](23.3,111.93333333333334){}
+\rput[lb](23.3,111.5){}
+\psframe[linewidth = 1.1pt](28.2,114.2)(32.8,114.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](28.2,110.2)(32.8,112.8)
+\rput[lb](28.3,112.36666666666667){In0 : PE5.1 9:LOAD:2}
+\rput[lb](28.3,111.93333333333334){In1 : PE1.259 32:CONST:3}
+\rput[lb](28.3,111.5){}
+\rput(30.5,110.85000000000001){\large 84:IADD\normalsize$\rightarrow$ 3}
+\psframe[linewidth = 1.1pt](33.2,114.2)(37.800000000000004,114.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](33.2,110.2)(37.800000000000004,112.8)
+\rput[lb](33.300000000000004,112.36666666666667){}
+\rput[lb](33.300000000000004,111.93333333333334){}
+\rput[lb](33.300000000000004,111.5){}
+\psframe[linewidth = 1.1pt](38.2,114.2)(42.800000000000004,114.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](38.2,110.2)(42.800000000000004,112.8)
+\rput[lb](38.300000000000004,112.36666666666667){}
+\rput[lb](38.300000000000004,111.93333333333334){}
+\rput[lb](38.300000000000004,111.5){}
+\rput(40.5,110.85000000000001){\large 20:DMA-LOAD(ref\normalsize$\rightarrow$ 1}
+\rput(42.57,110.43){\large 0\normalsize}
+\psframe[linewidth = 1.1pt](43.2,114.2)(47.800000000000004,114.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,110.2)(47.800000000000004,112.8)
+\rput[lb](43.300000000000004,112.36666666666667){}
+\rput[lb](43.300000000000004,111.93333333333334){}
+\rput[lb](43.300000000000004,111.5){}
+\psframe[linewidth = 1.1pt](48.2,114.2)(52.800000000000004,114.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,110.2)(52.800000000000004,112.8)
+\rput[lb](48.300000000000004,112.36666666666667){}
+\rput[lb](48.300000000000004,111.93333333333334){}
+\rput[lb](48.300000000000004,111.5){}
+\psframe[linewidth = 1.1pt](53.2,114.2)(57.800000000000004,114.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](53.2,110.2)(57.800000000000004,112.8)
+\rput[lb](53.300000000000004,112.36666666666667){}
+\rput[lb](53.300000000000004,111.93333333333334){}
+\rput[lb](53.300000000000004,111.5){}
+\psframe[linewidth = 1.1pt](58.2,114.2)(62.800000000000004,114.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,110.2)(62.800000000000004,112.8)
+\rput[lb](58.300000000000004,112.36666666666667){}
+\rput[lb](58.300000000000004,111.93333333333334){}
+\rput[lb](58.300000000000004,111.5){}
+\psframe[linewidth = 1.1pt](63.2,114.2)(67.8,114.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,110.2)(67.8,112.8)
+\rput[lb](63.300000000000004,112.36666666666667){}
+\rput[lb](63.300000000000004,111.93333333333334){}
+\rput[lb](63.300000000000004,111.5){}
+\psframe[linewidth = 1.1pt](68.2,114.2)(72.8,114.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,110.2)(72.8,112.8)
+\rput[lb](68.3,112.36666666666667){}
+\rput[lb](68.3,111.93333333333334){}
+\rput[lb](68.3,111.5){}
+\psframe[linewidth = 1.1pt](73.2,114.2)(77.8,114.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](73.2,110.2)(77.8,112.8)
+\rput[lb](73.3,112.36666666666667){}
+\rput[lb](73.3,111.93333333333334){}
+\rput[lb](73.3,111.5){}
+\psframe[linewidth = 1.1pt](78.2,114.2)(82.8,114.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,110.2)(82.8,112.8)
+\rput[lb](78.3,112.36666666666667){}
+\rput[lb](78.3,111.93333333333334){}
+\rput[lb](78.3,111.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,110.2)(87.8,110.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](83.2,112.2)(87.8,114.8)
+\rput(85.5,113.5){\large0: 14:IFGE\normalsize(0)}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,110.2)(92.8,110.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,112.2)(92.8,114.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,110.2)(97.8,110.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,112.2)(97.8,114.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,110.2)(102.8,110.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,112.2)(102.8,114.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,110.2)(2.8,114.8)
+\rput(1.5,112.5){\large4\normalsize}
+\psframe[linewidth = 1.1pt](3.2,109.2)(7.8,109.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,105.2)(7.8,107.8)
+\rput[lb](3.3000000000000003,107.36666666666667){}
+\rput[lb](3.3000000000000003,106.93333333333334){}
+\rput[lb](3.3000000000000003,106.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](8.2,109.2)(12.799999999999999,109.8)
+\rput(10.5,109.5){\large Out : 1 11:DMA-LOAD\normalsize$\rightarrow$ 3}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](8.2,105.2)(12.799999999999999,107.8)
+\rput[lb](8.299999999999999,107.36666666666667){In0 : PE1.2 24:DMA-LOAD}
+\rput[lb](8.299999999999999,106.93333333333334){In1 : PE5.0 32:IADD}
+\rput[lb](8.299999999999999,106.5){}
+\rput(10.5,105.85000000000001){\large 54:IADD\normalsize$\rightarrow$ 3}
+\psline[linewidth=3pt]{->}(10.5,109.0)(30.5,108.0)\psframe[linewidth = 1.1pt](13.2,109.2)(17.799999999999997,109.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,105.2)(17.799999999999997,107.8)
+\rput[lb](13.299999999999999,107.36666666666667){}
+\rput[lb](13.299999999999999,106.93333333333334){}
+\rput[lb](13.299999999999999,106.5){}
+\psframe[linewidth = 1.1pt](18.2,109.2)(22.799999999999997,109.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,105.2)(22.799999999999997,107.8)
+\rput[lb](18.3,107.36666666666667){}
+\rput[lb](18.3,106.93333333333334){}
+\rput[lb](18.3,106.5){}
+\psframe[linewidth = 1.1pt](23.2,109.2)(27.799999999999997,109.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,105.2)(27.799999999999997,107.8)
+\rput[lb](23.3,107.36666666666667){}
+\rput[lb](23.3,106.93333333333334){}
+\rput[lb](23.3,106.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](28.2,109.2)(32.8,109.8)
+\rput(30.5,109.5){\large Out : 0 32:IADD\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](28.2,105.2)(32.8,107.8)
+\rput[lb](28.3,107.36666666666667){In0 : PE5.2 58:IADD}
+\rput[lb](28.3,106.93333333333334){In1 : PE1.1 11:DMA-LOAD}
+\rput[lb](28.3,106.5){}
+\rput(30.5,105.85000000000001){\large 66:IFGE\normalsize}
+\rput(32.57,105.43){\large 0\normalsize}
+\psline[linewidth=3pt]{->}(30.5,109.0)(10.5,108.0)\psframe[linewidth = 1.1pt](33.2,109.2)(37.800000000000004,109.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](33.2,105.2)(37.800000000000004,107.8)
+\rput[lb](33.300000000000004,107.36666666666667){}
+\rput[lb](33.300000000000004,106.93333333333334){}
+\rput[lb](33.300000000000004,106.5){}
+\rput(35.5,105.85000000000001){\large C20:DMA-LOAD(re\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](38.2,109.2)(42.800000000000004,109.8)
+\rput(40.5,109.5){\large Out : 1 20:DMA-LOAD(ref)\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](38.2,105.2)(42.800000000000004,107.8)
+\rput[lb](38.300000000000004,107.36666666666667){}
+\rput[lb](38.300000000000004,106.93333333333334){}
+\rput[lb](38.300000000000004,106.5){}
+\psline[linewidth=3pt]{->}(40.5,109.0)(35.5,108.0)\psframe[linewidth = 1.1pt](43.2,109.2)(47.800000000000004,109.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,105.2)(47.800000000000004,107.8)
+\rput[lb](43.300000000000004,107.36666666666667){}
+\rput[lb](43.300000000000004,106.93333333333334){}
+\rput[lb](43.300000000000004,106.5){}
+\psframe[linewidth = 1.1pt](48.2,109.2)(52.800000000000004,109.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,105.2)(52.800000000000004,107.8)
+\rput[lb](48.300000000000004,107.36666666666667){}
+\rput[lb](48.300000000000004,106.93333333333334){}
+\rput[lb](48.300000000000004,106.5){}
+\psframe[linewidth = 1.1pt](53.2,109.2)(57.800000000000004,109.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](53.2,105.2)(57.800000000000004,107.8)
+\rput[lb](53.300000000000004,107.36666666666667){}
+\rput[lb](53.300000000000004,106.93333333333334){}
+\rput[lb](53.300000000000004,106.5){}
+\psframe[linewidth = 1.1pt](58.2,109.2)(62.800000000000004,109.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,105.2)(62.800000000000004,107.8)
+\rput[lb](58.300000000000004,107.36666666666667){}
+\rput[lb](58.300000000000004,106.93333333333334){}
+\rput[lb](58.300000000000004,106.5){}
+\psframe[linewidth = 1.1pt](63.2,109.2)(67.8,109.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,105.2)(67.8,107.8)
+\rput[lb](63.300000000000004,107.36666666666667){}
+\rput[lb](63.300000000000004,106.93333333333334){}
+\rput[lb](63.300000000000004,106.5){}
+\psframe[linewidth = 1.1pt](68.2,109.2)(72.8,109.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,105.2)(72.8,107.8)
+\rput[lb](68.3,107.36666666666667){}
+\rput[lb](68.3,106.93333333333334){}
+\rput[lb](68.3,106.5){}
+\psframe[linewidth = 1.1pt](73.2,109.2)(77.8,109.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](73.2,105.2)(77.8,107.8)
+\rput[lb](73.3,107.36666666666667){}
+\rput[lb](73.3,106.93333333333334){}
+\rput[lb](73.3,106.5){}
+\psframe[linewidth = 1.1pt](78.2,109.2)(82.8,109.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,105.2)(82.8,107.8)
+\rput[lb](78.3,107.36666666666667){}
+\rput[lb](78.3,106.93333333333334){}
+\rput[lb](78.3,106.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](83.2,105.2)(87.8,105.8)
+\rput[lb](83.2,105.5){In1 : PE5 66:IF $\rightarrow$ 2}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](83.2,107.2)(87.8,109.8)
+\rput(85.5,108.5){\large0: 40:IFGE\normalsize(1)}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,105.2)(92.8,105.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,107.2)(92.8,109.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,105.2)(97.8,105.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,107.2)(97.8,109.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,105.2)(102.8,105.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,107.2)(102.8,109.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,105.2)(2.8,109.8)
+\rput(1.5,107.5){\large5\normalsize}
+\psframe[linewidth = 1.1pt](3.2,104.2)(7.8,104.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,100.2)(7.8,102.8)
+\rput[lb](3.3000000000000003,102.36666666666667){}
+\rput[lb](3.3000000000000003,101.93333333333334){}
+\rput[lb](3.3000000000000003,101.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](8.2,104.2)(12.799999999999999,104.8)
+\rput(10.5,104.5){\large Out : 2 24:DMA-LOAD\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](8.2,100.2)(12.799999999999999,102.8)
+\rput[lb](8.299999999999999,102.36666666666667){In0 : PE5.3 84:IADD}
+\rput[lb](8.299999999999999,101.93333333333334){In1 : PE1.1 11:DMA-LOAD}
+\rput[lb](8.299999999999999,101.5){}
+\rput(10.5,100.85000000000001){\large 92:IFGE\normalsize}
+\rput(12.569999999999999,100.43){\large 0\normalsize}
+\psline[linewidth=3pt]{->}(10.5,104.0)(15.5,103.0)\psline[linewidth=3pt]{->}(10.5,104.0)(30.5,103.0)\psframe[linewidth = 1.1pt](13.2,104.2)(17.799999999999997,104.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](13.2,100.2)(17.799999999999997,102.8)
+\rput[lb](13.299999999999999,102.36666666666667){}
+\rput[lb](13.299999999999999,101.93333333333334){}
+\rput[lb](13.299999999999999,101.5){}
+\rput(15.5,100.85000000000001){\large C24:DMA-LOAD\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt](18.2,104.2)(22.799999999999997,104.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,100.2)(22.799999999999997,102.8)
+\rput[lb](18.3,102.36666666666667){}
+\rput[lb](18.3,101.93333333333334){}
+\rput[lb](18.3,101.5){}
+\psframe[linewidth = 1.1pt](23.2,104.2)(27.799999999999997,104.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,100.2)(27.799999999999997,102.8)
+\rput[lb](23.3,102.36666666666667){}
+\rput[lb](23.3,101.93333333333334){}
+\rput[lb](23.3,101.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](28.2,104.2)(32.8,104.8)
+\rput(30.5,104.5){\large Out : 3 84:IADD\normalsize$\rightarrow$ 4}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](28.2,100.2)(32.8,102.8)
+\rput[lb](28.3,102.36666666666667){}
+\rput[lb](28.3,101.93333333333334){}
+\rput[lb](28.3,101.5){}
+\rput(30.5,100.85000000000001){\large C24:DMA-LOAD\normalsize$\rightarrow$ 4}
+\psline[linewidth=3pt]{->}(30.5,104.0)(10.5,103.0)\psline[linewidth=3pt]{->}(30.5,104.0)(35.5,103.0)\psframe[linewidth = 1.1pt](33.2,104.2)(37.800000000000004,104.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](33.2,100.2)(37.800000000000004,102.8)
+\rput[lb](33.300000000000004,102.36666666666667){}
+\rput[lb](33.300000000000004,101.93333333333334){}
+\rput[lb](33.300000000000004,101.5){}
+\rput(35.5,100.85000000000001){\large C84:IADD\normalsize$\rightarrow$ 1}
+\psframe[linewidth = 1.1pt](38.2,104.2)(42.800000000000004,104.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](38.2,100.2)(42.800000000000004,102.8)
+\rput[lb](38.300000000000004,102.36666666666667){}
+\rput[lb](38.300000000000004,101.93333333333334){}
+\rput[lb](38.300000000000004,101.5){}
+\psframe[linewidth = 1.1pt](43.2,104.2)(47.800000000000004,104.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,100.2)(47.800000000000004,102.8)
+\rput[lb](43.300000000000004,102.36666666666667){}
+\rput[lb](43.300000000000004,101.93333333333334){}
+\rput[lb](43.300000000000004,101.5){}
+\psframe[linewidth = 1.1pt](48.2,104.2)(52.800000000000004,104.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,100.2)(52.800000000000004,102.8)
+\rput[lb](48.300000000000004,102.36666666666667){}
+\rput[lb](48.300000000000004,101.93333333333334){}
+\rput[lb](48.300000000000004,101.5){}
+\psframe[linewidth = 1.1pt](53.2,104.2)(57.800000000000004,104.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](53.2,100.2)(57.800000000000004,102.8)
+\rput[lb](53.300000000000004,102.36666666666667){}
+\rput[lb](53.300000000000004,101.93333333333334){}
+\rput[lb](53.300000000000004,101.5){}
+\psframe[linewidth = 1.1pt](58.2,104.2)(62.800000000000004,104.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,100.2)(62.800000000000004,102.8)
+\rput[lb](58.300000000000004,102.36666666666667){}
+\rput[lb](58.300000000000004,101.93333333333334){}
+\rput[lb](58.300000000000004,101.5){}
+\psframe[linewidth = 1.1pt](63.2,104.2)(67.8,104.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,100.2)(67.8,102.8)
+\rput[lb](63.300000000000004,102.36666666666667){}
+\rput[lb](63.300000000000004,101.93333333333334){}
+\rput[lb](63.300000000000004,101.5){}
+\psframe[linewidth = 1.1pt](68.2,104.2)(72.8,104.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,100.2)(72.8,102.8)
+\rput[lb](68.3,102.36666666666667){}
+\rput[lb](68.3,101.93333333333334){}
+\rput[lb](68.3,101.5){}
+\psframe[linewidth = 1.1pt](73.2,104.2)(77.8,104.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](73.2,100.2)(77.8,102.8)
+\rput[lb](73.3,102.36666666666667){}
+\rput[lb](73.3,101.93333333333334){}
+\rput[lb](73.3,101.5){}
+\psframe[linewidth = 1.1pt](78.2,104.2)(82.8,104.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,100.2)(82.8,102.8)
+\rput[lb](78.3,102.36666666666667){}
+\rput[lb](78.3,101.93333333333334){}
+\rput[lb](78.3,101.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](83.2,100.2)(87.8,100.8)
+\rput[lb](83.2,100.5){In1 : PE1 92:IF $\rightarrow$ 3}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](83.2,102.2)(87.8,104.8)
+\rput(85.5,103.5){\large0: 66:IFGE\normalsize(2)}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,100.2)(92.8,100.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,102.2)(92.8,104.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,100.2)(97.8,100.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,102.2)(97.8,104.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,100.2)(102.8,100.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,102.2)(102.8,104.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,100.2)(2.8,104.8)
+\rput(1.5,102.5){\large6\normalsize}
+\psframe[linewidth = 1.1pt](3.2,99.2)(7.8,99.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,95.2)(7.8,97.8)
+\rput[lb](3.3000000000000003,97.36666666666667){}
+\rput[lb](3.3000000000000003,96.93333333333334){}
+\rput[lb](3.3000000000000003,96.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](8.2,99.2)(12.799999999999999,99.8)
+\rput(10.5,99.5){\large Out : 3 54:IADD\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](8.2,95.2)(12.799999999999999,97.8)
+\rput[lb](8.299999999999999,97.36666666666667){}
+\rput[lb](8.299999999999999,96.93333333333334){}
+\rput[lb](8.299999999999999,96.5){}
+\psline[linewidth=3pt]{->}(10.5,99.0)(15.5,98.0)\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](13.2,99.2)(17.799999999999997,99.8)
+\rput(15.5,99.5){\large Out : 0 24:DMA-LOAD\normalsize$\rightarrow$ 1}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](13.2,95.2)(17.799999999999997,97.8)
+\rput[lb](13.299999999999999,97.36666666666667){}
+\rput[lb](13.299999999999999,96.93333333333334){}
+\rput[lb](13.299999999999999,96.5){}
+\rput(15.5,95.85000000000001){\large C54:IADD\normalsize$\rightarrow$ 1}
+\psline[linewidth=3pt]{->}(15.5,99.0)(35.5,98.0)\psframe[linewidth = 1.1pt](18.2,99.2)(22.799999999999997,99.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,95.2)(22.799999999999997,97.8)
+\rput[lb](18.3,97.36666666666667){}
+\rput[lb](18.3,96.93333333333334){}
+\rput[lb](18.3,96.5){}
+\psframe[linewidth = 1.1pt](23.2,99.2)(27.799999999999997,99.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,95.2)(27.799999999999997,97.8)
+\rput[lb](23.3,97.36666666666667){}
+\rput[lb](23.3,96.93333333333334){}
+\rput[lb](23.3,96.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](28.2,99.2)(32.8,99.8)
+\rput(30.5,99.5){\large Out : 3 84:IADD\normalsize$\rightarrow$ 5}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](28.2,95.2)(32.8,97.8)
+\rput[lb](28.3,97.36666666666667){}
+\rput[lb](28.3,96.93333333333334){}
+\rput[lb](28.3,96.5){}
+\rput(30.5,95.85000000000001){\large C20:DMA-LOAD(re\normalsize$\rightarrow$ 5}
+\psline[linewidth=3pt]{->}(30.5,99.0)(35.5,98.0)\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](33.2,99.2)(37.800000000000004,99.8)
+\rput(35.5,99.5){\large Out : 0 20:DMA-LOAD(ref)\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](33.2,95.2)(37.800000000000004,97.8)
+\rput[lb](33.300000000000004,97.36666666666667){In0 : PE2.0 24:DMA-LOAD}
+\rput[lb](33.300000000000004,96.93333333333334){In1 : PE5.3 84:IADD}
+\rput[lb](33.300000000000004,96.5){}
+\rput(35.5,95.85000000000001){\large 106:IADD\normalsize$\rightarrow$ 0}
+\psline[linewidth=3pt]{->}(35.5,99.0)(30.5,98.0)\psframe[linewidth = 1.1pt](38.2,99.2)(42.800000000000004,99.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](38.2,95.2)(42.800000000000004,97.8)
+\rput[lb](38.300000000000004,97.36666666666667){}
+\rput[lb](38.300000000000004,96.93333333333334){}
+\rput[lb](38.300000000000004,96.5){}
+\psframe[linewidth = 1.1pt](43.2,99.2)(47.800000000000004,99.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,95.2)(47.800000000000004,97.8)
+\rput[lb](43.300000000000004,97.36666666666667){}
+\rput[lb](43.300000000000004,96.93333333333334){}
+\rput[lb](43.300000000000004,96.5){}
+\psframe[linewidth = 1.1pt](48.2,99.2)(52.800000000000004,99.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,95.2)(52.800000000000004,97.8)
+\rput[lb](48.300000000000004,97.36666666666667){}
+\rput[lb](48.300000000000004,96.93333333333334){}
+\rput[lb](48.300000000000004,96.5){}
+\psframe[linewidth = 1.1pt](53.2,99.2)(57.800000000000004,99.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](53.2,95.2)(57.800000000000004,97.8)
+\rput[lb](53.300000000000004,97.36666666666667){}
+\rput[lb](53.300000000000004,96.93333333333334){}
+\rput[lb](53.300000000000004,96.5){}
+\psframe[linewidth = 1.1pt](58.2,99.2)(62.800000000000004,99.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,95.2)(62.800000000000004,97.8)
+\rput[lb](58.300000000000004,97.36666666666667){}
+\rput[lb](58.300000000000004,96.93333333333334){}
+\rput[lb](58.300000000000004,96.5){}
+\psframe[linewidth = 1.1pt](63.2,99.2)(67.8,99.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,95.2)(67.8,97.8)
+\rput[lb](63.300000000000004,97.36666666666667){}
+\rput[lb](63.300000000000004,96.93333333333334){}
+\rput[lb](63.300000000000004,96.5){}
+\psframe[linewidth = 1.1pt](68.2,99.2)(72.8,99.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,95.2)(72.8,97.8)
+\rput[lb](68.3,97.36666666666667){}
+\rput[lb](68.3,96.93333333333334){}
+\rput[lb](68.3,96.5){}
+\psframe[linewidth = 1.1pt](73.2,99.2)(77.8,99.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](73.2,95.2)(77.8,97.8)
+\rput[lb](73.3,97.36666666666667){}
+\rput[lb](73.3,96.93333333333334){}
+\rput[lb](73.3,96.5){}
+\psframe[linewidth = 1.1pt](78.2,99.2)(82.8,99.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,95.2)(82.8,97.8)
+\rput[lb](78.3,97.36666666666667){}
+\rput[lb](78.3,96.93333333333334){}
+\rput[lb](78.3,96.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,95.2)(87.8,95.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,97.2)(87.8,99.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,95.2)(92.8,95.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,97.2)(92.8,99.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,95.2)(97.8,95.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,97.2)(97.8,99.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,95.2)(102.8,95.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,97.2)(102.8,99.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,95.2)(2.8,99.8)
+\rput(1.5,97.5){\large7\normalsize}
+\psframe[linewidth = 1.1pt](3.2,94.2)(7.8,94.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,90.2)(7.8,92.8)
+\rput[lb](3.3000000000000003,92.36666666666667){}
+\rput[lb](3.3000000000000003,91.93333333333334){}
+\rput[lb](3.3000000000000003,91.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](8.2,94.2)(12.799999999999999,94.8)
+\rput(10.5,94.5){\large Out : 260 32:CONST:4\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](8.2,90.2)(12.799999999999999,92.8)
+\rput[lb](8.299999999999999,92.36666666666667){}
+\rput[lb](8.299999999999999,91.93333333333334){}
+\rput[lb](8.299999999999999,91.5){}
+\psline[linewidth=3pt]{->}(10.5,94.0)(30.5,93.0)\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](13.2,94.2)(17.799999999999997,94.8)
+\rput(15.5,94.5){\large Out : 1 54:IADD\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,90.2)(17.799999999999997,92.8)
+\rput[lb](13.299999999999999,92.36666666666667){}
+\rput[lb](13.299999999999999,91.93333333333334){}
+\rput[lb](13.299999999999999,91.5){}
+\psline[linewidth=3pt]{->}(15.5,94.0)(20.5,93.0)\psframe[linewidth = 1.1pt](18.2,94.2)(22.799999999999997,94.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](18.2,90.2)(22.799999999999997,92.8)
+\rput[lb](18.3,92.36666666666667){}
+\rput[lb](18.3,91.93333333333334){}
+\rput[lb](18.3,91.5){}
+\rput(20.5,90.85000000000001){\large C54:IADD\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt](23.2,94.2)(27.799999999999997,94.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,90.2)(27.799999999999997,92.8)
+\rput[lb](23.3,92.36666666666667){}
+\rput[lb](23.3,91.93333333333334){}
+\rput[lb](23.3,91.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](28.2,94.2)(32.8,94.8)
+\rput(30.5,94.5){\large Out : 4 24:DMA-LOAD\normalsize$\rightarrow$ 6}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](28.2,90.2)(32.8,92.8)
+\rput[lb](28.3,92.36666666666667){In0 : PE5.1 9:LOAD:2}
+\rput[lb](28.3,91.93333333333334){In1 : PE1.260 32:CONST:4}
+\rput[lb](28.3,91.5){}
+\rput(30.5,90.85000000000001){\large 110:IADD\normalsize$\rightarrow$ 6}
+\psline[linewidth=3pt]{->}(30.5,94.0)(50.5,93.0)\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](33.2,94.2)(37.800000000000004,94.8)
+\rput(35.5,94.5){\large Out : 1 84:IADD\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](33.2,90.2)(37.800000000000004,92.8)
+\rput[lb](33.300000000000004,92.36666666666667){}
+\rput[lb](33.300000000000004,91.93333333333334){}
+\rput[lb](33.300000000000004,91.5){}
+\psline[linewidth=3pt]{->}(35.5,94.0)(55.5,93.0)\psframe[linewidth = 1.1pt](38.2,94.2)(42.800000000000004,94.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](38.2,90.2)(42.800000000000004,92.8)
+\rput[lb](38.300000000000004,92.36666666666667){}
+\rput[lb](38.300000000000004,91.93333333333334){}
+\rput[lb](38.300000000000004,91.5){}
+\psframe[linewidth = 1.1pt](43.2,94.2)(47.800000000000004,94.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,90.2)(47.800000000000004,92.8)
+\rput[lb](43.300000000000004,92.36666666666667){}
+\rput[lb](43.300000000000004,91.93333333333334){}
+\rput[lb](43.300000000000004,91.5){}
+\psframe[linewidth = 1.1pt](48.2,94.2)(52.800000000000004,94.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](48.2,90.2)(52.800000000000004,92.8)
+\rput[lb](48.300000000000004,92.36666666666667){In0 : PE5.4 24:DMA-LOAD}
+\rput[lb](48.300000000000004,91.93333333333334){In1 : PE9.0 58:IADD}
+\rput[lb](48.300000000000004,91.5){}
+\rput(50.5,90.85000000000001){\large 80:IADD\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt](53.2,94.2)(57.800000000000004,94.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](53.2,90.2)(57.800000000000004,92.8)
+\rput[lb](53.300000000000004,92.36666666666667){}
+\rput[lb](53.300000000000004,91.93333333333334){}
+\rput[lb](53.300000000000004,91.5){}
+\rput(55.5,90.85000000000001){\large C84:IADD\normalsize$\rightarrow$ 3}
+\psframe[linewidth = 1.1pt](58.2,94.2)(62.800000000000004,94.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,90.2)(62.800000000000004,92.8)
+\rput[lb](58.300000000000004,92.36666666666667){}
+\rput[lb](58.300000000000004,91.93333333333334){}
+\rput[lb](58.300000000000004,91.5){}
+\psframe[linewidth = 1.1pt](63.2,94.2)(67.8,94.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,90.2)(67.8,92.8)
+\rput[lb](63.300000000000004,92.36666666666667){}
+\rput[lb](63.300000000000004,91.93333333333334){}
+\rput[lb](63.300000000000004,91.5){}
+\psframe[linewidth = 1.1pt](68.2,94.2)(72.8,94.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,90.2)(72.8,92.8)
+\rput[lb](68.3,92.36666666666667){}
+\rput[lb](68.3,91.93333333333334){}
+\rput[lb](68.3,91.5){}
+\psframe[linewidth = 1.1pt](73.2,94.2)(77.8,94.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](73.2,90.2)(77.8,92.8)
+\rput[lb](73.3,92.36666666666667){}
+\rput[lb](73.3,91.93333333333334){}
+\rput[lb](73.3,91.5){}
+\psframe[linewidth = 1.1pt](78.2,94.2)(82.8,94.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,90.2)(82.8,92.8)
+\rput[lb](78.3,92.36666666666667){}
+\rput[lb](78.3,91.93333333333334){}
+\rput[lb](78.3,91.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,90.2)(87.8,90.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,92.2)(87.8,94.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,90.2)(92.8,90.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,92.2)(92.8,94.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,90.2)(97.8,90.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,92.2)(97.8,94.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,90.2)(102.8,90.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,92.2)(102.8,94.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,90.2)(2.8,94.8)
+\rput(1.5,92.5){\large8\normalsize}
+\psframe[linewidth = 1.1pt](3.2,89.2)(7.8,89.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,85.2)(7.8,87.8)
+\rput[lb](3.3000000000000003,87.36666666666667){}
+\rput[lb](3.3000000000000003,86.93333333333334){}
+\rput[lb](3.3000000000000003,86.5){}
+\psframe[linewidth = 1.1pt](8.2,89.2)(12.799999999999999,89.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](8.2,85.2)(12.799999999999999,87.8)
+\rput[lb](8.299999999999999,87.36666666666667){}
+\rput[lb](8.299999999999999,86.93333333333334){}
+\rput[lb](8.299999999999999,86.5){}
+\rput(10.5,85.85000000000001){\large C9:LOAD:2\normalsize$\rightarrow$ 1}
+\psframe[linewidth = 1.1pt](13.2,89.2)(17.799999999999997,89.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,85.2)(17.799999999999997,87.8)
+\rput[lb](13.299999999999999,87.36666666666667){}
+\rput[lb](13.299999999999999,86.93333333333334){}
+\rput[lb](13.299999999999999,86.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](18.2,89.2)(22.799999999999997,89.8)
+\rput(20.5,89.5){\large Out : 0 54:IADD\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,85.2)(22.799999999999997,87.8)
+\rput[lb](18.3,87.36666666666667){}
+\rput[lb](18.3,86.93333333333334){}
+\rput[lb](18.3,86.5){}
+\psline[linewidth=3pt]{->}(20.5,89.0)(40.5,88.0)\psframe[linewidth = 1.1pt](23.2,89.2)(27.799999999999997,89.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,85.2)(27.799999999999997,87.8)
+\rput[lb](23.3,87.36666666666667){}
+\rput[lb](23.3,86.93333333333334){}
+\rput[lb](23.3,86.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](28.2,89.2)(32.8,89.8)
+\rput(30.5,89.5){\large Out : 1 9:LOAD:2\normalsize$\rightarrow$ 7}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](28.2,85.2)(32.8,87.8)
+\rput[lb](28.3,87.36666666666667){}
+\rput[lb](28.3,86.93333333333334){}
+\rput[lb](28.3,86.5){}
+\rput(30.5,85.85000000000001){\large C106:IADD\normalsize$\rightarrow$ 7}
+\psline[linewidth=3pt]{->}(30.5,89.0)(10.5,88.0)\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](33.2,89.2)(37.800000000000004,89.8)
+\rput(35.5,89.5){\large Out : 0 106:IADD\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](33.2,85.2)(37.800000000000004,87.8)
+\rput[lb](33.300000000000004,87.36666666666667){}
+\rput[lb](33.300000000000004,86.93333333333334){}
+\rput[lb](33.300000000000004,86.5){}
+\psline[linewidth=3pt]{->}(35.5,89.0)(30.5,88.0)\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](38.2,80.2)(42.8,85.2)
+\psframe[linewidth = 1.1pt](38.2,89.2)(42.800000000000004,89.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](38.2,85.2)(42.800000000000004,87.8)
+\rput[lb](38.300000000000004,87.36666666666667){In0 : PE7.1 20:DMA-LOAD(r}
+\rput[lb](38.300000000000004,86.93333333333334){In1 : PE3.0 54:IADD}
+\rput[lb](38.300000000000004,86.5){}
+\rput(40.5,85.85000000000001){\large 55:DMA-LOAD(C)\normalsize}
+\rput(42.57,85.43){\large 0\normalsize}
+\psframe[linewidth = 1.1pt](43.2,89.2)(47.800000000000004,89.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,85.2)(47.800000000000004,87.8)
+\rput[lb](43.300000000000004,87.36666666666667){}
+\rput[lb](43.300000000000004,86.93333333333334){}
+\rput[lb](43.300000000000004,86.5){}
+\psframe[linewidth = 1.1pt](48.2,89.2)(52.800000000000004,89.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,85.2)(52.800000000000004,87.8)
+\rput[lb](48.300000000000004,87.36666666666667){}
+\rput[lb](48.300000000000004,86.93333333333334){}
+\rput[lb](48.300000000000004,86.5){}
+\psframe[linewidth = 1.1pt](53.2,89.2)(57.800000000000004,89.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](53.2,85.2)(57.800000000000004,87.8)
+\rput[lb](53.300000000000004,87.36666666666667){}
+\rput[lb](53.300000000000004,86.93333333333334){}
+\rput[lb](53.300000000000004,86.5){}
+\psframe[linewidth = 1.1pt](58.2,89.2)(62.800000000000004,89.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,85.2)(62.800000000000004,87.8)
+\rput[lb](58.300000000000004,87.36666666666667){}
+\rput[lb](58.300000000000004,86.93333333333334){}
+\rput[lb](58.300000000000004,86.5){}
+\psframe[linewidth = 1.1pt](63.2,89.2)(67.8,89.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,85.2)(67.8,87.8)
+\rput[lb](63.300000000000004,87.36666666666667){}
+\rput[lb](63.300000000000004,86.93333333333334){}
+\rput[lb](63.300000000000004,86.5){}
+\psframe[linewidth = 1.1pt](68.2,89.2)(72.8,89.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,85.2)(72.8,87.8)
+\rput[lb](68.3,87.36666666666667){}
+\rput[lb](68.3,86.93333333333334){}
+\rput[lb](68.3,86.5){}
+\psframe[linewidth = 1.1pt](73.2,89.2)(77.8,89.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](73.2,85.2)(77.8,87.8)
+\rput[lb](73.3,87.36666666666667){}
+\rput[lb](73.3,86.93333333333334){}
+\rput[lb](73.3,86.5){}
+\psframe[linewidth = 1.1pt](78.2,89.2)(82.8,89.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,85.2)(82.8,87.8)
+\rput[lb](78.3,87.36666666666667){}
+\rput[lb](78.3,86.93333333333334){}
+\rput[lb](78.3,86.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,85.2)(87.8,85.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](83.2,87.2)(87.8,89.8)
+\rput(85.5,88.5){\large0: 40:IFGE\normalsize(1)}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,85.2)(92.8,85.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,87.2)(92.8,89.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,85.2)(97.8,85.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,87.2)(97.8,89.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,85.2)(102.8,85.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,87.2)(102.8,89.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,85.2)(2.8,89.8)
+\rput(1.5,87.5){\large9\normalsize}
+\psframe[linewidth = 1.1pt](3.2,84.2)(7.8,84.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,80.2)(7.8,82.8)
+\rput[lb](3.3000000000000003,82.36666666666667){}
+\rput[lb](3.3000000000000003,81.93333333333334){}
+\rput[lb](3.3000000000000003,81.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](8.2,84.2)(12.799999999999999,84.8)
+\rput(10.5,84.5){\large Out : 1 9:LOAD:2\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](8.2,80.2)(12.799999999999999,82.8)
+\rput[lb](8.299999999999999,82.36666666666667){}
+\rput[lb](8.299999999999999,81.93333333333334){}
+\rput[lb](8.299999999999999,81.5){}
+\psline[linewidth=3pt]{->}(10.5,84.0)(30.5,83.0)\psframe[linewidth = 1.1pt](13.2,84.2)(17.799999999999997,84.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,80.2)(17.799999999999997,82.8)
+\rput[lb](13.299999999999999,82.36666666666667){}
+\rput[lb](13.299999999999999,81.93333333333334){}
+\rput[lb](13.299999999999999,81.5){}
+\psframe[linewidth = 1.1pt](18.2,84.2)(22.799999999999997,84.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,80.2)(22.799999999999997,82.8)
+\rput[lb](18.3,82.36666666666667){}
+\rput[lb](18.3,81.93333333333334){}
+\rput[lb](18.3,81.5){}
+\psframe[linewidth = 1.1pt](23.2,84.2)(27.799999999999997,84.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](23.2,80.2)(27.799999999999997,82.8)
+\rput[lb](23.3,82.36666666666667){}
+\rput[lb](23.3,81.93333333333334){}
+\rput[lb](23.3,81.5){}
+\rput(25.5,80.85000000000001){\large C20:DMA-LOAD(re\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](28.2,84.2)(32.8,84.8)
+\rput(30.5,84.5){\large Out : 5 20:DMA-LOAD(ref)\normalsize$\rightarrow$ 4}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](28.2,80.2)(32.8,82.8)
+\rput[lb](28.3,82.36666666666667){In0 : PE5.4 24:DMA-LOAD}
+\rput[lb](28.3,81.93333333333334){In1 : PE1.1 9:LOAD:2}
+\rput[lb](28.3,81.5){}
+\rput(30.5,80.85000000000001){\large 28:IADD\normalsize$\rightarrow$ 4}
+\psline[linewidth=3pt]{->}(30.5,84.0)(25.5,83.0)\psframe[linewidth = 1.1pt](33.2,84.2)(37.800000000000004,84.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](33.2,80.2)(37.800000000000004,82.8)
+\rput[lb](33.300000000000004,82.36666666666667){}
+\rput[lb](33.300000000000004,81.93333333333334){}
+\rput[lb](33.300000000000004,81.5){}
+\psframe[linewidth = 1.1pt](38.2,84.2)(42.800000000000004,84.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](38.2,80.2)(42.800000000000004,82.8)
+\rput[lb](38.300000000000004,82.36666666666667){}
+\rput[lb](38.300000000000004,81.93333333333334){}
+\rput[lb](38.300000000000004,81.5){}
+\rput(40.5,80.85000000000001){\large 55:DMA-LOAD(C)\normalsize$\rightarrow$ 2}
+\rput(42.57,80.43){\large 0\normalsize}
+\psframe[linewidth = 1.1pt](43.2,84.2)(47.800000000000004,84.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,80.2)(47.800000000000004,82.8)
+\rput[lb](43.300000000000004,82.36666666666667){}
+\rput[lb](43.300000000000004,81.93333333333334){}
+\rput[lb](43.300000000000004,81.5){}
+\psframe[linewidth = 1.1pt](48.2,84.2)(52.800000000000004,84.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,80.2)(52.800000000000004,82.8)
+\rput[lb](48.300000000000004,82.36666666666667){}
+\rput[lb](48.300000000000004,81.93333333333334){}
+\rput[lb](48.300000000000004,81.5){}
+\psframe[linewidth = 1.1pt](53.2,84.2)(57.800000000000004,84.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](53.2,80.2)(57.800000000000004,82.8)
+\rput[lb](53.300000000000004,82.36666666666667){}
+\rput[lb](53.300000000000004,81.93333333333334){}
+\rput[lb](53.300000000000004,81.5){}
+\psframe[linewidth = 1.1pt](58.2,84.2)(62.800000000000004,84.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,80.2)(62.800000000000004,82.8)
+\rput[lb](58.300000000000004,82.36666666666667){}
+\rput[lb](58.300000000000004,81.93333333333334){}
+\rput[lb](58.300000000000004,81.5){}
+\psframe[linewidth = 1.1pt](63.2,84.2)(67.8,84.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,80.2)(67.8,82.8)
+\rput[lb](63.300000000000004,82.36666666666667){}
+\rput[lb](63.300000000000004,81.93333333333334){}
+\rput[lb](63.300000000000004,81.5){}
+\psframe[linewidth = 1.1pt](68.2,84.2)(72.8,84.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,80.2)(72.8,82.8)
+\rput[lb](68.3,82.36666666666667){}
+\rput[lb](68.3,81.93333333333334){}
+\rput[lb](68.3,81.5){}
+\psframe[linewidth = 1.1pt](73.2,84.2)(77.8,84.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](73.2,80.2)(77.8,82.8)
+\rput[lb](73.3,82.36666666666667){}
+\rput[lb](73.3,81.93333333333334){}
+\rput[lb](73.3,81.5){}
+\psframe[linewidth = 1.1pt](78.2,84.2)(82.8,84.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,80.2)(82.8,82.8)
+\rput[lb](78.3,82.36666666666667){}
+\rput[lb](78.3,81.93333333333334){}
+\rput[lb](78.3,81.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,80.2)(87.8,80.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](83.2,82.2)(87.8,84.8)
+\rput(85.5,83.5){\large0: 40:IFGE\normalsize(1)}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,80.2)(92.8,80.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,82.2)(92.8,84.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,80.2)(97.8,80.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,82.2)(97.8,84.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,80.2)(102.8,80.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,82.2)(102.8,84.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,80.2)(2.8,84.8)
+\rput(1.5,82.5){\large10\normalsize}
+\psframe[linewidth = 1.1pt](3.2,79.2)(7.8,79.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,75.2)(7.8,77.8)
+\rput[lb](3.3000000000000003,77.36666666666667){}
+\rput[lb](3.3000000000000003,76.93333333333334){}
+\rput[lb](3.3000000000000003,76.5){}
+\psframe[linewidth = 1.1pt](8.2,79.2)(12.799999999999999,79.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](8.2,75.2)(12.799999999999999,77.8)
+\rput[lb](8.299999999999999,77.36666666666667){}
+\rput[lb](8.299999999999999,76.93333333333334){}
+\rput[lb](8.299999999999999,76.5){}
+\psframe[linewidth = 1.1pt](13.2,79.2)(17.799999999999997,79.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,75.2)(17.799999999999997,77.8)
+\rput[lb](13.299999999999999,77.36666666666667){}
+\rput[lb](13.299999999999999,76.93333333333334){}
+\rput[lb](13.299999999999999,76.5){}
+\psframe[linewidth = 1.1pt](18.2,79.2)(22.799999999999997,79.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,75.2)(22.799999999999997,77.8)
+\rput[lb](18.3,77.36666666666667){}
+\rput[lb](18.3,76.93333333333334){}
+\rput[lb](18.3,76.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](23.2,79.2)(27.799999999999997,79.8)
+\rput(25.5,79.5){\large Out : 0 20:DMA-LOAD(ref)\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](23.2,75.2)(27.799999999999997,77.8)
+\rput[lb](23.3,77.36666666666667){}
+\rput[lb](23.3,76.93333333333334){}
+\rput[lb](23.3,76.5){}
+\rput(25.5,75.85000000000001){\large C106:IADD\normalsize$\rightarrow$ 0}
+\psline[linewidth=3pt]{->}(25.5,79.0)(45.5,78.0)\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](28.2,79.2)(32.8,79.8)
+\rput(30.5,79.5){\large Out : 7 106:IADD\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](28.2,75.2)(32.8,77.8)
+\rput[lb](28.3,77.36666666666667){}
+\rput[lb](28.3,76.93333333333334){}
+\rput[lb](28.3,76.5){}
+\psline[linewidth=3pt]{->}(30.5,79.0)(25.5,78.0)\psframe[linewidth = 1.1pt](33.2,79.2)(37.800000000000004,79.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](33.2,75.2)(37.800000000000004,77.8)
+\rput[lb](33.300000000000004,77.36666666666667){}
+\rput[lb](33.300000000000004,76.93333333333334){}
+\rput[lb](33.300000000000004,76.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](38.2,79.2)(42.800000000000004,79.8)
+\rput(40.5,79.5){\large Out : 2 55:DMA-LOAD(C)\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](38.2,75.2)(42.800000000000004,77.8)
+\rput[lb](38.300000000000004,77.36666666666667){}
+\rput[lb](38.300000000000004,76.93333333333334){}
+\rput[lb](38.300000000000004,76.5){}
+\psline[linewidth=3pt]{->}(40.5,79.0)(60.5,78.0)\psframe[linewidth = 1.1pt](43.2,79.2)(47.800000000000004,79.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](43.2,75.2)(47.800000000000004,77.8)
+\rput[lb](43.300000000000004,77.36666666666667){}
+\rput[lb](43.300000000000004,76.93333333333334){}
+\rput[lb](43.300000000000004,76.5){}
+\rput(45.5,75.85000000000001){\large C20:DMA-LOAD(re\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt](48.2,79.2)(52.800000000000004,79.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,75.2)(52.800000000000004,77.8)
+\rput[lb](48.300000000000004,77.36666666666667){}
+\rput[lb](48.300000000000004,76.93333333333334){}
+\rput[lb](48.300000000000004,76.5){}
+\psframe[linewidth = 1.1pt](53.2,79.2)(57.800000000000004,79.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](53.2,75.2)(57.800000000000004,77.8)
+\rput[lb](53.300000000000004,77.36666666666667){}
+\rput[lb](53.300000000000004,76.93333333333334){}
+\rput[lb](53.300000000000004,76.5){}
+\psframe[linewidth = 1.1pt](58.2,79.2)(62.800000000000004,79.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](58.2,75.2)(62.800000000000004,77.8)
+\rput[lb](58.300000000000004,77.36666666666667){In0 : PE7.2 55:DMA-LOAD(C}
+\rput[lb](58.300000000000004,76.93333333333334){}
+\rput[lb](58.300000000000004,76.5){}
+\rput(60.5,75.85000000000001){\large 56:I2B\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt](63.2,79.2)(67.8,79.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,75.2)(67.8,77.8)
+\rput[lb](63.300000000000004,77.36666666666667){}
+\rput[lb](63.300000000000004,76.93333333333334){}
+\rput[lb](63.300000000000004,76.5){}
+\psframe[linewidth = 1.1pt](68.2,79.2)(72.8,79.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,75.2)(72.8,77.8)
+\rput[lb](68.3,77.36666666666667){}
+\rput[lb](68.3,76.93333333333334){}
+\rput[lb](68.3,76.5){}
+\psframe[linewidth = 1.1pt](73.2,79.2)(77.8,79.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](73.2,75.2)(77.8,77.8)
+\rput[lb](73.3,77.36666666666667){}
+\rput[lb](73.3,76.93333333333334){}
+\rput[lb](73.3,76.5){}
+\psframe[linewidth = 1.1pt](78.2,79.2)(82.8,79.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,75.2)(82.8,77.8)
+\rput[lb](78.3,77.36666666666667){}
+\rput[lb](78.3,76.93333333333334){}
+\rput[lb](78.3,76.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,75.2)(87.8,75.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,77.2)(87.8,79.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,75.2)(92.8,75.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,77.2)(92.8,79.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,75.2)(97.8,75.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,77.2)(97.8,79.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,75.2)(102.8,75.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,77.2)(102.8,79.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,75.2)(2.8,79.8)
+\rput(1.5,77.5){\large11\normalsize}
+\psframe[linewidth = 1.1pt](3.2,74.2)(7.8,74.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,70.2)(7.8,72.8)
+\rput[lb](3.3000000000000003,72.36666666666667){}
+\rput[lb](3.3000000000000003,71.93333333333334){}
+\rput[lb](3.3000000000000003,71.5){}
+\psframe[linewidth = 1.1pt](8.2,74.2)(12.799999999999999,74.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](8.2,70.2)(12.799999999999999,72.8)
+\rput[lb](8.299999999999999,72.36666666666667){}
+\rput[lb](8.299999999999999,71.93333333333334){}
+\rput[lb](8.299999999999999,71.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](13.2,74.2)(17.799999999999997,74.8)
+\rput(15.5,74.5){\large Out : 0 24:DMA-LOAD\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,70.2)(17.799999999999997,72.8)
+\rput[lb](13.299999999999999,72.36666666666667){}
+\rput[lb](13.299999999999999,71.93333333333334){}
+\rput[lb](13.299999999999999,71.5){}
+\psline[linewidth=3pt]{->}(15.5,74.0)(35.5,73.0)\psframe[linewidth = 1.1pt](18.2,74.2)(22.799999999999997,74.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,70.2)(22.799999999999997,72.8)
+\rput[lb](18.3,72.36666666666667){}
+\rput[lb](18.3,71.93333333333334){}
+\rput[lb](18.3,71.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](23.2,74.2)(27.799999999999997,74.8)
+\rput(25.5,74.5){\large Out : 0 106:IADD\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,70.2)(27.799999999999997,72.8)
+\rput[lb](23.3,72.36666666666667){}
+\rput[lb](23.3,71.93333333333334){}
+\rput[lb](23.3,71.5){}
+\psline[linewidth=3pt]{->}(25.5,74.0)(45.5,73.0)\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](28.2,74.2)(32.8,74.8)
+\rput(30.5,74.5){\large Out : 6 110:IADD\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](28.2,70.2)(32.8,72.8)
+\rput[lb](28.3,72.36666666666667){}
+\rput[lb](28.3,71.93333333333334){}
+\rput[lb](28.3,71.5){}
+\psline[linewidth=3pt]{->}(30.5,74.0)(35.5,73.0)\psframe[linewidth = 1.1pt](33.2,74.2)(37.800000000000004,74.8)
+\psframe[linewidth = 1.1pt,  fillstyle=vlines, hatchcolor=lightblue, fillcolor=lightblue](33.2,70.2)(37.800000000000004,72.8)
+\rput[lb](33.300000000000004,72.36666666666667){In0 : PE2.0 24:DMA-LOAD}
+\rput[lb](33.300000000000004,71.93333333333334){In1 : PE5.6 110:IADD}
+\rput[lb](33.300000000000004,71.5){}
+\rput(35.5,70.85000000000001){\large 132:IADD\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt](38.2,74.2)(42.800000000000004,74.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](38.2,70.2)(42.800000000000004,72.8)
+\rput[lb](38.300000000000004,72.36666666666667){}
+\rput[lb](38.300000000000004,71.93333333333334){}
+\rput[lb](38.300000000000004,71.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](43.2,65.2)(47.8,70.2)
+\psframe[linewidth = 1.1pt](43.2,74.2)(47.800000000000004,74.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](43.2,70.2)(47.800000000000004,72.8)
+\rput[lb](43.300000000000004,72.36666666666667){In0 : PE8.0 20:DMA-LOAD(r}
+\rput[lb](43.300000000000004,71.93333333333334){In1 : PE4.0 106:IADD}
+\rput[lb](43.300000000000004,71.5){}
+\rput(45.5,70.85000000000001){\large 107:DMA-LOAD(C)\normalsize}
+\rput(47.57,70.43){\large 0\normalsize}
+\psframe[linewidth = 1.1pt](48.2,74.2)(52.800000000000004,74.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,70.2)(52.800000000000004,72.8)
+\rput[lb](48.300000000000004,72.36666666666667){}
+\rput[lb](48.300000000000004,71.93333333333334){}
+\rput[lb](48.300000000000004,71.5){}
+\psframe[linewidth = 1.1pt](53.2,74.2)(57.800000000000004,74.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](53.2,70.2)(57.800000000000004,72.8)
+\rput[lb](53.300000000000004,72.36666666666667){}
+\rput[lb](53.300000000000004,71.93333333333334){}
+\rput[lb](53.300000000000004,71.5){}
+\rput(55.5,70.85000000000001){\large C56:I2B\normalsize$\rightarrow$ 4}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](58.2,74.2)(62.800000000000004,74.8)
+\rput(60.5,74.5){\large Out : 0 56:I2B\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,70.2)(62.800000000000004,72.8)
+\rput[lb](58.300000000000004,72.36666666666667){}
+\rput[lb](58.300000000000004,71.93333333333334){}
+\rput[lb](58.300000000000004,71.5){}
+\psline[linewidth=3pt]{->}(60.5,74.0)(55.5,73.0)\psframe[linewidth = 1.1pt](63.2,74.2)(67.8,74.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,70.2)(67.8,72.8)
+\rput[lb](63.300000000000004,72.36666666666667){}
+\rput[lb](63.300000000000004,71.93333333333334){}
+\rput[lb](63.300000000000004,71.5){}
+\psframe[linewidth = 1.1pt](68.2,74.2)(72.8,74.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,70.2)(72.8,72.8)
+\rput[lb](68.3,72.36666666666667){}
+\rput[lb](68.3,71.93333333333334){}
+\rput[lb](68.3,71.5){}
+\psframe[linewidth = 1.1pt](73.2,74.2)(77.8,74.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](73.2,70.2)(77.8,72.8)
+\rput[lb](73.3,72.36666666666667){}
+\rput[lb](73.3,71.93333333333334){}
+\rput[lb](73.3,71.5){}
+\psframe[linewidth = 1.1pt](78.2,74.2)(82.8,74.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,70.2)(82.8,72.8)
+\rput[lb](78.3,72.36666666666667){}
+\rput[lb](78.3,71.93333333333334){}
+\rput[lb](78.3,71.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,70.2)(87.8,70.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](83.2,72.2)(87.8,74.8)
+\rput(85.5,73.5){\large0: 92:IFGE\normalsize(3)}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,70.2)(92.8,70.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,72.2)(92.8,74.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,70.2)(97.8,70.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,72.2)(97.8,74.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,70.2)(102.8,70.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,72.2)(102.8,74.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,70.2)(2.8,74.8)
+\rput(1.5,72.5){\large12\normalsize}
+\psframe[linewidth = 1.1pt](3.2,69.2)(7.8,69.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,65.2)(7.8,67.8)
+\rput[lb](3.3000000000000003,67.36666666666667){}
+\rput[lb](3.3000000000000003,66.93333333333334){}
+\rput[lb](3.3000000000000003,66.5){}
+\psframe[linewidth = 1.1pt](8.2,69.2)(12.799999999999999,69.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](8.2,65.2)(12.799999999999999,67.8)
+\rput[lb](8.299999999999999,67.36666666666667){}
+\rput[lb](8.299999999999999,66.93333333333334){}
+\rput[lb](8.299999999999999,66.5){}
+\psframe[linewidth = 1.1pt](13.2,69.2)(17.799999999999997,69.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,65.2)(17.799999999999997,67.8)
+\rput[lb](13.299999999999999,67.36666666666667){}
+\rput[lb](13.299999999999999,66.93333333333334){}
+\rput[lb](13.299999999999999,66.5){}
+\psframe[linewidth = 1.1pt](18.2,69.2)(22.799999999999997,69.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,65.2)(22.799999999999997,67.8)
+\rput[lb](18.3,67.36666666666667){}
+\rput[lb](18.3,66.93333333333334){}
+\rput[lb](18.3,66.5){}
+\psframe[linewidth = 1.1pt](23.2,69.2)(27.799999999999997,69.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,65.2)(27.799999999999997,67.8)
+\rput[lb](23.3,67.36666666666667){}
+\rput[lb](23.3,66.93333333333334){}
+\rput[lb](23.3,66.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](28.2,69.2)(32.8,69.8)
+\rput(30.5,69.5){\large Out : 6 110:IADD\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](28.2,65.2)(32.8,67.8)
+\rput[lb](28.3,67.36666666666667){}
+\rput[lb](28.3,66.93333333333334){}
+\rput[lb](28.3,66.5){}
+\psline[linewidth=3pt]{->}(30.5,69.0)(35.5,68.0)\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](33.2,69.2)(37.800000000000004,69.8)
+\rput(35.5,69.5){\large Out : 0 132:IADD\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](33.2,65.2)(37.800000000000004,67.8)
+\rput[lb](33.300000000000004,67.36666666666667){}
+\rput[lb](33.300000000000004,66.93333333333334){}
+\rput[lb](33.300000000000004,66.5){}
+\rput(35.5,65.85000000000001){\large C110:IADD\normalsize$\rightarrow$ 0}
+\psline[linewidth=3pt]{->}(35.5,69.0)(40.5,68.0)\psframe[linewidth = 1.1pt,  fillstyle=vlines, hatchcolor=lightblue, fillcolor=lightblue](38.2,60.2)(42.8,65.2)
+\psframe[linewidth = 1.1pt](38.2,69.2)(42.800000000000004,69.8)
+\psframe[linewidth = 1.1pt,  fillstyle=vlines, hatchcolor=lightblue, fillcolor=lightblue](38.2,65.2)(42.800000000000004,67.8)
+\rput[lb](38.300000000000004,67.36666666666667){In0 : PE7.1 20:DMA-LOAD(r}
+\rput[lb](38.300000000000004,66.93333333333334){In1 : PE6.0 132:IADD}
+\rput[lb](38.300000000000004,66.5){}
+\rput(40.5,65.85000000000001){\large 133:CACHE-FETCH\normalsize}
+\psframe[linewidth = 1.1pt](43.2,69.2)(47.800000000000004,69.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](43.2,65.2)(47.800000000000004,67.8)
+\rput[lb](43.300000000000004,67.36666666666667){}
+\rput[lb](43.300000000000004,66.93333333333334){}
+\rput[lb](43.300000000000004,66.5){}
+\rput(45.5,65.85000000000001){\large 107:DMA-LOAD(C)\normalsize$\rightarrow$ 1}
+\rput(47.57,65.43){\large 0\normalsize}
+\psframe[linewidth = 1.1pt](48.2,69.2)(52.800000000000004,69.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,65.2)(52.800000000000004,67.8)
+\rput[lb](48.300000000000004,67.36666666666667){}
+\rput[lb](48.300000000000004,66.93333333333334){}
+\rput[lb](48.300000000000004,66.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](53.2,69.2)(57.800000000000004,69.8)
+\rput(55.5,69.5){\large Out : 4 56:I2B\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](53.2,65.2)(57.800000000000004,67.8)
+\rput[lb](53.300000000000004,67.36666666666667){}
+\rput[lb](53.300000000000004,66.93333333333334){}
+\rput[lb](53.300000000000004,66.5){}
+\psline[linewidth=3pt]{->}(55.5,69.0)(75.5,68.0)\psframe[linewidth = 1.1pt](58.2,69.2)(62.800000000000004,69.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,65.2)(62.800000000000004,67.8)
+\rput[lb](58.300000000000004,67.36666666666667){}
+\rput[lb](58.300000000000004,66.93333333333334){}
+\rput[lb](58.300000000000004,66.5){}
+\psframe[linewidth = 1.1pt](63.2,69.2)(67.8,69.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,65.2)(67.8,67.8)
+\rput[lb](63.300000000000004,67.36666666666667){}
+\rput[lb](63.300000000000004,66.93333333333334){}
+\rput[lb](63.300000000000004,66.5){}
+\psframe[linewidth = 1.1pt](68.2,69.2)(72.8,69.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,65.2)(72.8,67.8)
+\rput[lb](68.3,67.36666666666667){}
+\rput[lb](68.3,66.93333333333334){}
+\rput[lb](68.3,66.5){}
+\psframe[linewidth = 1.1pt](73.2,69.2)(77.8,69.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](73.2,65.2)(77.8,67.8)
+\rput[lb](73.3,67.36666666666667){}
+\rput[lb](73.3,66.93333333333334){}
+\rput[lb](73.3,66.5){}
+\rput(75.5,65.85000000000001){\large C56:I2B\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt](78.2,69.2)(82.8,69.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,65.2)(82.8,67.8)
+\rput[lb](78.3,67.36666666666667){}
+\rput[lb](78.3,66.93333333333334){}
+\rput[lb](78.3,66.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,65.2)(87.8,65.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](83.2,67.2)(87.8,69.8)
+\rput(85.5,68.5){\large0: 92:IFGE\normalsize(3)}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,65.2)(92.8,65.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,67.2)(92.8,69.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,65.2)(97.8,65.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,67.2)(97.8,69.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,65.2)(102.8,65.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,67.2)(102.8,69.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,65.2)(2.8,69.8)
+\rput(1.5,67.5){\large13\normalsize}
+\psframe[linewidth = 1.1pt](3.2,64.2)(7.8,64.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,60.2)(7.8,62.800000000000004)
+\rput[lb](3.3000000000000003,62.36666666666667){}
+\rput[lb](3.3000000000000003,61.93333333333334){}
+\rput[lb](3.3000000000000003,61.5){}
+\psframe[linewidth = 1.1pt](8.2,64.2)(12.799999999999999,64.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](8.2,60.2)(12.799999999999999,62.800000000000004)
+\rput[lb](8.299999999999999,62.36666666666667){}
+\rput[lb](8.299999999999999,61.93333333333334){}
+\rput[lb](8.299999999999999,61.5){}
+\psframe[linewidth = 1.1pt](13.2,64.2)(17.799999999999997,64.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,60.2)(17.799999999999997,62.800000000000004)
+\rput[lb](13.299999999999999,62.36666666666667){}
+\rput[lb](13.299999999999999,61.93333333333334){}
+\rput[lb](13.299999999999999,61.5){}
+\psframe[linewidth = 1.1pt](18.2,64.2)(22.799999999999997,64.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,60.2)(22.799999999999997,62.800000000000004)
+\rput[lb](18.3,62.36666666666667){}
+\rput[lb](18.3,61.93333333333334){}
+\rput[lb](18.3,61.5){}
+\psframe[linewidth = 1.1pt](23.2,64.2)(27.799999999999997,64.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,60.2)(27.799999999999997,62.800000000000004)
+\rput[lb](23.3,62.36666666666667){}
+\rput[lb](23.3,61.93333333333334){}
+\rput[lb](23.3,61.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](28.2,64.2)(32.8,64.8)
+\rput(30.5,64.5){\large Out : 4 28:IADD\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](28.2,60.2)(32.8,62.800000000000004)
+\rput[lb](28.3,62.36666666666667){}
+\rput[lb](28.3,61.93333333333334){}
+\rput[lb](28.3,61.5){}
+\psline[linewidth=3pt]{->}(30.5,64.0)(35.5,63.0)\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](33.2,64.2)(37.800000000000004,64.8)
+\rput(35.5,64.5){\large Out : 0 110:IADD\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](33.2,60.2)(37.800000000000004,62.800000000000004)
+\rput[lb](33.300000000000004,62.36666666666667){}
+\rput[lb](33.300000000000004,61.93333333333334){}
+\rput[lb](33.300000000000004,61.5){}
+\rput(35.5,60.85){\large C28:IADD\normalsize$\rightarrow$ 0}
+\psline[linewidth=3pt]{->}(35.5,64.0)(55.5,63.0)\psframe[linewidth = 1.1pt](38.2,64.2)(42.800000000000004,64.8)
+\psframe[linewidth = 1.1pt,  fillstyle=vlines, hatchcolor=lightblue, fillcolor=lightblue](38.2,60.2)(42.800000000000004,62.800000000000004)
+\rput[lb](38.300000000000004,62.36666666666667){}
+\rput[lb](38.300000000000004,61.93333333333334){}
+\rput[lb](38.300000000000004,61.5){}
+\rput(40.5,60.85){\large 133:CACHE-FETCH\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](43.2,55.2)(47.8,60.2)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](43.2,64.2)(47.800000000000004,64.8)
+\rput(45.5,64.5){\large Out : 1 107:DMA-LOAD(C)\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](43.2,60.2)(47.800000000000004,62.800000000000004)
+\rput[lb](43.300000000000004,62.36666666666667){In0 : PE8.0 20:DMA-LOAD(r}
+\rput[lb](43.300000000000004,61.93333333333334){In1 : PE9.0 80:IADD}
+\rput[lb](43.300000000000004,61.5){}
+\rput(45.5,60.85){\large 81:DMA-LOAD(C)\normalsize}
+\rput(47.57,60.43){\large 0\normalsize}
+\psline[linewidth=3pt]{->}(45.5,64.0)(50.5,63.0)\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](48.2,64.2)(52.800000000000004,64.8)
+\rput(50.5,64.5){\large Out : 0 80:IADD\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](48.2,60.2)(52.800000000000004,62.800000000000004)
+\rput[lb](48.300000000000004,62.36666666666667){In0 : PE8.1 107:DMA-LOAD(}
+\rput[lb](48.300000000000004,61.93333333333334){}
+\rput[lb](48.300000000000004,61.5){}
+\rput(50.5,60.85){\large 108:I2B\normalsize$\rightarrow$ 0}
+\psline[linewidth=3pt]{->}(50.5,64.0)(45.5,63.0)\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](53.2,64.2)(57.800000000000004,64.8)
+\rput(55.5,64.5){\large Out : 1 32:IADD\normalsize$\rightarrow$ 1}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](53.2,60.2)(57.800000000000004,62.800000000000004)
+\rput[lb](53.300000000000004,62.36666666666667){}
+\rput[lb](53.300000000000004,61.93333333333334){}
+\rput[lb](53.300000000000004,61.5){}
+\rput(55.5,60.85){\large C110:IADD\normalsize$\rightarrow$ 1}
+\psline[linewidth=3pt]{->}(55.5,64.0)(75.5,63.0)\psframe[linewidth = 1.1pt](58.2,64.2)(62.800000000000004,64.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,60.2)(62.800000000000004,62.800000000000004)
+\rput[lb](58.300000000000004,62.36666666666667){}
+\rput[lb](58.300000000000004,61.93333333333334){}
+\rput[lb](58.300000000000004,61.5){}
+\psframe[linewidth = 1.1pt](63.2,64.2)(67.8,64.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,60.2)(67.8,62.800000000000004)
+\rput[lb](63.300000000000004,62.36666666666667){}
+\rput[lb](63.300000000000004,61.93333333333334){}
+\rput[lb](63.300000000000004,61.5){}
+\psframe[linewidth = 1.1pt](68.2,64.2)(72.8,64.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,60.2)(72.8,62.800000000000004)
+\rput[lb](68.3,62.36666666666667){}
+\rput[lb](68.3,61.93333333333334){}
+\rput[lb](68.3,61.5){}
+\psframe[linewidth = 1.1pt](73.2,64.2)(77.8,64.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](73.2,60.2)(77.8,62.800000000000004)
+\rput[lb](73.3,62.36666666666667){In0 : PE14.2 17:LOAD:1(re}
+\rput[lb](73.3,61.93333333333334){In1 : PE10.1 32:IADD}
+\rput[lb](73.3,61.5){In2 : PE14.0 56:I2B}
+\rput(75.5,60.85){\large 57:DMA-STORE(B)\normalsize}
+\rput(77.57000000000001,60.43){\large 1\normalsize}
+\psframe[linewidth = 1.1pt](78.2,64.2)(82.8,64.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,60.2)(82.8,62.800000000000004)
+\rput[lb](78.3,62.36666666666667){}
+\rput[lb](78.3,61.93333333333334){}
+\rput[lb](78.3,61.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,60.2)(87.8,60.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](83.2,62.2)(87.8,64.8)
+\rput(85.5,63.5){\large0: 66:IFGE\normalsize(2)}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,60.2)(92.8,60.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](88.2,62.2)(92.8,64.8)
+\rput(90.5,63.5){\large0: 40:IFGE\normalsize(1)}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,60.2)(97.8,60.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,62.2)(97.8,64.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,60.2)(102.8,60.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,62.2)(102.8,64.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,60.2)(2.8,64.8)
+\rput(1.5,62.5){\large14\normalsize}
+\psframe[linewidth = 1.1pt](3.2,59.2)(7.8,59.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,55.2)(7.8,57.800000000000004)
+\rput[lb](3.3000000000000003,57.36666666666667){}
+\rput[lb](3.3000000000000003,56.93333333333334){}
+\rput[lb](3.3000000000000003,56.5){}
+\psframe[linewidth = 1.1pt](8.2,59.2)(12.799999999999999,59.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](8.2,55.2)(12.799999999999999,57.800000000000004)
+\rput[lb](8.299999999999999,57.36666666666667){}
+\rput[lb](8.299999999999999,56.93333333333334){}
+\rput[lb](8.299999999999999,56.5){}
+\psframe[linewidth = 1.1pt](13.2,59.2)(17.799999999999997,59.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,55.2)(17.799999999999997,57.800000000000004)
+\rput[lb](13.299999999999999,57.36666666666667){}
+\rput[lb](13.299999999999999,56.93333333333334){}
+\rput[lb](13.299999999999999,56.5){}
+\psframe[linewidth = 1.1pt](18.2,59.2)(22.799999999999997,59.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,55.2)(22.799999999999997,57.800000000000004)
+\rput[lb](18.3,57.36666666666667){}
+\rput[lb](18.3,56.93333333333334){}
+\rput[lb](18.3,56.5){}
+\psframe[linewidth = 1.1pt](23.2,59.2)(27.799999999999997,59.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,55.2)(27.799999999999997,57.800000000000004)
+\rput[lb](23.3,57.36666666666667){}
+\rput[lb](23.3,56.93333333333334){}
+\rput[lb](23.3,56.5){}
+\psframe[linewidth = 1.1pt](28.2,59.2)(32.8,59.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](28.2,55.2)(32.8,57.800000000000004)
+\rput[lb](28.3,57.36666666666667){}
+\rput[lb](28.3,56.93333333333334){}
+\rput[lb](28.3,56.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](33.2,59.2)(37.800000000000004,59.800000000000004)
+\rput(35.5,59.5){\large Out : 0 28:IADD\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](33.2,55.2)(37.800000000000004,57.800000000000004)
+\rput[lb](33.300000000000004,57.36666666666667){}
+\rput[lb](33.300000000000004,56.93333333333334){}
+\rput[lb](33.300000000000004,56.5){}
+\psline[linewidth=3pt]{->}(35.5,59.0)(40.5,58.0)\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](38.2,50.2)(42.8,55.2)
+\psframe[linewidth = 1.1pt](38.2,59.2)(42.800000000000004,59.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](38.2,55.2)(42.800000000000004,57.800000000000004)
+\rput[lb](38.300000000000004,57.36666666666667){In0 : PE7.1 20:DMA-LOAD(r}
+\rput[lb](38.300000000000004,56.93333333333334){In1 : PE6.0 28:IADD}
+\rput[lb](38.300000000000004,56.5){}
+\rput(40.5,55.85){\large 29:DMA-LOAD(C)\normalsize}
+\rput(42.57,55.43){\large 1\normalsize}
+\psframe[linewidth = 1.1pt](43.2,59.2)(47.800000000000004,59.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](43.2,55.2)(47.800000000000004,57.800000000000004)
+\rput[lb](43.300000000000004,57.36666666666667){}
+\rput[lb](43.300000000000004,56.93333333333334){}
+\rput[lb](43.300000000000004,56.5){}
+\rput(45.5,55.85){\large 81:DMA-LOAD(C)\normalsize$\rightarrow$ 0}
+\rput(47.57,55.43){\large 0\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](48.2,59.2)(52.800000000000004,59.800000000000004)
+\rput(50.5,59.5){\large Out : 0 108:I2B\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,55.2)(52.800000000000004,57.800000000000004)
+\rput[lb](48.300000000000004,57.36666666666667){}
+\rput[lb](48.300000000000004,56.93333333333334){}
+\rput[lb](48.300000000000004,56.5){}
+\psline[linewidth=3pt]{->}(50.5,59.0)(55.5,58.0)\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](53.2,59.2)(57.800000000000004,59.800000000000004)
+\rput(55.5,59.5){\large Out : 1 110:IADD\normalsize$\rightarrow$ 1}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](53.2,55.2)(57.800000000000004,57.800000000000004)
+\rput[lb](53.300000000000004,57.36666666666667){}
+\rput[lb](53.300000000000004,56.93333333333334){}
+\rput[lb](53.300000000000004,56.5){}
+\rput(55.5,55.85){\large C108:I2B\normalsize$\rightarrow$ 1}
+\psline[linewidth=3pt]{->}(55.5,59.0)(75.5,58.0)\psframe[linewidth = 1.1pt](58.2,59.2)(62.800000000000004,59.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,55.2)(62.800000000000004,57.800000000000004)
+\rput[lb](58.300000000000004,57.36666666666667){}
+\rput[lb](58.300000000000004,56.93333333333334){}
+\rput[lb](58.300000000000004,56.5){}
+\psframe[linewidth = 1.1pt](63.2,59.2)(67.8,59.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,55.2)(67.8,57.800000000000004)
+\rput[lb](63.300000000000004,57.36666666666667){}
+\rput[lb](63.300000000000004,56.93333333333334){}
+\rput[lb](63.300000000000004,56.5){}
+\psframe[linewidth = 1.1pt](68.2,59.2)(72.8,59.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,55.2)(72.8,57.800000000000004)
+\rput[lb](68.3,57.36666666666667){}
+\rput[lb](68.3,56.93333333333334){}
+\rput[lb](68.3,56.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=vlines, hatchcolor=lightblue, fillcolor=lightblue](73.2,50.2)(77.8,55.2)
+\psframe[linewidth = 1.1pt](73.2,59.2)(77.8,59.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=vlines, hatchcolor=lightblue, fillcolor=lightblue](73.2,55.2)(77.8,57.800000000000004)
+\rput[lb](73.3,57.36666666666667){In0 : PE14.2 17:LOAD:1(re}
+\rput[lb](73.3,56.93333333333334){In1 : PE10.1 110:IADD}
+\rput[lb](73.3,56.5){}
+\rput(75.5,55.85){\large 135:CACHE-FETCH\normalsize}
+\psframe[linewidth = 1.1pt](78.2,59.2)(82.8,59.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,55.2)(82.8,57.800000000000004)
+\rput[lb](78.3,57.36666666666667){}
+\rput[lb](78.3,56.93333333333334){}
+\rput[lb](78.3,56.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,55.2)(87.8,55.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](83.2,57.2)(87.8,59.800000000000004)
+\rput(85.5,58.5){\large0: 66:IFGE\normalsize(2)}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,55.2)(92.8,55.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](88.2,57.2)(92.8,59.800000000000004)
+\rput(90.5,58.5){\large0: 14:IFGE\normalsize(0)}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,55.2)(97.8,55.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,57.2)(97.8,59.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,55.2)(102.8,55.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,57.2)(102.8,59.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,55.2)(2.8,59.8)
+\rput(1.5,57.5){\large15\normalsize}
+\psframe[linewidth = 1.1pt](3.2,54.2)(7.8,54.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,50.2)(7.8,52.800000000000004)
+\rput[lb](3.3000000000000003,52.36666666666667){}
+\rput[lb](3.3000000000000003,51.93333333333334){}
+\rput[lb](3.3000000000000003,51.5){}
+\psframe[linewidth = 1.1pt](8.2,54.2)(12.799999999999999,54.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](8.2,50.2)(12.799999999999999,52.800000000000004)
+\rput[lb](8.299999999999999,52.36666666666667){}
+\rput[lb](8.299999999999999,51.93333333333334){}
+\rput[lb](8.299999999999999,51.5){}
+\psframe[linewidth = 1.1pt](13.2,54.2)(17.799999999999997,54.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,50.2)(17.799999999999997,52.800000000000004)
+\rput[lb](13.299999999999999,52.36666666666667){}
+\rput[lb](13.299999999999999,51.93333333333334){}
+\rput[lb](13.299999999999999,51.5){}
+\psframe[linewidth = 1.1pt](18.2,54.2)(22.799999999999997,54.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,50.2)(22.799999999999997,52.800000000000004)
+\rput[lb](18.3,52.36666666666667){}
+\rput[lb](18.3,51.93333333333334){}
+\rput[lb](18.3,51.5){}
+\psframe[linewidth = 1.1pt](23.2,54.2)(27.799999999999997,54.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,50.2)(27.799999999999997,52.800000000000004)
+\rput[lb](23.3,52.36666666666667){}
+\rput[lb](23.3,51.93333333333334){}
+\rput[lb](23.3,51.5){}
+\psframe[linewidth = 1.1pt](28.2,54.2)(32.8,54.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](28.2,50.2)(32.8,52.800000000000004)
+\rput[lb](28.3,52.36666666666667){}
+\rput[lb](28.3,51.93333333333334){}
+\rput[lb](28.3,51.5){}
+\psframe[linewidth = 1.1pt](33.2,54.2)(37.800000000000004,54.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](33.2,50.2)(37.800000000000004,52.800000000000004)
+\rput[lb](33.300000000000004,52.36666666666667){}
+\rput[lb](33.300000000000004,51.93333333333334){}
+\rput[lb](33.300000000000004,51.5){}
+\psframe[linewidth = 1.1pt](38.2,54.2)(42.800000000000004,54.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](38.2,50.2)(42.800000000000004,52.800000000000004)
+\rput[lb](38.300000000000004,52.36666666666667){}
+\rput[lb](38.300000000000004,51.93333333333334){}
+\rput[lb](38.300000000000004,51.5){}
+\rput(40.5,50.85){\large 29:DMA-LOAD(C)\normalsize$\rightarrow$ 1}
+\rput(42.57,50.43){\large 1\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](43.2,54.2)(47.800000000000004,54.800000000000004)
+\rput(45.5,54.5){\large Out : 0 81:DMA-LOAD(C)\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,50.2)(47.800000000000004,52.800000000000004)
+\rput[lb](43.300000000000004,52.36666666666667){}
+\rput[lb](43.300000000000004,51.93333333333334){}
+\rput[lb](43.300000000000004,51.5){}
+\psline[linewidth=3pt]{->}(45.5,54.0)(50.5,53.0)\psframe[linewidth = 1.1pt](48.2,54.2)(52.800000000000004,54.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](48.2,50.2)(52.800000000000004,52.800000000000004)
+\rput[lb](48.300000000000004,52.36666666666667){In0 : PE8.0 81:DMA-LOAD(C}
+\rput[lb](48.300000000000004,51.93333333333334){}
+\rput[lb](48.300000000000004,51.5){}
+\rput(50.5,50.85){\large 82:I2B\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt](53.2,54.2)(57.800000000000004,54.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](53.2,50.2)(57.800000000000004,52.800000000000004)
+\rput[lb](53.300000000000004,52.36666666666667){}
+\rput[lb](53.300000000000004,51.93333333333334){}
+\rput[lb](53.300000000000004,51.5){}
+\psframe[linewidth = 1.1pt](58.2,54.2)(62.800000000000004,54.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,50.2)(62.800000000000004,52.800000000000004)
+\rput[lb](58.300000000000004,52.36666666666667){}
+\rput[lb](58.300000000000004,51.93333333333334){}
+\rput[lb](58.300000000000004,51.5){}
+\psframe[linewidth = 1.1pt](63.2,54.2)(67.8,54.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,50.2)(67.8,52.800000000000004)
+\rput[lb](63.300000000000004,52.36666666666667){}
+\rput[lb](63.300000000000004,51.93333333333334){}
+\rput[lb](63.300000000000004,51.5){}
+\psframe[linewidth = 1.1pt](68.2,54.2)(72.8,54.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,50.2)(72.8,52.800000000000004)
+\rput[lb](68.3,52.36666666666667){}
+\rput[lb](68.3,51.93333333333334){}
+\rput[lb](68.3,51.5){}
+\psframe[linewidth = 1.1pt](73.2,54.2)(77.8,54.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=vlines, hatchcolor=lightblue, fillcolor=lightblue](73.2,50.2)(77.8,52.800000000000004)
+\rput[lb](73.3,52.36666666666667){}
+\rput[lb](73.3,51.93333333333334){}
+\rput[lb](73.3,51.5){}
+\rput(75.5,50.85){\large 135:CACHE-FETCH\normalsize}
+\psframe[linewidth = 1.1pt](78.2,54.2)(82.8,54.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,50.2)(82.8,52.800000000000004)
+\rput[lb](78.3,52.36666666666667){}
+\rput[lb](78.3,51.93333333333334){}
+\rput[lb](78.3,51.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,50.2)(87.8,50.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,52.2)(87.8,54.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,50.2)(92.8,50.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](88.2,52.2)(92.8,54.800000000000004)
+\rput(90.5,53.5){\large0: 14:IFGE\normalsize(0)}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,50.2)(97.8,50.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,52.2)(97.8,54.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,50.2)(102.8,50.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,52.2)(102.8,54.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,50.2)(2.8,54.8)
+\rput(1.5,52.5){\large16\normalsize}
+\psframe[linewidth = 1.1pt](3.2,49.2)(7.8,49.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,45.2)(7.8,47.800000000000004)
+\rput[lb](3.3000000000000003,47.36666666666667){}
+\rput[lb](3.3000000000000003,46.93333333333334){}
+\rput[lb](3.3000000000000003,46.5){}
+\psframe[linewidth = 1.1pt](8.2,49.2)(12.799999999999999,49.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](8.2,45.2)(12.799999999999999,47.800000000000004)
+\rput[lb](8.299999999999999,47.36666666666667){}
+\rput[lb](8.299999999999999,46.93333333333334){}
+\rput[lb](8.299999999999999,46.5){}
+\psframe[linewidth = 1.1pt](13.2,49.2)(17.799999999999997,49.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,45.2)(17.799999999999997,47.800000000000004)
+\rput[lb](13.299999999999999,47.36666666666667){}
+\rput[lb](13.299999999999999,46.93333333333334){}
+\rput[lb](13.299999999999999,46.5){}
+\psframe[linewidth = 1.1pt](18.2,49.2)(22.799999999999997,49.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,45.2)(22.799999999999997,47.800000000000004)
+\rput[lb](18.3,47.36666666666667){}
+\rput[lb](18.3,46.93333333333334){}
+\rput[lb](18.3,46.5){}
+\psframe[linewidth = 1.1pt](23.2,49.2)(27.799999999999997,49.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,45.2)(27.799999999999997,47.800000000000004)
+\rput[lb](23.3,47.36666666666667){}
+\rput[lb](23.3,46.93333333333334){}
+\rput[lb](23.3,46.5){}
+\psframe[linewidth = 1.1pt](28.2,49.2)(32.8,49.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](28.2,45.2)(32.8,47.800000000000004)
+\rput[lb](28.3,47.36666666666667){}
+\rput[lb](28.3,46.93333333333334){}
+\rput[lb](28.3,46.5){}
+\psframe[linewidth = 1.1pt](33.2,49.2)(37.800000000000004,49.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](33.2,45.2)(37.800000000000004,47.800000000000004)
+\rput[lb](33.300000000000004,47.36666666666667){In0 : PE7.1 29:DMA-LOAD(C}
+\rput[lb](33.300000000000004,46.93333333333334){}
+\rput[lb](33.300000000000004,46.5){}
+\rput(35.5,45.85){\large 30:I2B\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](38.2,49.2)(42.800000000000004,49.800000000000004)
+\rput(40.5,49.5){\large Out : 1 29:DMA-LOAD(C)\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](38.2,45.2)(42.800000000000004,47.800000000000004)
+\rput[lb](38.300000000000004,47.36666666666667){}
+\rput[lb](38.300000000000004,46.93333333333334){}
+\rput[lb](38.300000000000004,46.5){}
+\psline[linewidth=3pt]{->}(40.5,49.0)(35.5,48.0)\psframe[linewidth = 1.1pt](43.2,49.2)(47.800000000000004,49.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,45.2)(47.800000000000004,47.800000000000004)
+\rput[lb](43.300000000000004,47.36666666666667){}
+\rput[lb](43.300000000000004,46.93333333333334){}
+\rput[lb](43.300000000000004,46.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](48.2,49.2)(52.800000000000004,49.800000000000004)
+\rput(50.5,49.5){\large Out : 0 82:I2B\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,45.2)(52.800000000000004,47.800000000000004)
+\rput[lb](48.300000000000004,47.36666666666667){}
+\rput[lb](48.300000000000004,46.93333333333334){}
+\rput[lb](48.300000000000004,46.5){}
+\psline[linewidth=3pt]{->}(50.5,49.0)(55.5,48.0)\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](53.2,49.2)(57.800000000000004,49.800000000000004)
+\rput(55.5,49.5){\large Out : 1 108:I2B\normalsize$\rightarrow$ 1}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](53.2,45.2)(57.800000000000004,47.800000000000004)
+\rput[lb](53.300000000000004,47.36666666666667){}
+\rput[lb](53.300000000000004,46.93333333333334){}
+\rput[lb](53.300000000000004,46.5){}
+\rput(55.5,45.85){\large C82:I2B\normalsize$\rightarrow$ 1}
+\psline[linewidth=3pt]{->}(55.5,49.0)(75.5,48.0)\psframe[linewidth = 1.1pt](58.2,49.2)(62.800000000000004,49.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,45.2)(62.800000000000004,47.800000000000004)
+\rput[lb](58.300000000000004,47.36666666666667){}
+\rput[lb](58.300000000000004,46.93333333333334){}
+\rput[lb](58.300000000000004,46.5){}
+\psframe[linewidth = 1.1pt](63.2,49.2)(67.8,49.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,45.2)(67.8,47.800000000000004)
+\rput[lb](63.300000000000004,47.36666666666667){}
+\rput[lb](63.300000000000004,46.93333333333334){}
+\rput[lb](63.300000000000004,46.5){}
+\psframe[linewidth = 1.1pt](68.2,49.2)(72.8,49.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,45.2)(72.8,47.800000000000004)
+\rput[lb](68.3,47.36666666666667){}
+\rput[lb](68.3,46.93333333333334){}
+\rput[lb](68.3,46.5){}
+\psframe[linewidth = 1.1pt](73.2,49.2)(77.8,49.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](73.2,45.2)(77.8,47.800000000000004)
+\rput[lb](73.3,47.36666666666667){}
+\rput[lb](73.3,46.93333333333334){}
+\rput[lb](73.3,46.5){}
+\rput(75.5,45.85){\large C108:I2B\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt](78.2,49.2)(82.8,49.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,45.2)(82.8,47.800000000000004)
+\rput[lb](78.3,47.36666666666667){}
+\rput[lb](78.3,46.93333333333334){}
+\rput[lb](78.3,46.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,45.2)(87.8,45.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,47.2)(87.8,49.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,45.2)(92.8,45.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,47.2)(92.8,49.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,45.2)(97.8,45.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,47.2)(97.8,49.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,45.2)(102.8,45.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,47.2)(102.8,49.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,45.2)(2.8,49.8)
+\rput(1.5,47.5){\large17\normalsize}
+\psframe[linewidth = 1.1pt](3.2,44.2)(7.8,44.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,40.2)(7.8,42.800000000000004)
+\rput[lb](3.3000000000000003,42.36666666666667){}
+\rput[lb](3.3000000000000003,41.93333333333334){}
+\rput[lb](3.3000000000000003,41.5){}
+\psframe[linewidth = 1.1pt](8.2,44.2)(12.799999999999999,44.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](8.2,40.2)(12.799999999999999,42.800000000000004)
+\rput[lb](8.299999999999999,42.36666666666667){}
+\rput[lb](8.299999999999999,41.93333333333334){}
+\rput[lb](8.299999999999999,41.5){}
+\psframe[linewidth = 1.1pt](13.2,44.2)(17.799999999999997,44.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,40.2)(17.799999999999997,42.800000000000004)
+\rput[lb](13.299999999999999,42.36666666666667){}
+\rput[lb](13.299999999999999,41.93333333333334){}
+\rput[lb](13.299999999999999,41.5){}
+\psframe[linewidth = 1.1pt](18.2,44.2)(22.799999999999997,44.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,40.2)(22.799999999999997,42.800000000000004)
+\rput[lb](18.3,42.36666666666667){}
+\rput[lb](18.3,41.93333333333334){}
+\rput[lb](18.3,41.5){}
+\psframe[linewidth = 1.1pt](23.2,44.2)(27.799999999999997,44.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,40.2)(27.799999999999997,42.800000000000004)
+\rput[lb](23.3,42.36666666666667){}
+\rput[lb](23.3,41.93333333333334){}
+\rput[lb](23.3,41.5){}
+\psframe[linewidth = 1.1pt](28.2,44.2)(32.8,44.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](28.2,40.2)(32.8,42.800000000000004)
+\rput[lb](28.3,42.36666666666667){}
+\rput[lb](28.3,41.93333333333334){}
+\rput[lb](28.3,41.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](33.2,44.2)(37.800000000000004,44.800000000000004)
+\rput(35.5,44.5){\large Out : 0 30:I2B\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](33.2,40.2)(37.800000000000004,42.800000000000004)
+\rput[lb](33.300000000000004,42.36666666666667){}
+\rput[lb](33.300000000000004,41.93333333333334){}
+\rput[lb](33.300000000000004,41.5){}
+\psline[linewidth=3pt]{->}(35.5,44.0)(55.5,43.0)\psframe[linewidth = 1.1pt](38.2,44.2)(42.800000000000004,44.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](38.2,40.2)(42.800000000000004,42.800000000000004)
+\rput[lb](38.300000000000004,42.36666666666667){}
+\rput[lb](38.300000000000004,41.93333333333334){}
+\rput[lb](38.300000000000004,41.5){}
+\psframe[linewidth = 1.1pt](43.2,44.2)(47.800000000000004,44.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,40.2)(47.800000000000004,42.800000000000004)
+\rput[lb](43.300000000000004,42.36666666666667){}
+\rput[lb](43.300000000000004,41.93333333333334){}
+\rput[lb](43.300000000000004,41.5){}
+\psframe[linewidth = 1.1pt](48.2,44.2)(52.800000000000004,44.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,40.2)(52.800000000000004,42.800000000000004)
+\rput[lb](48.300000000000004,42.36666666666667){}
+\rput[lb](48.300000000000004,41.93333333333334){}
+\rput[lb](48.300000000000004,41.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](53.2,44.2)(57.800000000000004,44.800000000000004)
+\rput(55.5,44.5){\large Out : 1 82:I2B\normalsize$\rightarrow$ 1}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](53.2,40.2)(57.800000000000004,42.800000000000004)
+\rput[lb](53.300000000000004,42.36666666666667){}
+\rput[lb](53.300000000000004,41.93333333333334){}
+\rput[lb](53.300000000000004,41.5){}
+\rput(55.5,40.85){\large C30:I2B\normalsize$\rightarrow$ 1}
+\psline[linewidth=3pt]{->}(55.5,44.0)(75.5,43.0)\psframe[linewidth = 1.1pt](58.2,44.2)(62.800000000000004,44.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,40.2)(62.800000000000004,42.800000000000004)
+\rput[lb](58.300000000000004,42.36666666666667){}
+\rput[lb](58.300000000000004,41.93333333333334){}
+\rput[lb](58.300000000000004,41.5){}
+\psframe[linewidth = 1.1pt](63.2,44.2)(67.8,44.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,40.2)(67.8,42.800000000000004)
+\rput[lb](63.300000000000004,42.36666666666667){}
+\rput[lb](63.300000000000004,41.93333333333334){}
+\rput[lb](63.300000000000004,41.5){}
+\psframe[linewidth = 1.1pt](68.2,44.2)(72.8,44.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,40.2)(72.8,42.800000000000004)
+\rput[lb](68.3,42.36666666666667){}
+\rput[lb](68.3,41.93333333333334){}
+\rput[lb](68.3,41.5){}
+\psframe[linewidth = 1.1pt](73.2,44.2)(77.8,44.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](73.2,40.2)(77.8,42.800000000000004)
+\rput[lb](73.3,42.36666666666667){}
+\rput[lb](73.3,41.93333333333334){}
+\rput[lb](73.3,41.5){}
+\rput(75.5,40.85){\large C82:I2B\normalsize$\rightarrow$ 1}
+\psframe[linewidth = 1.1pt](78.2,44.2)(82.8,44.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,40.2)(82.8,42.800000000000004)
+\rput[lb](78.3,42.36666666666667){}
+\rput[lb](78.3,41.93333333333334){}
+\rput[lb](78.3,41.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,40.2)(87.8,40.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,42.2)(87.8,44.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,40.2)(92.8,40.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,42.2)(92.8,44.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,40.2)(97.8,40.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,42.2)(97.8,44.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,40.2)(102.8,40.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,42.2)(102.8,44.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,40.2)(2.8,44.8)
+\rput(1.5,42.5){\large18\normalsize}
+\psframe[linewidth = 1.1pt](3.2,39.2)(7.8,39.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,35.2)(7.8,37.800000000000004)
+\rput[lb](3.3000000000000003,37.36666666666667){}
+\rput[lb](3.3000000000000003,36.93333333333334){}
+\rput[lb](3.3000000000000003,36.5){}
+\psframe[linewidth = 1.1pt](8.2,39.2)(12.799999999999999,39.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](8.2,35.2)(12.799999999999999,37.800000000000004)
+\rput[lb](8.299999999999999,37.36666666666667){}
+\rput[lb](8.299999999999999,36.93333333333334){}
+\rput[lb](8.299999999999999,36.5){}
+\psframe[linewidth = 1.1pt](13.2,39.2)(17.799999999999997,39.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,35.2)(17.799999999999997,37.800000000000004)
+\rput[lb](13.299999999999999,37.36666666666667){}
+\rput[lb](13.299999999999999,36.93333333333334){}
+\rput[lb](13.299999999999999,36.5){}
+\psframe[linewidth = 1.1pt](18.2,39.2)(22.799999999999997,39.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,35.2)(22.799999999999997,37.800000000000004)
+\rput[lb](18.3,37.36666666666667){}
+\rput[lb](18.3,36.93333333333334){}
+\rput[lb](18.3,36.5){}
+\psframe[linewidth = 1.1pt](23.2,39.2)(27.799999999999997,39.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,35.2)(27.799999999999997,37.800000000000004)
+\rput[lb](23.3,37.36666666666667){}
+\rput[lb](23.3,36.93333333333334){}
+\rput[lb](23.3,36.5){}
+\psframe[linewidth = 1.1pt](28.2,39.2)(32.8,39.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](28.2,35.2)(32.8,37.800000000000004)
+\rput[lb](28.3,37.36666666666667){}
+\rput[lb](28.3,36.93333333333334){}
+\rput[lb](28.3,36.5){}
+\psframe[linewidth = 1.1pt](33.2,39.2)(37.800000000000004,39.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](33.2,35.2)(37.800000000000004,37.800000000000004)
+\rput[lb](33.300000000000004,37.36666666666667){}
+\rput[lb](33.300000000000004,36.93333333333334){}
+\rput[lb](33.300000000000004,36.5){}
+\psframe[linewidth = 1.1pt](38.2,39.2)(42.800000000000004,39.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](38.2,35.2)(42.800000000000004,37.800000000000004)
+\rput[lb](38.300000000000004,37.36666666666667){}
+\rput[lb](38.300000000000004,36.93333333333334){}
+\rput[lb](38.300000000000004,36.5){}
+\psframe[linewidth = 1.1pt](43.2,39.2)(47.800000000000004,39.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,35.2)(47.800000000000004,37.800000000000004)
+\rput[lb](43.300000000000004,37.36666666666667){}
+\rput[lb](43.300000000000004,36.93333333333334){}
+\rput[lb](43.300000000000004,36.5){}
+\psframe[linewidth = 1.1pt](48.2,39.2)(52.800000000000004,39.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,35.2)(52.800000000000004,37.800000000000004)
+\rput[lb](48.300000000000004,37.36666666666667){}
+\rput[lb](48.300000000000004,36.93333333333334){}
+\rput[lb](48.300000000000004,36.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](53.2,39.2)(57.800000000000004,39.800000000000004)
+\rput(55.5,39.5){\large Out : 2 58:IADD\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](53.2,35.2)(57.800000000000004,37.800000000000004)
+\rput[lb](53.300000000000004,37.36666666666667){}
+\rput[lb](53.300000000000004,36.93333333333334){}
+\rput[lb](53.300000000000004,36.5){}
+\psline[linewidth=3pt]{->}(55.5,39.0)(75.5,38.0)\psframe[linewidth = 1.1pt](58.2,39.2)(62.800000000000004,39.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,35.2)(62.800000000000004,37.800000000000004)
+\rput[lb](58.300000000000004,37.36666666666667){}
+\rput[lb](58.300000000000004,36.93333333333334){}
+\rput[lb](58.300000000000004,36.5){}
+\psframe[linewidth = 1.1pt](63.2,39.2)(67.8,39.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,35.2)(67.8,37.800000000000004)
+\rput[lb](63.300000000000004,37.36666666666667){}
+\rput[lb](63.300000000000004,36.93333333333334){}
+\rput[lb](63.300000000000004,36.5){}
+\psframe[linewidth = 1.1pt](68.2,39.2)(72.8,39.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,35.2)(72.8,37.800000000000004)
+\rput[lb](68.3,37.36666666666667){}
+\rput[lb](68.3,36.93333333333334){}
+\rput[lb](68.3,36.5){}
+\psframe[linewidth = 1.1pt](73.2,39.2)(77.8,39.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](73.2,35.2)(77.8,37.800000000000004)
+\rput[lb](73.3,37.36666666666667){In0 : PE14.2 17:LOAD:1(re}
+\rput[lb](73.3,36.93333333333334){In1 : PE10.2 58:IADD}
+\rput[lb](73.3,36.5){In2 : PE14.1 82:I2B}
+\rput(75.5,35.85){\large 83:DMA-STORE(B)\normalsize}
+\rput(77.57000000000001,35.43){\large 0\normalsize}
+\psframe[linewidth = 1.1pt](78.2,39.2)(82.8,39.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,35.2)(82.8,37.800000000000004)
+\rput[lb](78.3,37.36666666666667){}
+\rput[lb](78.3,36.93333333333334){}
+\rput[lb](78.3,36.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,35.2)(87.8,35.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](83.2,37.2)(87.8,39.800000000000004)
+\rput(85.5,38.5){\large0: 66:IFGE\normalsize(2)}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,35.2)(92.8,35.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,37.2)(92.8,39.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,35.2)(97.8,35.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,37.2)(97.8,39.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,35.2)(102.8,35.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,37.2)(102.8,39.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,35.2)(2.8,39.8)
+\rput(1.5,37.5){\large19\normalsize}
+\psframe[linewidth = 1.1pt](3.2,34.2)(7.8,34.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,30.2)(7.8,32.8)
+\rput[lb](3.3000000000000003,32.36666666666667){}
+\rput[lb](3.3000000000000003,31.933333333333334){}
+\rput[lb](3.3000000000000003,31.5){}
+\psframe[linewidth = 1.1pt](8.2,34.2)(12.799999999999999,34.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](8.2,30.2)(12.799999999999999,32.8)
+\rput[lb](8.299999999999999,32.36666666666667){}
+\rput[lb](8.299999999999999,31.933333333333334){}
+\rput[lb](8.299999999999999,31.5){}
+\psframe[linewidth = 1.1pt](13.2,34.2)(17.799999999999997,34.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,30.2)(17.799999999999997,32.8)
+\rput[lb](13.299999999999999,32.36666666666667){}
+\rput[lb](13.299999999999999,31.933333333333334){}
+\rput[lb](13.299999999999999,31.5){}
+\psframe[linewidth = 1.1pt](18.2,34.2)(22.799999999999997,34.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,30.2)(22.799999999999997,32.8)
+\rput[lb](18.3,32.36666666666667){}
+\rput[lb](18.3,31.933333333333334){}
+\rput[lb](18.3,31.5){}
+\psframe[linewidth = 1.1pt](23.2,34.2)(27.799999999999997,34.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,30.2)(27.799999999999997,32.8)
+\rput[lb](23.3,32.36666666666667){}
+\rput[lb](23.3,31.933333333333334){}
+\rput[lb](23.3,31.5){}
+\psframe[linewidth = 1.1pt](28.2,34.2)(32.8,34.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](28.2,30.2)(32.8,32.8)
+\rput[lb](28.3,32.36666666666667){}
+\rput[lb](28.3,31.933333333333334){}
+\rput[lb](28.3,31.5){}
+\psframe[linewidth = 1.1pt](33.2,34.2)(37.800000000000004,34.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](33.2,30.2)(37.800000000000004,32.8)
+\rput[lb](33.300000000000004,32.36666666666667){}
+\rput[lb](33.300000000000004,31.933333333333334){}
+\rput[lb](33.300000000000004,31.5){}
+\psframe[linewidth = 1.1pt](38.2,34.2)(42.800000000000004,34.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](38.2,30.2)(42.800000000000004,32.8)
+\rput[lb](38.300000000000004,32.36666666666667){}
+\rput[lb](38.300000000000004,31.933333333333334){}
+\rput[lb](38.300000000000004,31.5){}
+\psframe[linewidth = 1.1pt](43.2,34.2)(47.800000000000004,34.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,30.2)(47.800000000000004,32.8)
+\rput[lb](43.300000000000004,32.36666666666667){}
+\rput[lb](43.300000000000004,31.933333333333334){}
+\rput[lb](43.300000000000004,31.5){}
+\psframe[linewidth = 1.1pt](48.2,34.2)(52.800000000000004,34.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,30.2)(52.800000000000004,32.8)
+\rput[lb](48.300000000000004,32.36666666666667){}
+\rput[lb](48.300000000000004,31.933333333333334){}
+\rput[lb](48.300000000000004,31.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](53.2,34.2)(57.800000000000004,34.800000000000004)
+\rput(55.5,34.5){\large Out : 3 84:IADD\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](53.2,30.2)(57.800000000000004,32.8)
+\rput[lb](53.300000000000004,32.36666666666667){}
+\rput[lb](53.300000000000004,31.933333333333334){}
+\rput[lb](53.300000000000004,31.5){}
+\psline[linewidth=3pt]{->}(55.5,34.0)(75.5,33.0)\psframe[linewidth = 1.1pt](58.2,34.2)(62.800000000000004,34.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,30.2)(62.800000000000004,32.8)
+\rput[lb](58.300000000000004,32.36666666666667){}
+\rput[lb](58.300000000000004,31.933333333333334){}
+\rput[lb](58.300000000000004,31.5){}
+\psframe[linewidth = 1.1pt](63.2,34.2)(67.8,34.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,30.2)(67.8,32.8)
+\rput[lb](63.300000000000004,32.36666666666667){}
+\rput[lb](63.300000000000004,31.933333333333334){}
+\rput[lb](63.300000000000004,31.5){}
+\psframe[linewidth = 1.1pt](68.2,34.2)(72.8,34.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,30.2)(72.8,32.8)
+\rput[lb](68.3,32.36666666666667){}
+\rput[lb](68.3,31.933333333333334){}
+\rput[lb](68.3,31.5){}
+\psframe[linewidth = 1.1pt](73.2,34.2)(77.8,34.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](73.2,30.2)(77.8,32.8)
+\rput[lb](73.3,32.36666666666667){In0 : PE14.2 17:LOAD:1(re}
+\rput[lb](73.3,31.933333333333334){In1 : PE10.3 84:IADD}
+\rput[lb](73.3,31.5){In2 : PE14.0 108:I2B}
+\rput(75.5,30.849999999999998){\large 109:DMA-STORE(B\normalsize}
+\rput(77.57000000000001,30.43){\large 0\normalsize}
+\psframe[linewidth = 1.1pt](78.2,34.2)(82.8,34.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,30.2)(82.8,32.8)
+\rput[lb](78.3,32.36666666666667){}
+\rput[lb](78.3,31.933333333333334){}
+\rput[lb](78.3,31.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,30.2)(87.8,30.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](83.2,32.2)(87.8,34.800000000000004)
+\rput(85.5,33.5){\large0: 92:IFGE\normalsize(3)}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,30.2)(92.8,30.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,32.2)(92.8,34.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,30.2)(97.8,30.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,32.2)(97.8,34.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,30.2)(102.8,30.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,32.2)(102.8,34.800000000000004)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,30.2)(2.8,34.8)
+\rput(1.5,32.5){\large20\normalsize}
+\psframe[linewidth = 1.1pt](3.2,29.2)(7.8,29.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,25.2)(7.8,27.8)
+\rput[lb](3.3000000000000003,27.366666666666667){}
+\rput[lb](3.3000000000000003,26.933333333333334){}
+\rput[lb](3.3000000000000003,26.5){}
+\psframe[linewidth = 1.1pt](8.2,29.2)(12.799999999999999,29.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](8.2,25.2)(12.799999999999999,27.8)
+\rput[lb](8.299999999999999,27.366666666666667){}
+\rput[lb](8.299999999999999,26.933333333333334){}
+\rput[lb](8.299999999999999,26.5){}
+\psframe[linewidth = 1.1pt](13.2,29.2)(17.799999999999997,29.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,25.2)(17.799999999999997,27.8)
+\rput[lb](13.299999999999999,27.366666666666667){}
+\rput[lb](13.299999999999999,26.933333333333334){}
+\rput[lb](13.299999999999999,26.5){}
+\psframe[linewidth = 1.1pt](18.2,29.2)(22.799999999999997,29.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,25.2)(22.799999999999997,27.8)
+\rput[lb](18.3,27.366666666666667){}
+\rput[lb](18.3,26.933333333333334){}
+\rput[lb](18.3,26.5){}
+\psframe[linewidth = 1.1pt](23.2,29.2)(27.799999999999997,29.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,25.2)(27.799999999999997,27.8)
+\rput[lb](23.3,27.366666666666667){}
+\rput[lb](23.3,26.933333333333334){}
+\rput[lb](23.3,26.5){}
+\psframe[linewidth = 1.1pt](28.2,29.2)(32.8,29.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](28.2,25.2)(32.8,27.8)
+\rput[lb](28.3,27.366666666666667){}
+\rput[lb](28.3,26.933333333333334){}
+\rput[lb](28.3,26.5){}
+\psframe[linewidth = 1.1pt](33.2,29.2)(37.800000000000004,29.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](33.2,25.2)(37.800000000000004,27.8)
+\rput[lb](33.300000000000004,27.366666666666667){}
+\rput[lb](33.300000000000004,26.933333333333334){}
+\rput[lb](33.300000000000004,26.5){}
+\psframe[linewidth = 1.1pt](38.2,29.2)(42.800000000000004,29.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](38.2,25.2)(42.800000000000004,27.8)
+\rput[lb](38.300000000000004,27.366666666666667){}
+\rput[lb](38.300000000000004,26.933333333333334){}
+\rput[lb](38.300000000000004,26.5){}
+\psframe[linewidth = 1.1pt](43.2,29.2)(47.800000000000004,29.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,25.2)(47.800000000000004,27.8)
+\rput[lb](43.300000000000004,27.366666666666667){}
+\rput[lb](43.300000000000004,26.933333333333334){}
+\rput[lb](43.300000000000004,26.5){}
+\psframe[linewidth = 1.1pt](48.2,29.2)(52.800000000000004,29.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,25.2)(52.800000000000004,27.8)
+\rput[lb](48.300000000000004,27.366666666666667){}
+\rput[lb](48.300000000000004,26.933333333333334){}
+\rput[lb](48.300000000000004,26.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](53.2,29.2)(57.800000000000004,29.8)
+\rput(55.5,29.5){\large Out : 1 30:I2B\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](53.2,25.2)(57.800000000000004,27.8)
+\rput[lb](53.300000000000004,27.366666666666667){}
+\rput[lb](53.300000000000004,26.933333333333334){}
+\rput[lb](53.300000000000004,26.5){}
+\psline[linewidth=3pt]{->}(55.5,29.0)(75.5,28.0)\psframe[linewidth = 1.1pt](58.2,29.2)(62.800000000000004,29.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,25.2)(62.800000000000004,27.8)
+\rput[lb](58.300000000000004,27.366666666666667){}
+\rput[lb](58.300000000000004,26.933333333333334){}
+\rput[lb](58.300000000000004,26.5){}
+\psframe[linewidth = 1.1pt](63.2,29.2)(67.8,29.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,25.2)(67.8,27.8)
+\rput[lb](63.300000000000004,27.366666666666667){}
+\rput[lb](63.300000000000004,26.933333333333334){}
+\rput[lb](63.300000000000004,26.5){}
+\psframe[linewidth = 1.1pt](68.2,29.2)(72.8,29.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,25.2)(72.8,27.8)
+\rput[lb](68.3,27.366666666666667){}
+\rput[lb](68.3,26.933333333333334){}
+\rput[lb](68.3,26.5){}
+\psframe[linewidth = 1.1pt](73.2,29.2)(77.8,29.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](73.2,25.2)(77.8,27.8)
+\rput[lb](73.3,27.366666666666667){}
+\rput[lb](73.3,26.933333333333334){}
+\rput[lb](73.3,26.5){}
+\rput(75.5,25.849999999999998){\large C30:I2B\normalsize$\rightarrow$ 0}
+\psframe[linewidth = 1.1pt](78.2,29.2)(82.8,29.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,25.2)(82.8,27.8)
+\rput[lb](78.3,27.366666666666667){}
+\rput[lb](78.3,26.933333333333334){}
+\rput[lb](78.3,26.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,25.2)(87.8,25.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,27.2)(87.8,29.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,25.2)(92.8,25.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,27.2)(92.8,29.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,25.2)(97.8,25.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,27.2)(97.8,29.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,25.2)(102.8,25.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,27.2)(102.8,29.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,25.2)(2.8,29.8)
+\rput(1.5,27.5){\large21\normalsize}
+\psframe[linewidth = 1.1pt](3.2,24.2)(7.8,24.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,20.2)(7.8,22.8)
+\rput[lb](3.3000000000000003,22.366666666666667){}
+\rput[lb](3.3000000000000003,21.933333333333334){}
+\rput[lb](3.3000000000000003,21.5){}
+\psframe[linewidth = 1.1pt](8.2,24.2)(12.799999999999999,24.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](8.2,20.2)(12.799999999999999,22.8)
+\rput[lb](8.299999999999999,22.366666666666667){}
+\rput[lb](8.299999999999999,21.933333333333334){}
+\rput[lb](8.299999999999999,21.5){}
+\psframe[linewidth = 1.1pt](13.2,24.2)(17.799999999999997,24.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,20.2)(17.799999999999997,22.8)
+\rput[lb](13.299999999999999,22.366666666666667){}
+\rput[lb](13.299999999999999,21.933333333333334){}
+\rput[lb](13.299999999999999,21.5){}
+\psframe[linewidth = 1.1pt](18.2,24.2)(22.799999999999997,24.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,20.2)(22.799999999999997,22.8)
+\rput[lb](18.3,22.366666666666667){}
+\rput[lb](18.3,21.933333333333334){}
+\rput[lb](18.3,21.5){}
+\psframe[linewidth = 1.1pt](23.2,24.2)(27.799999999999997,24.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,20.2)(27.799999999999997,22.8)
+\rput[lb](23.3,22.366666666666667){}
+\rput[lb](23.3,21.933333333333334){}
+\rput[lb](23.3,21.5){}
+\psframe[linewidth = 1.1pt](28.2,24.2)(32.8,24.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](28.2,20.2)(32.8,22.8)
+\rput[lb](28.3,22.366666666666667){}
+\rput[lb](28.3,21.933333333333334){}
+\rput[lb](28.3,21.5){}
+\psframe[linewidth = 1.1pt](33.2,24.2)(37.800000000000004,24.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](33.2,20.2)(37.800000000000004,22.8)
+\rput[lb](33.300000000000004,22.366666666666667){}
+\rput[lb](33.300000000000004,21.933333333333334){}
+\rput[lb](33.300000000000004,21.5){}
+\psframe[linewidth = 1.1pt](38.2,24.2)(42.800000000000004,24.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](38.2,20.2)(42.800000000000004,22.8)
+\rput[lb](38.300000000000004,22.366666666666667){}
+\rput[lb](38.300000000000004,21.933333333333334){}
+\rput[lb](38.300000000000004,21.5){}
+\psframe[linewidth = 1.1pt](43.2,24.2)(47.800000000000004,24.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,20.2)(47.800000000000004,22.8)
+\rput[lb](43.300000000000004,22.366666666666667){}
+\rput[lb](43.300000000000004,21.933333333333334){}
+\rput[lb](43.300000000000004,21.5){}
+\psframe[linewidth = 1.1pt](48.2,24.2)(52.800000000000004,24.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,20.2)(52.800000000000004,22.8)
+\rput[lb](48.300000000000004,22.366666666666667){}
+\rput[lb](48.300000000000004,21.933333333333334){}
+\rput[lb](48.300000000000004,21.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](53.2,24.2)(57.800000000000004,24.8)
+\rput(55.5,24.5){\large Out : 0 9:LOAD:2\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](53.2,20.2)(57.800000000000004,22.8)
+\rput[lb](53.300000000000004,22.366666666666667){}
+\rput[lb](53.300000000000004,21.933333333333334){}
+\rput[lb](53.300000000000004,21.5){}
+\psline[linewidth=3pt]{->}(55.5,24.0)(75.5,23.0)\psframe[linewidth = 1.1pt](58.2,24.2)(62.800000000000004,24.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,20.2)(62.800000000000004,22.8)
+\rput[lb](58.300000000000004,22.366666666666667){}
+\rput[lb](58.300000000000004,21.933333333333334){}
+\rput[lb](58.300000000000004,21.5){}
+\psframe[linewidth = 1.1pt](63.2,24.2)(67.8,24.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,20.2)(67.8,22.8)
+\rput[lb](63.300000000000004,22.366666666666667){}
+\rput[lb](63.300000000000004,21.933333333333334){}
+\rput[lb](63.300000000000004,21.5){}
+\psframe[linewidth = 1.1pt](68.2,24.2)(72.8,24.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,20.2)(72.8,22.8)
+\rput[lb](68.3,22.366666666666667){}
+\rput[lb](68.3,21.933333333333334){}
+\rput[lb](68.3,21.5){}
+\psframe[linewidth = 1.1pt](73.2,24.2)(77.8,24.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](73.2,20.2)(77.8,22.8)
+\rput[lb](73.3,22.366666666666667){In0 : PE14.2 17:LOAD:1(re}
+\rput[lb](73.3,21.933333333333334){In1 : PE10.0 9:LOAD:2}
+\rput[lb](73.3,21.5){In2 : PE14.0 30:I2B}
+\rput(75.5,20.849999999999998){\large 31:DMA-STORE(B)\normalsize}
+\rput(77.57000000000001,20.43){\large 0\normalsize}
+\psframe[linewidth = 1.1pt](78.2,24.2)(82.8,24.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,20.2)(82.8,22.8)
+\rput[lb](78.3,22.366666666666667){}
+\rput[lb](78.3,21.933333333333334){}
+\rput[lb](78.3,21.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,20.2)(87.8,20.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](83.2,22.2)(87.8,24.8)
+\rput(85.5,23.5){\large0: 14:IFGE\normalsize(0)}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,20.2)(92.8,20.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,22.2)(92.8,24.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,20.2)(97.8,20.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,22.2)(97.8,24.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,20.2)(102.8,20.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,22.2)(102.8,24.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,20.2)(2.8,24.8)
+\rput(1.5,22.5){\large22\normalsize}
+\psframe[linewidth = 1.1pt](3.2,19.2)(7.8,19.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,15.2)(7.8,17.8)
+\rput[lb](3.3000000000000003,17.366666666666667){}
+\rput[lb](3.3000000000000003,16.933333333333334){}
+\rput[lb](3.3000000000000003,16.5){}
+\psframe[linewidth = 1.1pt](8.2,19.2)(12.799999999999999,19.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](8.2,15.2)(12.799999999999999,17.8)
+\rput[lb](8.299999999999999,17.366666666666667){}
+\rput[lb](8.299999999999999,16.933333333333334){}
+\rput[lb](8.299999999999999,16.5){}
+\psframe[linewidth = 1.1pt](13.2,19.2)(17.799999999999997,19.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,15.2)(17.799999999999997,17.8)
+\rput[lb](13.299999999999999,17.366666666666667){}
+\rput[lb](13.299999999999999,16.933333333333334){}
+\rput[lb](13.299999999999999,16.5){}
+\psframe[linewidth = 1.1pt](18.2,19.2)(22.799999999999997,19.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,15.2)(22.799999999999997,17.8)
+\rput[lb](18.3,17.366666666666667){}
+\rput[lb](18.3,16.933333333333334){}
+\rput[lb](18.3,16.5){}
+\psframe[linewidth = 1.1pt](23.2,19.2)(27.799999999999997,19.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,15.2)(27.799999999999997,17.8)
+\rput[lb](23.3,17.366666666666667){}
+\rput[lb](23.3,16.933333333333334){}
+\rput[lb](23.3,16.5){}
+\psframe[linewidth = 1.1pt](28.2,19.2)(32.8,19.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](28.2,15.2)(32.8,17.8)
+\rput[lb](28.3,17.366666666666667){In0 : PE5.0 32:IADD}
+\rput[lb](28.3,16.933333333333334){}
+\rput[lb](28.3,16.5){}
+\rput(30.5,15.85){\large 32:STORE:2\normalsize$\rightarrow$ 1}
+\rput(32.57,15.43){\large 0\normalsize}
+\psframe[linewidth = 1.1pt](33.2,19.2)(37.800000000000004,19.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](33.2,15.2)(37.800000000000004,17.8)
+\rput[lb](33.300000000000004,17.366666666666667){}
+\rput[lb](33.300000000000004,16.933333333333334){}
+\rput[lb](33.300000000000004,16.5){}
+\psframe[linewidth = 1.1pt](38.2,19.2)(42.800000000000004,19.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](38.2,15.2)(42.800000000000004,17.8)
+\rput[lb](38.300000000000004,17.366666666666667){}
+\rput[lb](38.300000000000004,16.933333333333334){}
+\rput[lb](38.300000000000004,16.5){}
+\psframe[linewidth = 1.1pt](43.2,19.2)(47.800000000000004,19.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,15.2)(47.800000000000004,17.8)
+\rput[lb](43.300000000000004,17.366666666666667){}
+\rput[lb](43.300000000000004,16.933333333333334){}
+\rput[lb](43.300000000000004,16.5){}
+\psframe[linewidth = 1.1pt](48.2,19.2)(52.800000000000004,19.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,15.2)(52.800000000000004,17.8)
+\rput[lb](48.300000000000004,17.366666666666667){}
+\rput[lb](48.300000000000004,16.933333333333334){}
+\rput[lb](48.300000000000004,16.5){}
+\psframe[linewidth = 1.1pt](53.2,19.2)(57.800000000000004,19.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](53.2,15.2)(57.800000000000004,17.8)
+\rput[lb](53.300000000000004,17.366666666666667){}
+\rput[lb](53.300000000000004,16.933333333333334){}
+\rput[lb](53.300000000000004,16.5){}
+\psframe[linewidth = 1.1pt](58.2,19.2)(62.800000000000004,19.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,15.2)(62.800000000000004,17.8)
+\rput[lb](58.300000000000004,17.366666666666667){}
+\rput[lb](58.300000000000004,16.933333333333334){}
+\rput[lb](58.300000000000004,16.5){}
+\psframe[linewidth = 1.1pt](63.2,19.2)(67.8,19.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,15.2)(67.8,17.8)
+\rput[lb](63.300000000000004,17.366666666666667){}
+\rput[lb](63.300000000000004,16.933333333333334){}
+\rput[lb](63.300000000000004,16.5){}
+\psframe[linewidth = 1.1pt](68.2,19.2)(72.8,19.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,15.2)(72.8,17.8)
+\rput[lb](68.3,17.366666666666667){}
+\rput[lb](68.3,16.933333333333334){}
+\rput[lb](68.3,16.5){}
+\psframe[linewidth = 1.1pt](73.2,19.2)(77.8,19.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](73.2,15.2)(77.8,17.8)
+\rput[lb](73.3,17.366666666666667){}
+\rput[lb](73.3,16.933333333333334){}
+\rput[lb](73.3,16.5){}
+\psframe[linewidth = 1.1pt](78.2,19.2)(82.8,19.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,15.2)(82.8,17.8)
+\rput[lb](78.3,17.366666666666667){}
+\rput[lb](78.3,16.933333333333334){}
+\rput[lb](78.3,16.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,15.2)(87.8,15.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](83.2,17.2)(87.8,19.8)
+\rput(85.5,18.5){\large0: 14:IFGE\normalsize(0)}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,15.2)(92.8,15.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,17.2)(92.8,19.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,15.2)(97.8,15.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,17.2)(97.8,19.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,15.2)(102.8,15.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,17.2)(102.8,19.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,15.2)(2.8,19.8)
+\rput(1.5,17.5){\large23\normalsize}
+\psframe[linewidth = 1.1pt](3.2,14.2)(7.8,14.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,10.2)(7.8,12.799999999999999)
+\rput[lb](3.3000000000000003,12.366666666666665){}
+\rput[lb](3.3000000000000003,11.933333333333334){}
+\rput[lb](3.3000000000000003,11.5){}
+\psframe[linewidth = 1.1pt](8.2,14.2)(12.799999999999999,14.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](8.2,10.2)(12.799999999999999,12.799999999999999)
+\rput[lb](8.299999999999999,12.366666666666665){}
+\rput[lb](8.299999999999999,11.933333333333334){}
+\rput[lb](8.299999999999999,11.5){}
+\psframe[linewidth = 1.1pt](13.2,14.2)(17.799999999999997,14.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,10.2)(17.799999999999997,12.799999999999999)
+\rput[lb](13.299999999999999,12.366666666666665){}
+\rput[lb](13.299999999999999,11.933333333333334){}
+\rput[lb](13.299999999999999,11.5){}
+\psframe[linewidth = 1.1pt](18.2,14.2)(22.799999999999997,14.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,10.2)(22.799999999999997,12.799999999999999)
+\rput[lb](18.3,12.366666666666665){}
+\rput[lb](18.3,11.933333333333334){}
+\rput[lb](18.3,11.5){}
+\psframe[linewidth = 1.1pt](23.2,14.2)(27.799999999999997,14.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,10.2)(27.799999999999997,12.799999999999999)
+\rput[lb](23.3,12.366666666666665){}
+\rput[lb](23.3,11.933333333333334){}
+\rput[lb](23.3,11.5){}
+\psframe[linewidth = 1.1pt](28.2,14.2)(32.8,14.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](28.2,10.2)(32.8,12.799999999999999)
+\rput[lb](28.3,12.366666666666665){In0 : PE5.2 58:IADD}
+\rput[lb](28.3,11.933333333333334){}
+\rput[lb](28.3,11.5){}
+\rput(30.5,10.85){\large 58:STORE:2\normalsize$\rightarrow$ 1}
+\rput(32.57,10.43){\large 0\normalsize}
+\psframe[linewidth = 1.1pt](33.2,14.2)(37.800000000000004,14.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](33.2,10.2)(37.800000000000004,12.799999999999999)
+\rput[lb](33.300000000000004,12.366666666666665){}
+\rput[lb](33.300000000000004,11.933333333333334){}
+\rput[lb](33.300000000000004,11.5){}
+\psframe[linewidth = 1.1pt](38.2,14.2)(42.800000000000004,14.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](38.2,10.2)(42.800000000000004,12.799999999999999)
+\rput[lb](38.300000000000004,12.366666666666665){}
+\rput[lb](38.300000000000004,11.933333333333334){}
+\rput[lb](38.300000000000004,11.5){}
+\psframe[linewidth = 1.1pt](43.2,14.2)(47.800000000000004,14.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,10.2)(47.800000000000004,12.799999999999999)
+\rput[lb](43.300000000000004,12.366666666666665){}
+\rput[lb](43.300000000000004,11.933333333333334){}
+\rput[lb](43.300000000000004,11.5){}
+\psframe[linewidth = 1.1pt](48.2,14.2)(52.800000000000004,14.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,10.2)(52.800000000000004,12.799999999999999)
+\rput[lb](48.300000000000004,12.366666666666665){}
+\rput[lb](48.300000000000004,11.933333333333334){}
+\rput[lb](48.300000000000004,11.5){}
+\psframe[linewidth = 1.1pt](53.2,14.2)(57.800000000000004,14.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](53.2,10.2)(57.800000000000004,12.799999999999999)
+\rput[lb](53.300000000000004,12.366666666666665){}
+\rput[lb](53.300000000000004,11.933333333333334){}
+\rput[lb](53.300000000000004,11.5){}
+\psframe[linewidth = 1.1pt](58.2,14.2)(62.800000000000004,14.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,10.2)(62.800000000000004,12.799999999999999)
+\rput[lb](58.300000000000004,12.366666666666665){}
+\rput[lb](58.300000000000004,11.933333333333334){}
+\rput[lb](58.300000000000004,11.5){}
+\psframe[linewidth = 1.1pt](63.2,14.2)(67.8,14.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,10.2)(67.8,12.799999999999999)
+\rput[lb](63.300000000000004,12.366666666666665){}
+\rput[lb](63.300000000000004,11.933333333333334){}
+\rput[lb](63.300000000000004,11.5){}
+\psframe[linewidth = 1.1pt](68.2,14.2)(72.8,14.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,10.2)(72.8,12.799999999999999)
+\rput[lb](68.3,12.366666666666665){}
+\rput[lb](68.3,11.933333333333334){}
+\rput[lb](68.3,11.5){}
+\psframe[linewidth = 1.1pt](73.2,14.2)(77.8,14.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](73.2,10.2)(77.8,12.799999999999999)
+\rput[lb](73.3,12.366666666666665){}
+\rput[lb](73.3,11.933333333333334){}
+\rput[lb](73.3,11.5){}
+\psframe[linewidth = 1.1pt](78.2,14.2)(82.8,14.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,10.2)(82.8,12.799999999999999)
+\rput[lb](78.3,12.366666666666665){}
+\rput[lb](78.3,11.933333333333334){}
+\rput[lb](78.3,11.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,10.2)(87.8,10.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](83.2,12.2)(87.8,14.799999999999999)
+\rput(85.5,13.5){\large0: 40:IFGE\normalsize(1)}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,10.2)(92.8,10.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,12.2)(92.8,14.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,10.2)(97.8,10.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,12.2)(97.8,14.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,10.2)(102.8,10.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,12.2)(102.8,14.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,10.2)(2.8,14.8)
+\rput(1.5,12.5){\large24\normalsize}
+\psframe[linewidth = 1.1pt](3.2,9.2)(7.8,9.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,5.2)(7.8,7.800000000000001)
+\rput[lb](3.3000000000000003,7.366666666666667){}
+\rput[lb](3.3000000000000003,6.933333333333334){}
+\rput[lb](3.3000000000000003,6.5){}
+\psframe[linewidth = 1.1pt](8.2,9.2)(12.799999999999999,9.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](8.2,5.2)(12.799999999999999,7.800000000000001)
+\rput[lb](8.299999999999999,7.366666666666667){}
+\rput[lb](8.299999999999999,6.933333333333334){}
+\rput[lb](8.299999999999999,6.5){}
+\psframe[linewidth = 1.1pt](13.2,9.2)(17.799999999999997,9.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,5.2)(17.799999999999997,7.800000000000001)
+\rput[lb](13.299999999999999,7.366666666666667){}
+\rput[lb](13.299999999999999,6.933333333333334){}
+\rput[lb](13.299999999999999,6.5){}
+\psframe[linewidth = 1.1pt](18.2,9.2)(22.799999999999997,9.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,5.2)(22.799999999999997,7.800000000000001)
+\rput[lb](18.3,7.366666666666667){}
+\rput[lb](18.3,6.933333333333334){}
+\rput[lb](18.3,6.5){}
+\psframe[linewidth = 1.1pt](23.2,9.2)(27.799999999999997,9.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,5.2)(27.799999999999997,7.800000000000001)
+\rput[lb](23.3,7.366666666666667){}
+\rput[lb](23.3,6.933333333333334){}
+\rput[lb](23.3,6.5){}
+\psframe[linewidth = 1.1pt](28.2,9.2)(32.8,9.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](28.2,5.2)(32.8,7.800000000000001)
+\rput[lb](28.3,7.366666666666667){In0 : PE5.3 84:IADD}
+\rput[lb](28.3,6.933333333333334){}
+\rput[lb](28.3,6.5){}
+\rput(30.5,5.8500000000000005){\large 84:STORE:2\normalsize$\rightarrow$ 1}
+\rput(32.57,5.43){\large 0\normalsize}
+\psframe[linewidth = 1.1pt](33.2,9.2)(37.800000000000004,9.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](33.2,5.2)(37.800000000000004,7.800000000000001)
+\rput[lb](33.300000000000004,7.366666666666667){}
+\rput[lb](33.300000000000004,6.933333333333334){}
+\rput[lb](33.300000000000004,6.5){}
+\psframe[linewidth = 1.1pt](38.2,9.2)(42.800000000000004,9.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](38.2,5.2)(42.800000000000004,7.800000000000001)
+\rput[lb](38.300000000000004,7.366666666666667){}
+\rput[lb](38.300000000000004,6.933333333333334){}
+\rput[lb](38.300000000000004,6.5){}
+\psframe[linewidth = 1.1pt](43.2,9.2)(47.800000000000004,9.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,5.2)(47.800000000000004,7.800000000000001)
+\rput[lb](43.300000000000004,7.366666666666667){}
+\rput[lb](43.300000000000004,6.933333333333334){}
+\rput[lb](43.300000000000004,6.5){}
+\psframe[linewidth = 1.1pt](48.2,9.2)(52.800000000000004,9.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,5.2)(52.800000000000004,7.800000000000001)
+\rput[lb](48.300000000000004,7.366666666666667){}
+\rput[lb](48.300000000000004,6.933333333333334){}
+\rput[lb](48.300000000000004,6.5){}
+\psframe[linewidth = 1.1pt](53.2,9.2)(57.800000000000004,9.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](53.2,5.2)(57.800000000000004,7.800000000000001)
+\rput[lb](53.300000000000004,7.366666666666667){}
+\rput[lb](53.300000000000004,6.933333333333334){}
+\rput[lb](53.300000000000004,6.5){}
+\psframe[linewidth = 1.1pt](58.2,9.2)(62.800000000000004,9.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,5.2)(62.800000000000004,7.800000000000001)
+\rput[lb](58.300000000000004,7.366666666666667){}
+\rput[lb](58.300000000000004,6.933333333333334){}
+\rput[lb](58.300000000000004,6.5){}
+\psframe[linewidth = 1.1pt](63.2,9.2)(67.8,9.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,5.2)(67.8,7.800000000000001)
+\rput[lb](63.300000000000004,7.366666666666667){}
+\rput[lb](63.300000000000004,6.933333333333334){}
+\rput[lb](63.300000000000004,6.5){}
+\psframe[linewidth = 1.1pt](68.2,9.2)(72.8,9.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,5.2)(72.8,7.800000000000001)
+\rput[lb](68.3,7.366666666666667){}
+\rput[lb](68.3,6.933333333333334){}
+\rput[lb](68.3,6.5){}
+\psframe[linewidth = 1.1pt](73.2,9.2)(77.8,9.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](73.2,5.2)(77.8,7.800000000000001)
+\rput[lb](73.3,7.366666666666667){}
+\rput[lb](73.3,6.933333333333334){}
+\rput[lb](73.3,6.5){}
+\psframe[linewidth = 1.1pt](78.2,9.2)(82.8,9.799999999999999)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,5.2)(82.8,7.800000000000001)
+\rput[lb](78.3,7.366666666666667){}
+\rput[lb](78.3,6.933333333333334){}
+\rput[lb](78.3,6.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,5.2)(87.8,5.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](83.2,7.2)(87.8,9.8)
+\rput(85.5,8.5){\large0: 66:IFGE\normalsize(2)}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,5.2)(92.8,5.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,7.2)(92.8,9.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,5.2)(97.8,5.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,7.2)(97.8,9.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,5.2)(102.8,5.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,7.2)(102.8,9.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,5.2)(2.8,9.8)
+\rput(1.5,7.5){\large25\normalsize}
+\psframe[linewidth = 1.1pt](3.2,4.2)(7.8,4.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](3.2,0.2)(7.8,2.8000000000000003)
+\rput[lb](3.3000000000000003,2.3666666666666667){}
+\rput[lb](3.3000000000000003,1.9333333333333333){}
+\rput[lb](3.3000000000000003,1.5){}
+\psframe[linewidth = 1.1pt](8.2,4.2)(12.799999999999999,4.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](8.2,0.2)(12.799999999999999,2.8000000000000003)
+\rput[lb](8.299999999999999,2.3666666666666667){}
+\rput[lb](8.299999999999999,1.9333333333333333){}
+\rput[lb](8.299999999999999,1.5){}
+\psframe[linewidth = 1.1pt](13.2,4.2)(17.799999999999997,4.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](13.2,0.2)(17.799999999999997,2.8000000000000003)
+\rput[lb](13.299999999999999,2.3666666666666667){}
+\rput[lb](13.299999999999999,1.9333333333333333){}
+\rput[lb](13.299999999999999,1.5){}
+\psframe[linewidth = 1.1pt](18.2,4.2)(22.799999999999997,4.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](18.2,0.2)(22.799999999999997,2.8000000000000003)
+\rput[lb](18.3,2.3666666666666667){}
+\rput[lb](18.3,1.9333333333333333){}
+\rput[lb](18.3,1.5){}
+\psframe[linewidth = 1.1pt](23.2,4.2)(27.799999999999997,4.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](23.2,0.2)(27.799999999999997,2.8000000000000003)
+\rput[lb](23.3,2.3666666666666667){}
+\rput[lb](23.3,1.9333333333333333){}
+\rput[lb](23.3,1.5){}
+\psframe[linewidth = 1.1pt](28.2,4.2)(32.8,4.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](28.2,0.2)(32.8,2.8000000000000003)
+\rput[lb](28.3,2.3666666666666667){In0 : PE5.6 110:IADD}
+\rput[lb](28.3,1.9333333333333333){}
+\rput[lb](28.3,1.5){}
+\rput(30.5,0.8500000000000001){\large 110:STORE:2\normalsize$\rightarrow$ 1}
+\rput(32.57,0.43){\large 0\normalsize}
+\psframe[linewidth = 1.1pt](33.2,4.2)(37.800000000000004,4.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](33.2,0.2)(37.800000000000004,2.8000000000000003)
+\rput[lb](33.300000000000004,2.3666666666666667){}
+\rput[lb](33.300000000000004,1.9333333333333333){}
+\rput[lb](33.300000000000004,1.5){}
+\psframe[linewidth = 1.1pt](38.2,4.2)(42.800000000000004,4.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](38.2,0.2)(42.800000000000004,2.8000000000000003)
+\rput[lb](38.300000000000004,2.3666666666666667){}
+\rput[lb](38.300000000000004,1.9333333333333333){}
+\rput[lb](38.300000000000004,1.5){}
+\psframe[linewidth = 1.1pt](43.2,4.2)(47.800000000000004,4.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](43.2,0.2)(47.800000000000004,2.8000000000000003)
+\rput[lb](43.300000000000004,2.3666666666666667){}
+\rput[lb](43.300000000000004,1.9333333333333333){}
+\rput[lb](43.300000000000004,1.5){}
+\psframe[linewidth = 1.1pt](48.2,4.2)(52.800000000000004,4.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](48.2,0.2)(52.800000000000004,2.8000000000000003)
+\rput[lb](48.300000000000004,2.3666666666666667){}
+\rput[lb](48.300000000000004,1.9333333333333333){}
+\rput[lb](48.300000000000004,1.5){}
+\psframe[linewidth = 1.1pt](53.2,4.2)(57.800000000000004,4.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](53.2,0.2)(57.800000000000004,2.8000000000000003)
+\rput[lb](53.300000000000004,2.3666666666666667){}
+\rput[lb](53.300000000000004,1.9333333333333333){}
+\rput[lb](53.300000000000004,1.5){}
+\psframe[linewidth = 1.1pt](58.2,4.2)(62.800000000000004,4.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](58.2,0.2)(62.800000000000004,2.8000000000000003)
+\rput[lb](58.300000000000004,2.3666666666666667){}
+\rput[lb](58.300000000000004,1.9333333333333333){}
+\rput[lb](58.300000000000004,1.5){}
+\psframe[linewidth = 1.1pt](63.2,4.2)(67.8,4.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](63.2,0.2)(67.8,2.8000000000000003)
+\rput[lb](63.300000000000004,2.3666666666666667){}
+\rput[lb](63.300000000000004,1.9333333333333333){}
+\rput[lb](63.300000000000004,1.5){}
+\psframe[linewidth = 1.1pt](68.2,4.2)(72.8,4.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](68.2,0.2)(72.8,2.8000000000000003)
+\rput[lb](68.3,2.3666666666666667){}
+\rput[lb](68.3,1.9333333333333333){}
+\rput[lb](68.3,1.5){}
+\psframe[linewidth = 1.1pt](73.2,4.2)(77.8,4.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](73.2,0.2)(77.8,2.8000000000000003)
+\rput[lb](73.3,2.3666666666666667){}
+\rput[lb](73.3,1.9333333333333333){}
+\rput[lb](73.3,1.5){}
+\psframe[linewidth = 1.1pt](78.2,4.2)(82.8,4.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](78.2,0.2)(82.8,2.8000000000000003)
+\rput[lb](78.3,2.3666666666666667){}
+\rput[lb](78.3,1.9333333333333333){}
+\rput[lb](78.3,1.5){}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](83.2,0.2)(87.8,0.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightred](83.2,2.2)(87.8,4.800000000000001)
+\rput(85.5,3.5){\large0: 92:IFGE\normalsize(3)}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,0.2)(92.8,0.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](88.2,2.2)(92.8,4.800000000000001)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,0.2)(97.8,0.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](93.2,2.2)(97.8,4.800000000000001)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,0.2)(102.8,0.8)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=white](98.2,2.2)(102.8,4.800000000000001)
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](0.2,0.2)(2.8,4.8)
+\rput(1.5,2.5){\large26\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](3.2,135.2)(7.8,136.8)
+\rput(5.7,136.0){\large PE 0\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](8.2,135.2)(12.8,136.8)
+\rput(10.7,136.0){\large PE 1\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](13.2,135.2)(17.8,136.8)
+\rput(15.7,136.0){\large PE 2\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](18.2,135.2)(22.8,136.8)
+\rput(20.7,136.0){\large PE 3\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](23.2,135.2)(27.8,136.8)
+\rput(25.7,136.0){\large PE 4\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](28.2,135.2)(32.8,136.8)
+\rput(30.7,136.0){\large PE 5\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](33.2,135.2)(37.8,136.8)
+\rput(35.7,136.0){\large PE 6\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](38.2,135.2)(42.8,136.8)
+\rput(40.7,136.0){\large PE 7\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](43.2,135.2)(47.8,136.8)
+\rput(45.7,136.0){\large PE 8\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](48.2,135.2)(52.8,136.8)
+\rput(50.7,136.0){\large PE 9\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](53.2,135.2)(57.8,136.8)
+\rput(55.7,136.0){\large PE 10\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](58.2,135.2)(62.8,136.8)
+\rput(60.7,136.0){\large PE 11\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](63.2,135.2)(67.8,136.8)
+\rput(65.7,136.0){\large PE 12\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](68.2,135.2)(72.8,136.8)
+\rput(70.7,136.0){\large PE 13\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](73.2,135.2)(77.8,136.8)
+\rput(75.7,136.0){\large PE 14\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightgray](78.2,135.2)(82.8,136.8)
+\rput(80.7,136.0){\large PE 15\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](83.2,135.2)(87.8,136.8)
+\rput(85.7,136.0){\large C-Box\normalsize}
+\psframe[linewidth = 1.1pt,  fillstyle=solid, fillcolor=lightblue](-0.8,134.8)(-0.2,0.2)
+\end{pspicture}
+\end{document}

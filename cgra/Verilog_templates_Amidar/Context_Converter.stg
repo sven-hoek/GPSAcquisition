@@ -1,0 +1,94 @@
+Context_Converter
+(date,ID,ccntwidth,contextWidth,nrPes,memaccess,cond_dma,cond_wr,wr_en,regAddrWidthRead,rdmuxH,rdmuxL,rddoH,rddoL,rdCacheH,rdCacheL,wrH,wrL,muxAH,muxAL,muxBH,muxBL,muxRegH,muxRegL,opH,opL,multipleInputs,maxMuxWidth
+) ::= <<
+
+/*
+Author: Dennis L. Wolf
+Date: {date}
+Version: 2.0 Refactored with new toplevel module
+History : 1.0 (String Template Interface - layout & concept)
+
+Comments: A Context Converter is used to map information from the bus to the individual contexts of a PE to receiving and sending local variables. For both processes the contexts of the related PEs have to be modified first. Because most of the configurations - to receive or send a local varible - are static but contexts of indiv. PEs vary with the heteroginity of the CGRA, the contexts need to be prepared based on the mask of the PE. This is done in this module for each PE.
+*/
+
+
+`include "cgra.vh" 
+`default_nettype wire
+
+module Context_Converter_§ID§(
+  input wire [§regAddrWidthRead§-1:0] ADDR_I,
+  input wire SELECTION_I,
+§if(muxBH)§
+  input wire [§muxBH§-§muxBL§:0] MUX_I, §endif§
+  input wire CLEAN_HIGHEST_SLOT_I,
+  input wire WRITE_CONTEXT_FSM_I,
+  input wire IS_SEND_CONTEXT_I,
+  output wire CONVERTED_WRITE_EN_O,
+  output wire [§contextWidth§-1:0] CONVERTED_CONTEXT_DATA_O
+);
+
+wire [§contextWidth§-1:0] w_context_mapped_data_rec, w_context_mapped_data_send;
+
+
+ assign CONVERTED_CONTEXT_DATA_O = (CLEAN_HIGHEST_SLOT_I == 1'b1) ? {§contextWidth§{1'b0}} : (IS_SEND_CONTEXT_I) ? w_context_mapped_data_send: w_context_mapped_data_rec;
+
+ assign CONVERTED_WRITE_EN_O = (SELECTION_I || IS_SEND_CONTEXT_I || CLEAN_HIGHEST_SLOT_I) && WRITE_CONTEXT_FSM_I;
+
+
+// Mask for receiving local variables
+
+§if(memaccess)§
+assign w_context_mapped_data_rec[§cond_dma§]= 0;
+§endif§
+assign w_context_mapped_data_rec[§cond_wr§]= 0;
+assign w_context_mapped_data_rec[§wr_en§]= 1;				// WRITE ENABLE
+§if(regAddrWidthRead)§
+assign w_context_mapped_data_rec[§rdmuxH§:§rdmuxL§]= 0;§endif§
+§if(rddoH)§
+assign w_context_mapped_data_rec[§rddoH§:§rddoL§]= 0;§endif§
+§if(memaccess)§ §if(rdCacheH)§
+assign w_context_mapped_data_rec[§rdCacheH§:§rdCacheL§]= 0;§endif§ §endif§
+§if(wrH)§
+assign w_context_mapped_data_rec[§wrH§:§wrL§]= {1'b0, ADDR_I[§wrH§-§wrL§:0]}; // WRITE ADDR §endif§
+§if(multipleInputs)§
+§if(muxAH)§
+assign w_context_mapped_data_rec[§muxAH§:§muxAL§]= 0;§endif§
+§if(muxBH)§
+assign w_context_mapped_data_rec[§muxBH§:§muxBL§]= 0;
+§endif§
+§endif§
+assign w_context_mapped_data_rec[§muxRegH§:§muxRegL§]= 1;
+§if(opH)§assign w_context_mapped_data_rec[§opH§:§opL§]= 0;§endif§
+
+
+// Mask for sending local variables
+
+§if(memaccess)§
+assign w_context_mapped_data_send[§cond_dma§]= 0;
+§endif§
+assign w_context_mapped_data_send[§cond_wr§]= 0;
+assign w_context_mapped_data_send[§wr_en§]= 0;
+§if(regAddrWidthRead)§
+assign w_context_mapped_data_send[§rdmuxH§:§rdmuxL§] = {1'b0, ADDR_I[§regAddrWidthRead§-1:0]}; //READ ADDR §endif§
+§if(regAddrWidthRead)§
+assign w_context_mapped_data_send[§rddoH§:§rddoL§] =   {1'b0, ADDR_I[§regAddrWidthRead§-1:0]}; // READ ADDR §endif§
+§if(memaccess)§ §if(rdCacheH)§
+assign w_context_mapped_data_send[§rdCacheH§:§rdCacheL§]= 0;§endif§
+§endif§
+§if(wrH)§
+assign w_context_mapped_data_send[§wrH§:§wrL§]= 0;§endif§
+§if(multipleInputs)§
+§if(muxAH)§
+assign w_context_mapped_data_send[§muxAH§:§muxAL§]= MUX_I[§muxAH§-§muxAL§:0];§endif§
+§if(muxBH)§
+assign w_context_mapped_data_send[§muxBH§:§muxBL§]= MUX_I[§muxBH§-§muxBL§:0]; // MUX_SELECTION
+§endif§
+§endif§
+assign w_context_mapped_data_send[§muxRegH§:§muxRegL§]= 0; 
+§if(opH)§assign w_context_mapped_data_send[§opH§:§opL§]= 0;§endif§
+
+
+endmodule
+>>
+
+

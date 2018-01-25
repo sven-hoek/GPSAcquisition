@@ -1,0 +1,464 @@
+cgraapi(
+	send_context_calls_pe, 
+	send_context_calls_pe_log,
+	send_context_calls_other
+)
+::= <<
+#include "cgraapi.h"
+#include "cgracontext.h"
+#include "cgrastaticdata.h"
+#include "cgraprivatestaticdata.h"
+#include "axi.h"
+
+#include <assert.h>
+
+typedef enum
+{
+	// Item order matters, do not reorder!
+	GeneralTargetPe,
+	GeneralTargetParameter,
+	GeneralTargetOther,
+	GeneralTargetSingleReg,
+} CgraGeneralTargetSelection;
+
+typedef enum
+{
+	// Item order matters, do not reorder!
+	StatePause,
+	StateRun,
+	StateStop,
+	StateRunHybrid,
+} CgraState;
+
+typedef enum
+{
+	// Item order matters, do not reorder!
+	IdCgraStateChange,
+	IdLogDest,
+	IdLogDestBound,
+	IdLogDestInc,
+	IdOCMDest,
+	IdOCMDestBound,
+	IdOCMDestInc,
+	IdIntervalLength,
+	IdExpectedParameterCount,
+	IdHybridCounterResetValue,
+} SingleRegId;
+
+static inline uint32_t create_addr(CgraGeneralTargetSelection target, unsigned target_id, uint32_t offset)
+{
+	uint32_t addr = 0;
+	addr |= target << (CGRA_AXI_OFFSET_WIDTH + CGRA_AXI_TARGET_ID_WIDTH);
+	addr |= target_id << CGRA_AXI_OFFSET_WIDTH;
+	addr |= offset;
+	addr <<= CGRA_AXI_SYSTEM_ADDR_OFFSET;
+
+	return addr;
+}
+
+static inline uint32_t create_state_data(CgraState state, uint32_t start_addr)
+{
+	uint32_t state_data = 0;
+	state_data |= state << CGRA_STATE_DATA_OFFSET;
+	state_data |= start_addr;
+	return state_data;
+}
+
+// Returns a new address calculated from an old one.
+// Changes the offset bits of an AXI address. These are the bits carying the CGRA internal offset
+// of an AXI write. Due to the fact that they are located at the lower end of the address, 
+// simply adding the actual change is perfectly fine.
+static inline uint32_t increment_addr_offset(uint32_t old_addr, size_t transfers_per_entry, size_t transfers_done)
+{
+	return old_addr + (transfers_done / transfers_per_entry) * AXI_TRANSFER_SIZE;
+}
+
+// Send all data given by the data ptr and its associated size.
+// This procedure guarantees that no 4k address boundaries will be cossed and
+// that calls to the AXI transaction procedure are done with lengths smaller 
+// the max AXI transaction length.
+static void send_data_stream(const uint32_t* data, size_t data_count, size_t transfers_per_entry, 
+	uint32_t start_addr, unsigned max_tran_len)
+{
+	assert(data_count % transfers_per_entry == 0);
+
+	while (data_count > 0)
+	{
+		// The length of the next transaction.
+		// It is required that the length is a multiple of transfers_per_entry!
+		size_t transaction_length = data_count > max_tran_len ?
+			max_tran_len - (max_tran_len % transfers_per_entry) :
+			data_count - (data_count % transfers_per_entry);
+
+		// check if we will be crossing a 4k boundary, if so: split the transaction
+		const uint32_t start_mod = start_addr % AXI_TRANSACTION_BOUNDARY;
+
+		const uint32_t next_start = increment_addr_offset(start_addr, transfers_per_entry, transaction_length);
+		const uint32_t end_mod = next_start % AXI_TRANSACTION_BOUNDARY;
+
+		if (start_mod > end_mod && end_mod != 0)
+			transaction_length -= end_mod / AXI_TRANSFER_SIZE;
+
+		// do the actual transaction
+		cgra_config_axi_transaction(data, transaction_length, start_addr);
+
+		// loop variant and next iteration preparation
+		data += transaction_length;
+		data_count -= transaction_length;
+		start_addr = increment_addr_offset(start_addr, transfers_per_entry, transaction_length);
+	}
+}
+
+// Send the given continuous range of parameter IDs.
+// Yes, it is absolutly required that parameter id_range points to a continuous range!
+//
+// Returns the amount of transfers done to send the given range
+static size_t send_parameter_range(const uint32_t* parameters, const CgraIdRange* id_range, 
+								   bool are_expected, unsigned max_tran_len)
+{
+	const size_t parameter_count = id_range->upper_id - id_range->lower_id;
+	const size_t transfer_count = parameter_count * CGRA_PARAMETER_SIZE;
+	const uint32_t addr = create_addr(GeneralTargetParameter, are_expected ? 1 : 0, id_range->lower_id);
+
+	send_data_stream(parameters, transfer_count, CGRA_PARAMETER_SIZE, addr, max_tran_len);
+
+	return transfer_count;
+}
+
+// Sends all given parameters which are dirty.
+//
+// Argument "expected" denotes if these are parameters the CGRA has to wait for.
+static void send_indexed_parameter_stream(ParameterArrayRef parameters_array_ref, 
+										  CgraIdRangeMap id_map, bool expected, unsigned max_tran_len)
+{
+	const uint32_t* parameters = parameters_array_ref.parameters;
+	const bool* dirty_flags = parameters_array_ref.dirty_flags;
+	const size_t parameter_count = parameters_array_ref.parameter_count;
+
+	assert(parameter_count <= id_map.size && "Parameter count does not fit ID map size");
+
+	// These arrays will be filled synchronous:
+	// An ID located at index idx in the ids_to_send array maps to 
+	// the index (idx * CGRA_PARAMETER_SIZE) in the data array.
+	uint32_t data_to_send[CGRA_MAX_INDEXED_PARAMETER_COUNT * CGRA_PARAMETER_SIZE];
+	size_t ids_to_send[CGRA_MAX_INDEXED_PARAMETER_COUNT];
+
+	size_t data_write_idx = 0;
+	size_t id_write_idx = 0;
+
+	for (size_t parameter_idx = 0; parameter_idx < parameter_count; ++parameter_idx)
+	{
+		if (dirty_flags == 0 || dirty_flags[parameter_idx])
+		{
+			CgraIdRange id_range = id_map.ranges[parameter_idx];
+
+			// Iterate all IDs in the given range
+			for (size_t id = id_range.lower_id; id < id_range.upper_id; ++id)
+			{
+				ids_to_send[id_write_idx++] = id;
+
+				// Iterate the parameter data to this ID in 32 bit steps
+				for (size_t j = 0; j < CGRA_PARAMETER_SIZE; ++j)
+					data_to_send[data_write_idx++] = parameters[CGRA_PARAMETER_SIZE * parameter_idx + j];
+			}
+		}
+	}
+
+	if (0 == id_write_idx)
+		return; // nothing to do
+
+	// Range of paramter IDs which may be send in a AXI burst.
+	CgraIdRange id_range = { ids_to_send[0], ids_to_send[0] + 1 };
+	size_t next_data_idx_to_send = 0;
+
+	for (size_t i = 1; i < id_write_idx; ++i)
+	{
+		const size_t current_id = ids_to_send[i];
+		if (current_id != id_range.upper_id)
+		{
+			next_data_idx_to_send += send_parameter_range(
+				&data_to_send[next_data_idx_to_send], &id_range, expected, max_tran_len
+			);
+
+			id_range.lower_id = current_id;
+			id_range.upper_id = current_id + 1;
+		}
+		else
+			++id_range.upper_id;
+	}
+
+	// check for unsend parameters
+	if (next_data_idx_to_send < data_write_idx)
+		send_parameter_range(&data_to_send[next_data_idx_to_send], &id_range, expected, max_tran_len);
+}
+
+static void cgra_set_cycle_clock_count(uint32_t clock_count)
+{
+	const uint32_t addr = create_addr(GeneralTargetSingleReg, IdIntervalLength, 0);
+	cgra_config_axi_transaction(&clock_count, 1, addr);
+}
+
+static void cgra_set_hybrid_parameter_count(uint32_t param_count)
+{
+	const uint32_t addr = create_addr(GeneralTargetSingleReg, IdExpectedParameterCount, 0);
+	cgra_config_axi_transaction(&param_count, 1, addr);
+}
+
+static void cgra_set_hybrid_counter_rst_val(uint32_t rst_val)
+{
+	const uint32_t addr = create_addr(GeneralTargetSingleReg, IdHybridCounterResetValue, 0);
+	cgra_config_axi_transaction(&rst_val, 1, addr);
+}
+
+static void cgra_set_ocm_low_addr(uint32_t low_addr)
+{
+	const uint32_t addr = create_addr(GeneralTargetSingleReg, IdOCMDest, 0);
+	cgra_config_axi_transaction(&low_addr, 1, addr);
+}
+
+static void cgra_set_ocm_high_addr(uint32_t high_addr)
+{
+	const uint32_t addr = create_addr(GeneralTargetSingleReg, IdOCMDestBound, 0);
+	cgra_config_axi_transaction(&high_addr, 1, addr);
+}
+
+static void cgra_set_ocm_addr_increment(uint32_t addr_inc)
+{
+	const uint32_t addr = create_addr(GeneralTargetSingleReg, IdOCMDestInc, 0);
+	cgra_config_axi_transaction(&addr_inc, 1, addr);
+}
+
+static void cgra_set_log_low_addr(uint32_t low_addr)
+{
+	const uint32_t addr = create_addr(GeneralTargetSingleReg, IdLogDest, 0);
+	cgra_config_axi_transaction(&low_addr, 1, addr);
+}
+
+static void cgra_set_log_high_addr(uint32_t high_addr)
+{
+	const uint32_t addr = create_addr(GeneralTargetSingleReg, IdLogDestBound, 0);
+	cgra_config_axi_transaction(&high_addr, 1, addr);
+}
+
+static void cgra_set_log_addr_increment(uint32_t addr_inc)
+{
+	const uint32_t addr = create_addr(GeneralTargetSingleReg, IdLogDestInc, 0);
+	cgra_config_axi_transaction(&addr_inc, 1, addr);
+}
+
+static void cgra_set_single_reg(uint32_t value, int id)
+{
+	const uint32_t addr = create_addr(GeneralTargetSingleReg, id, 0);
+	cgra_config_axi_transaction(&value, 1, addr);
+}
+
+// Generic single transfer procedure, called from cgra_setup.
+//
+// Just like any other init procedure, the following procedure will call a cascade of
+// procedures for all required use cases.
+//
+// TODO: other single value transfers
+static void cgra_init_single_transfers(const CgraSetupData* setup_data)
+{
+	cgra_set_single_reg(setup_data->cgra_cycle_clock_count, IdIntervalLength);
+	cgra_set_single_reg(setup_data->expected_host_results, IdExpectedParameterCount);
+	cgra_set_single_reg(setup_data->multirate_counter_reset_val, IdHybridCounterResetValue);
+
+	cgra_set_single_reg(setup_data->ocm_lower_addr, IdOCMDest);
+	cgra_set_single_reg(setup_data->ocm_upper_addr, IdOCMDestBound);
+	cgra_set_single_reg(setup_data->ocm_inc_addr, IdOCMDestInc);
+
+	cgra_set_single_reg(setup_data->log_lower_addr, IdLogDest);
+	cgra_set_single_reg(setup_data->log_upper_addr, IdLogDestBound);
+	cgra_set_single_reg(setup_data->log_inc_addr, IdLogDestInc);
+}
+
+static void cgra_set_pe_context(uint32_t pe_id, const uint32_t* entries, size_t entry_count, 
+	size_t transfers_per_entry, uint32_t context_offset, unsigned max_transaction_length)
+{
+	const uint32_t addr = create_addr(GeneralTargetPe, pe_id, context_offset);
+	send_data_stream(entries, entry_count, transfers_per_entry, addr, max_transaction_length);
+}
+
+static void cgra_set_pe_log_context(uint32_t pe_id, const uint32_t* entries, size_t entry_count, 
+	size_t transfers_per_entry, uint32_t context_offset, unsigned max_transaction_length)
+{
+	const uint32_t addr = create_addr(GeneralTargetPe, pe_id + CGRA_PE_LOG_ID_OFFSET, context_offset);
+	send_data_stream(entries, entry_count, transfers_per_entry, addr, max_transaction_length);
+}
+
+static void cgra_set_other_context(uint32_t id, const uint32_t* entries, size_t entry_count, 
+	size_t transfers_per_entry, uint32_t context_offset, unsigned max_transaction_length)
+{
+	const uint32_t addr = create_addr(GeneralTargetOther, id, context_offset);
+	send_data_stream(entries, entry_count, transfers_per_entry, addr, max_transaction_length);
+}
+
+// Generic context transfer procedure, called from cgra_setup.
+// Calls all other context transfer procedures for all CGRA entities.
+static void cgra_init_contexts(const CgraSetupData* setup_data)
+{
+	const unsigned max_tans_length = setup_data->max_axi_transaction_length;
+
+	§send_context_calls_pe§
+	§send_context_calls_pe_log§
+	§send_context_calls_other§
+}
+
+static void cgra_set_static_parameters(unsigned max_tran_len)
+{
+	send_parameter_range(cgra_static_parameters, &cgra_static_parameter_id_range, false, max_tran_len);
+}
+
+static void cgra_reset_parameters(ParameterArrayRef runtime_parameters, unsigned max_tran_len)
+{
+	cgra_set_runtime_parameters(runtime_parameters, max_tran_len);
+	cgra_set_static_parameters(max_tran_len);
+}
+
+static void cgra_set_consts(const uint32_t* constants, uint32_t constant_count, unsigned max_tran_len)
+{
+	// TODO: see that there is a define for the ROM ID 
+	// TODO: replace 0xffffffff with this ID
+	uint32_t addr = create_addr(GeneralTargetOther, 0xffffffff, 0);
+	send_data_stream(constants, constant_count, CGRA_CONST_LUT_DATA_SIZE, addr, max_tran_len);
+}
+
+// Reset the CGRA
+// This will not change any contexts but will make sure that the next
+// state change (to running state) will behave as if we just setup the 
+// CGRA with cgra_setup(...)
+static void cgra_reset(const CgraSetupData* rst_info, ParameterArrayRef runtime_parameters)
+{
+	cgra_init_single_transfers(rst_info); // Reset Log and OCM addresses
+	cgra_reset_parameters(runtime_parameters, rst_info->max_axi_transaction_length);
+}
+
+//
+// =====--- Public Interface ---=====
+//
+
+void cgra_setup(const CgraSetupData* init_data)
+{
+	cgra_init_single_transfers(init_data);
+	cgra_init_contexts(init_data);
+	cgra_set_static_parameters(init_data->max_axi_transaction_length);
+
+	// Prepare a struct to send the initial values of the runtime parameters 
+	ParameterArrayRef parms = {
+		.parameters = cgra_runtime_parameters,
+		.dirty_flags = 0, 
+		.parameter_count = 	cgra_runtime_parameter_id_range.upper_id 
+						  - cgra_runtime_parameter_id_range.lower_id,
+	};
+
+	cgra_set_runtime_parameters(parms, init_data->max_axi_transaction_length);
+}
+
+void cgra_change_state_run(const CgraSetupData* data, CgraRunType type)
+{
+	const uint32_t addr = create_addr(GeneralTargetSingleReg, IdCgraStateChange, 0);
+	uint32_t state_data;
+
+	switch (type) {
+	case CgraRun:
+		state_data = create_state_data(StateRun, 0);
+		assert(data->multirate_counter_reset_val == 0);
+		break;
+	case CgraSupport:
+		state_data = create_state_data(StateRunHybrid, 0);
+		assert(data->multirate_counter_reset_val == 0);
+		break;
+	case CgraMultirate:
+		state_data = create_state_data(StateRunHybrid, 0);
+		assert(data->expected_host_results == 0);
+		break;
+	default:
+		assert(false && "Invalid run type given");
+		break;
+	}
+
+	// See that we change the other values before changing the actual state
+	cgra_set_single_reg(data->expected_host_results, IdExpectedParameterCount);
+	cgra_set_multi_rate_counter_reset_value(data);
+
+	// Send the state change command
+	cgra_config_axi_transaction(&state_data, 1, addr);
+}
+
+void cgra_change_state_pause() 
+{
+	const uint32_t addr = create_addr(GeneralTargetSingleReg, IdCgraStateChange, 0);
+	const uint32_t state_data = create_state_data(StatePause, 0);
+	cgra_config_axi_transaction(&state_data, 1, addr);	
+}
+
+void cgra_change_state_stop(const CgraSetupData* rst_info, ParameterArrayRef runtime_parameters)
+{
+	const uint32_t addr = create_addr(GeneralTargetSingleReg, IdCgraStateChange, 0);
+	const uint32_t state_data = create_state_data(StateStop, 0);
+
+	cgra_config_axi_transaction(&state_data, 1, addr);
+	cgra_reset(rst_info, runtime_parameters);
+	cgra_reset_parameters(runtime_parameters, rst_info->max_axi_transaction_length);
+}
+
+void cgra_set_cycle_parameters(const CgraSetupData* data, const uint32_t* integration_step_size)
+{
+	cgra_set_single_reg(data->cgra_cycle_clock_count, IdIntervalLength);
+	send_parameter_range(integration_step_size, &cgra_integration_step_size_id_range, 
+						 false, data->max_axi_transaction_length);
+}
+
+void cgra_set_multi_rate_counter_reset_value(const CgraSetupData* data)
+{
+	cgra_set_single_reg(data->multirate_counter_reset_val, IdHybridCounterResetValue);
+}
+
+// Implement this by using a special log context, consisting of one entry
+// signaling done and the rest listen to ccnt max value!
+void cgra_disable_log(void)
+{
+	assert(false && "Not Implemented!");
+}
+
+// write back the correct context
+void cgra_enable_log(void)
+{
+	assert(false && "Not Implemented!");
+}
+
+void cgra_set_const_lut_data(const uint32_t* constants, uint32_t constant_count, unsigned max_tran_len)
+{
+	assert(false && "Not Implemented!");
+	cgra_set_consts(constants, constant_count, max_tran_len);
+}
+
+void cgra_set_runtime_parameters(ParameterArrayRef parameters, unsigned max_tran_len)
+{
+	send_indexed_parameter_stream(parameters, cgra_runtime_parameter_id_map, false, max_tran_len);
+}
+
+void cgra_set_host_results(ParameterArrayRef parameters, unsigned max_tran_len)
+{
+	send_indexed_parameter_stream(parameters, cgra_host_result_parameter_id_map, true, max_tran_len);
+}
+
+>>
+
+context_init_call_pe(id, context_array_name, size, transfers_per_entry)
+::= <<
+cgra_set_pe_context(§id§, c_§context_array_name§, §size§, §transfers_per_entry§, 0, max_tans_length);
+
+>>
+
+context_init_call_pe_log(id, context_array_name, size, transfers_per_entry)
+::= <<
+cgra_set_pe_context(§id§, c_§context_array_name§, §size§, §transfers_per_entry§, 0, max_tans_length);
+
+>>
+context_init_call_other(id, context_array_name, size, transfers_per_entry)
+::= <<
+cgra_set_other_context(§id§, c_§context_array_name§, §size§, §transfers_per_entry§, 0, max_tans_length);
+
+>>

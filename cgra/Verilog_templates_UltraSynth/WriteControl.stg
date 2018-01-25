@@ -1,0 +1,296 @@
+wrCtrl(peWrEnPorts, parameterWires, parameterWiresNull, parameterWiresNotNull, parameterWiresNullSync, parameterWiresNotNullSync, 
+	contextEnPE, contextEnPEnull, contextEnPEnotNull, contextEnPEnullSync, contextEnPEnotNullSync, cBoxEvalContextNotNull)
+::= <<
+
+`include "axiinterface.vh"
+`include "cgra.vh"
+
+module WriteControl #
+(
+	parameter integer OTHER_ID_WIDTH = -1, // the width needed for all IDs of "other" targets
+	parameter integer PE_ID_WIDTH = -1 // ...
+)
+(
+input wire CGRA_CLK_I,
+input wire EN_I,
+input wire RST_N_I,
+input wire EN_CONTROLLER_I,
+input wire VALID_CONTEXT_I,
+input wire [`ADDR_CONTROL_WIDTH-1:0] CONTROL_ADDR_I, // the control address to disect
+input wire PARAMETER_UPDATE_ALLOWED_I, // CGRA FSM signal informing this module to write parameters
+input wire [PE_ID_WIDTH-1:0] PE_ID_I, // the ID coming from the parameter buffer
+// control
+output wire IS_PELOG_CONTEXT_O, // treat all PE enables as PE log context enables						
+§peWrEnPorts§
+output wire CONTEXT_WREN_CCU_O,
+output wire [`CBOX_EVAL_BLOCK_COUNT:0] CONTEXT_WREN_CBOX_O,
+output wire CONTEXT_WREN_IDC_O,
+output wire CONTEXT_WREN_GLOG_O,
+output wire CONTEXT_WREN_ACTOR_O,
+output wire CONTEXT_WREN_SENSOR_O,
+output wire PARAMETER_BUFFER_WREN_O,
+output wire PARAMETER_BUFFER_IS_HYBRID_O,
+output wire PARAMETER_BUFFER_EXP_WREN_O,
+output wire SYNCUNIT_STATE_CHANGE_O,
+output wire SYNCUNIT_INTERVAL_CHANGE_O,
+output wire SYNCUNIT_SPECIAL_ACTION_COUNTER_RST_CHANGE_O,
+output wire LOG_DEST_CHANGE_O,
+output wire LOG_DEST_BOUND_CHANGE_O,
+output wire LOG_DEST_INC_CHANGE_O,
+output wire OCM_DEST_CHANGE_O,
+output wire OCM_DEST_BOUND_CHANGE_O,
+output wire OCM_DEST_INC_CHANGE_O,
+output wire CONTEXT_WREN_OCM_O,
+output wire CONTEXT_WREN_OCM_OUTPUT_O,
+output wire CONST_BUF_WREN_O,
+output wire PREPARE_PARAMETER_CONTEXT_O,	// informs the CGRA FSM that it should change its state to handle a parameter write
+output wire PE_CONTEXT_ENABLE_O	// informs the CGRA that some kind of PE context will be written 
+);
+
+§parameterWires§
+reg prepareParameterContext;
+reg prepareParameterContext_sync;
+assign PREPARE_PARAMETER_CONTEXT_O = prepareParameterContext_sync;
+
+/* This block handles writing parameters from the buffer
+ * to their final destination */ 
+always @(*) begin
+	§parameterWiresNull§
+	prepareParameterContext = 1'b0;
+
+	if (PARAMETER_UPDATE_ALLOWED_I) begin
+		case(PE_ID_I)
+			§parameterWiresNotNull§ 		
+		endcase
+		prepareParameterContext = 1'b1;
+	end
+end
+
+always @(posedge CGRA_CLK_I) begin
+	if (~RST_N_I) begin
+		§parameterWiresNullSync§
+		prepareParameterContext_sync <= 1'b0;
+	end else if (EN_I) begin
+		§parameterWiresNotNullSync§		
+		prepareParameterContext_sync <= prepareParameterContext;
+	end
+end
+
+// Signal components of the control info of the address
+wire [`GENERAL_TARGET_SELECTION_WIDTH-1:0] general_target_selection;
+wire [`TARGET_ID_WIDTH-1:0] target_id;
+
+assign general_target_selection = CONTROL_ADDR_I[`GENERAL_TARGET_SELECTION_HIGH:`GENERAL_TARGET_SELECTION_LOW];
+assign target_id = CONTROL_ADDR_I[`TARGET_ID_HIGH:`TARGET_ID_LOW];
+
+§contextEnPE§
+reg [`CBOX_EVAL_BLOCK_COUNT-1:0] cbox_eval_block_context_wren;
+reg isPELogContext;
+reg contextWrEn_ccu;
+reg contextWrEn_cbox;
+reg contextWrEn_idc;
+reg contextWrEn_glblLog;
+reg contextWrEn_sensor;
+reg contextWrEn_actor;
+reg parameterBufferWrEn;
+reg parameterBufferIsHybrid;
+reg parameterBufferExpWrEn;
+reg syncUnitStateChange;
+reg syncUnitIntervalChange;
+reg syncUnitSpecialActionCounterRstChange;
+reg logDestWrEn;
+reg logDestBoundWrEn;
+reg logDestIncWrEn;
+reg ocmDestWrEn;
+reg ocmDestBoundWrEn;
+reg ocmDestIncWrEn;
+reg ocmContextWrEn;
+reg constBufferWrEn;
+reg peContextEnable;
+reg ocmOutputContextWrEn;
+
+reg [`CBOX_EVAL_BLOCK_COUNT-1:0] cbox_eval_block_context_wren_sync;
+reg isPELogContext_sync;
+reg contextWrEn_ccu_sync;
+reg contextWrEn_cbox_sync;
+reg contextWrEn_idc_sync;
+reg contextWrEn_glblLog_sync;
+reg contextWrEn_sensor_sync;
+reg contextWrEn_actor_sync;
+reg parameterBufferWrEn_sync;
+reg parameterBufferIsHybrid_sync;
+reg parameterBufferExpWrEn_sync;
+reg syncUnitStateChange_sync;
+reg syncUnitIntervalChange_sync;
+reg syncUnitSpecialActionCounterRstChange_sync;
+reg logDestWrEn_sync;
+reg logDestBoundWrEn_sync;
+reg logDestIncWrEn_sync;
+reg ocmDestWrEn_sync;
+reg ocmDestBoundWrEn_sync;
+reg ocmDestIncWrEn_sync;
+reg ocmContextWrEn_sync;
+reg constBufferWrEn_sync;
+reg peContextEnable_sync;
+reg ocmOutputContextWrEn_sync;
+
+assign IS_PELOG_CONTEXT_O = isPELogContext_sync;
+assign CONTEXT_WREN_CCU_O = contextWrEn_ccu_sync;
+assign CONTEXT_WREN_CBOX_O = {contextWrEn_cbox_sync, cbox_eval_block_context_wren_sync};
+assign CONTEXT_WREN_IDC_O = contextWrEn_idc_sync;
+assign CONTEXT_WREN_GLOG_O = contextWrEn_glblLog_sync;
+assign CONTEXT_WREN_ACTOR_O = contextWrEn_actor_sync;
+assign CONTEXT_WREN_SENSOR_O = contextWrEn_sensor_sync;
+assign PARAMETER_BUFFER_WREN_O = parameterBufferWrEn_sync;
+assign PARAMETER_BUFFER_IS_HYBRID_O = parameterBufferIsHybrid_sync;
+assign PARAMETER_BUFFER_EXP_WREN_O = parameterBufferExpWrEn_sync;
+assign SYNCUNIT_STATE_CHANGE_O = syncUnitStateChange_sync;
+assign SYNCUNIT_INTERVAL_CHANGE_O = syncUnitIntervalChange_sync;
+assign SYNCUNIT_SPECIAL_ACTION_COUNTER_RST_CHANGE_O = syncUnitSpecialActionCounterRstChange_sync;
+assign LOG_DEST_CHANGE_O = logDestWrEn_sync;
+assign LOG_DEST_BOUND_CHANGE_O = logDestBoundWrEn_sync;
+assign LOG_DEST_INC_CHANGE_O = logDestIncWrEn_sync;
+assign OCM_DEST_CHANGE_O = ocmDestWrEn_sync;
+assign OCM_DEST_BOUND_CHANGE_O = ocmDestBoundWrEn_sync;
+assign OCM_DEST_INC_CHANGE_O = ocmDestIncWrEn_sync;
+assign CONTEXT_WREN_OCM_O = ocmContextWrEn_sync;
+assign CONST_BUF_WREN_O = constBufferWrEn_sync;
+assign PE_CONTEXT_ENABLE_O = peContextEnable_sync;
+assign CONTEXT_WREN_OCM_OUTPUT_O = ocmOutputContextWrEn_sync;
+
+/* This block handles all AXI interface operations,
+ * writing data to contexts or buffers. */
+always @(*) begin
+	isPELogContext = 1'b0;
+	§contextEnPEnull§
+	cbox_eval_block_context_wren = 0;
+	contextWrEn_ccu = 1'b0;
+	contextWrEn_cbox = 1'b0;
+	contextWrEn_idc = 1'b0;
+	contextWrEn_glblLog = 1'b0;
+	contextWrEn_sensor = 1'b0;
+	contextWrEn_actor = 1'b0;
+	parameterBufferWrEn = 1'b0;
+	parameterBufferIsHybrid = 1'b0;
+	parameterBufferExpWrEn = 1'b0;
+	syncUnitStateChange = 1'b0;
+	syncUnitIntervalChange = 1'b0;
+	syncUnitSpecialActionCounterRstChange = 1'b0;
+	logDestWrEn = 1'b0;
+	logDestBoundWrEn = 1'b0;
+	logDestIncWrEn = 1'b0;
+	ocmDestWrEn = 1'b0;
+	ocmDestBoundWrEn = 1'b0;
+	ocmDestIncWrEn = 1'b0;
+	ocmContextWrEn = 1'b0;
+	constBufferWrEn	 = 1'b0;
+	peContextEnable = 1'b0;
+	ocmOutputContextWrEn = 1'b0;
+
+	if (EN_CONTROLLER_I) begin
+		// This is a transaction targeting some kind of internal memory range
+		// First, find out its general purpose.
+		case (general_target_selection)
+			`GENERAL_TARGET_PE: begin
+				case(target_id[PE_ID_WIDTH-1:0])
+					§contextEnPEnotNull§				
+				endcase
+				isPELogContext = target_id[`PE_LOG_SELECTION_BIT];
+				if (~isPELogContext)
+					peContextEnable = 1'b1;
+			end
+			`GENERAL_TARGET_PARAMETER: begin
+				parameterBufferWrEn = VALID_CONTEXT_I;
+				parameterBufferIsHybrid = target_id[`COUNT_PARAMETERS_BIT];
+			end
+			`GENERAL_TARGET_OTHER: begin
+				case (target_id[OTHER_ID_WIDTH-1:0])
+					`ID_CCUContext: contextWrEn_ccu = VALID_CONTEXT_I;
+					`ID_CBoxContext: contextWrEn_cbox = VALID_CONTEXT_I;
+					`ID_IDC: contextWrEn_idc = VALID_CONTEXT_I; 
+					`ID_SensorContext: contextWrEn_sensor = VALID_CONTEXT_I;
+					`ID_ActorContext: contextWrEn_actor = VALID_CONTEXT_I;
+					`ID_GlblLogContext: contextWrEn_glblLog = VALID_CONTEXT_I;
+					`ID_OCMContext: ocmContextWrEn = VALID_CONTEXT_I;
+					// `ID_ConstBuffer: constBufferWrEn = VALID_CONTEXT_I;
+					`ID_OCMOutputContext: ocmOutputContextWrEn = VALID_CONTEXT_I;
+					§cBoxEvalContextNotNull§
+				endcase
+			end
+			`GENERAL_TARGET_SINGLE_REG: begin
+				case (target_id[`SINGLE_REG_ID_WIDTH-1:0])
+					`ID_CgraStateChange: syncUnitStateChange = 1'b1;
+					`ID_LogDest: logDestWrEn = 1'b1;
+					`ID_LogDestBound: logDestBoundWrEn = 1'b1;
+					`ID_LogDestInc: logDestIncWrEn = 1'b1;
+					`ID_OCMDest: ocmDestWrEn = 1'b1;
+					`ID_OCMDestBound: ocmDestBoundWrEn = 1'b1;
+					`ID_OCMDestInc: ocmDestIncWrEn = 1'b1;
+					`ID_IntervalLength: syncUnitIntervalChange = 1'b1;
+					`ID_ExpectedParameterCount: parameterBufferExpWrEn = 1'b1;
+					`ID_SpecialActionCounterResetValue: syncUnitSpecialActionCounterRstChange = 1'b1;
+				endcase
+			end
+		endcase
+	end
+end
+
+always @(posedge CGRA_CLK_I) begin
+	if (~RST_N_I) begin
+		isPELogContext_sync <= 1'b0;
+		§contextEnPEnullSync§
+		cbox_eval_block_context_wren_sync <= 0;
+		contextWrEn_ccu_sync <= 1'b0;
+		contextWrEn_cbox_sync <= 1'b0;
+		contextWrEn_idc_sync <= 1'b0;
+		contextWrEn_glblLog_sync <= 1'b0;
+		contextWrEn_sensor_sync <= 1'b0;
+		contextWrEn_actor_sync <= 1'b0;
+		parameterBufferWrEn_sync <= 1'b0;
+		parameterBufferIsHybrid_sync <= 1'b0;
+		parameterBufferExpWrEn_sync <= 1'b0;
+		syncUnitStateChange_sync <= 1'b0;
+		syncUnitIntervalChange_sync <= 1'b0;
+		syncUnitSpecialActionCounterRstChange_sync <= 1'b0;
+		logDestWrEn_sync <= 1'b0;
+		logDestBoundWrEn_sync <= 1'b0;
+		logDestIncWrEn_sync <= 1'b0;
+		ocmDestWrEn_sync <= 1'b0;
+		ocmDestBoundWrEn_sync <= 1'b0;
+		ocmDestIncWrEn_sync <= 1'b0;
+		ocmContextWrEn_sync <= 1'b0;
+		constBufferWrEn_sync <= 1'b0;		
+		peContextEnable_sync <= 1'b0;
+		ocmOutputContextWrEn_sync <= 1'b0;
+	end else if (EN_I) begin
+		isPELogContext_sync <= isPELogContext;
+		§contextEnPEnotNullSync§
+		cbox_eval_block_context_wren_sync <= cbox_eval_block_context_wren;	
+		contextWrEn_ccu_sync <= contextWrEn_ccu;
+		contextWrEn_cbox_sync <= contextWrEn_cbox;
+		contextWrEn_idc_sync <= contextWrEn_idc;
+		contextWrEn_glblLog_sync <= contextWrEn_glblLog;
+		contextWrEn_sensor_sync <= contextWrEn_sensor;
+		contextWrEn_actor_sync <= contextWrEn_actor;
+		parameterBufferWrEn_sync <= parameterBufferWrEn;
+		parameterBufferIsHybrid_sync <= parameterBufferIsHybrid;
+		parameterBufferExpWrEn_sync <= parameterBufferExpWrEn;
+		syncUnitStateChange_sync <= syncUnitStateChange;
+		syncUnitIntervalChange_sync <= syncUnitIntervalChange;
+		syncUnitSpecialActionCounterRstChange_sync <= syncUnitSpecialActionCounterRstChange;
+		logDestWrEn_sync <= logDestWrEn;
+		logDestBoundWrEn_sync <= logDestBoundWrEn;
+		logDestIncWrEn_sync <= logDestIncWrEn;
+		ocmDestWrEn_sync <= ocmDestWrEn;
+		ocmDestBoundWrEn_sync <= ocmDestBoundWrEn;
+		ocmDestIncWrEn_sync <= ocmDestIncWrEn;
+		ocmContextWrEn_sync <= ocmContextWrEn;
+		constBufferWrEn_sync <= constBufferWrEn;		
+		peContextEnable_sync <= peContextEnable;
+		ocmOutputContextWrEn_sync <= ocmOutputContextWrEn;
+	end
+end
+
+endmodule
+
+>>

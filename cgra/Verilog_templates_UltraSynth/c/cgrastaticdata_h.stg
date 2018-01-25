@@ -1,0 +1,21 @@
+cgrastaticdata_h(
+	log_res_count, ocm_res_count
+)
+::= <<
+#ifndef CGRA_STATIC_DATA_H
+#define CGRA_STATIC_DATA_H
+
+#include <stddef.h> // size_t
+
+#define CGRA_LOG_RESULT_COUNT §log_res_count§
+#define CGRA_OCM_RESULT_COUNT §ocm_res_count§
+
+// Index one the respective array with an iXtronix result ID and
+// get the offset (based on the current result array beginning) to the results value.
+
+extern const size_t cgra_log_data_offset_map[CGRA_LOG_RESULT_COUNT];
+extern const size_t cgra_ocm_data_offset_map[CGRA_OCM_RESULT_COUNT];
+
+#endif // CGRA_STATIC_DATA_H
+
+>>

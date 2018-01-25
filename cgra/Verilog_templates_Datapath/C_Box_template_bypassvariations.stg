@@ -1,0 +1,177 @@
+CBox(date, memoryslots, status_inputs, mux_status, out_h , out_l , bypassAndNegative , bypassAndPositive , bypassOrNegative , bypassOrPositive , raddrOrPositiveH , raddrOrPositiveL , raddrOrNegativeH , raddrOrNegativeL ,
+ raddrPredicationH , raddrPredicationL , waddrNegativeH , waddrNegativeL , waddrPositiveH , waddrPositiveL , muxH , muxL , write_enable, ccntwidth, contextsize, contextmemorywidth, bypass_inputmux,nrOfOutputs,additionalOutputAssign,additionalOutputs,ID,initPath)
+::= <<
+
+/*
+Author: Dennis L. Wolf
+Date: §date§
+Version: 2.0 (changed to String templates)
+Version History: 1.1 debugged and simulated
+		 1.0 layout & concept
+*/
+
+`default_nettype wire
+
+
+module CBox #(
+parameter id=0
+) (
+input wire 			CLK_I,
+§status_inputs§
+input wire EN_I,
+input wire CONTEXT_WR_EN_I,
+input wire [§ccntwidth§-1:0]	CONTEXT_WR_ADDR_I,
+input wire [§contextmemorywidth§-1:0]	CONTEXT_DATA_I,
+input wire [§ccntwidth§-1:0]	CCNT_I,
+output reg w_reg_in_positive,
+output reg w_reg_in_negative,
+input wire w_reg_predication,
+input wire w_reg_or_positive,
+input wire w_reg_or_negative,
+output wire[§raddrOrPositiveH§-§raddrOrPositiveL§:0] w_rd_addr_or_positive,
+output wire[§raddrOrNegativeH§-§raddrOrNegativeL§:0] w_rd_addr_or_negative,
+output wire[§raddrPredicationH§-§raddrPredicationL§:0] w_rd_addr_predication,
+§if(nrOfOutputs)§
+§additionalOutputs§
+§endif§
+output wire[§waddrNegativeH§-§waddrNegativeL§:0] w_wr_addr_negative,
+output wire[§waddrPositiveH§-§waddrPositiveL§:0] w_wr_addr_positive,
+output wire w_wr_en
+
+);
+
+
+// Context memory to configure the CBox
+ (* ram_style = "block" *) reg [§contextmemorywidth§-1:0] contextmemory [§contextsize§-1:0];
+reg [§contextmemorywidth§-1:0] contextmemoryout;
+
+
+// Mask to decode the context memory
+
+// driver to bypass the and gate on side B
+wire w_bypass_and_negative;
+assign w_bypass_and_negative = contextmemoryout[§bypassAndNegative§];
+
+// driver to bypass the and gate on side A 
+wire w_bypass_and_positive;
+assign w_bypass_and_positive = contextmemoryout[§bypassAndPositive§];
+
+// driver to bypass the or gate on side B
+wire w_bypass_or_negative;
+assign w_bypass_or_negative = contextmemoryout[§bypassOrNegative§];
+
+// driver to bypass the or gate on side A
+wire w_bypass_or_positive;
+assign w_bypass_or_positive = contextmemoryout[§bypassOrPositive§];
+
+// Read address for read port b1
+assign w_rd_addr_or_positive = contextmemoryout[§raddrOrPositiveH§:§raddrOrPositiveL§];
+
+// Read address for read port b2
+assign w_rd_addr_or_negative = contextmemoryout[§raddrOrNegativeH§:§raddrOrNegativeL§];
+
+// Read address for read port a
+assign w_rd_addr_predication = contextmemoryout[§raddrPredicationH§:§raddrPredicationL§];
+§if(nrOfOutputs)§
+§additionalOutputAssign§
+§endif§
+
+
+// Write address for side B
+assign w_wr_addr_negative = contextmemoryout[§waddrNegativeH§:§waddrNegativeL§];
+
+// Write address for side A
+assign w_wr_addr_positive = contextmemoryout[§waddrPositiveH§:§waddrPositiveL§];
+
+// Driver to select the status in
+§if(muxH)§
+wire[§muxH§-§muxL§+1:0] w_mux_inputs;
+assign w_mux_inputs = contextmemoryout[§muxH§:§muxL§];
+§endif§
+
+// Write enable for the condition memory
+
+assign w_wr_en = contextmemoryout[§write_enable§];
+
+
+// contextmanagment
+always@(posedge CLK_I) begin
+  if(CONTEXT_WR_EN_I) begin
+     contextmemory[CONTEXT_WR_ADDR_I] <= CONTEXT_DATA_I;
+  end if(EN_I)
+  contextmemoryout <= contextmemory[CCNT_I];
+end
+
+
+§if(muxH)§
+// Multiplexer to select a status - driven by 'w_wr_en'
+reg w_status;
+always@(*) begin
+(* full_case *)
+case(w_mux_inputs)
+§mux_status§
+ endcase
+end
+§else§
+assign w_status = §bypass_inputmux§
+§endif§
+
+
+// Conjunction logic for side A in front of the condition memory
+always@* begin
+	if(w_bypass_or_positive && w_bypass_and_positive)
+		w_reg_in_positive = w_status;
+	else if(w_bypass_or_positive && !w_bypass_and_positive)
+		w_reg_in_positive = w_status && w_reg_predication;
+	else if(! w_bypass_or_positive && w_bypass_and_positive)
+		w_reg_in_positive = w_status || w_reg_or_positive;
+	else 
+		w_reg_in_positive = w_status && w_reg_predication || w_reg_or_positive;
+
+end
+// Conjunction logic for side B in front of the condition memory
+always@* begin
+	if(w_bypass_or_negative && w_bypass_and_negative)
+		w_reg_in_negative = !w_status;
+	else if(w_bypass_or_negative && !w_bypass_and_negative)
+		w_reg_in_negative = !w_status && w_reg_predication;
+	else if(! w_bypass_or_negative && w_bypass_and_negative)
+		w_reg_in_negative = !w_status || w_reg_or_negative;
+	else 
+		w_reg_in_negative = !w_status && w_reg_predication || w_reg_or_negative;
+
+end
+
+§if(initPath)§
+initial begin
+	case(id)
+             0:	$readmemb("§initPath§/cbox0.dat", contextmemory);
+             1:	$readmemb("§initPath§/cbox1.dat", contextmemory);
+             2:	$readmemb("§initPath§/cbox2.dat", contextmemory);
+             3:	$readmemb("§initPath§/cbox3.dat", contextmemory);
+             4:	$readmemb("§initPath§/cbox4.dat", contextmemory);
+             5:	$readmemb("§initPath§/cbox5.dat", contextmemory);
+             6:	$readmemb("§initPath§/cbox6.dat", contextmemory);
+             7:	$readmemb("§initPath§/cbox7.dat", contextmemory);
+	endcase
+
+end
+§endif§
+
+endmodule
+  
+>>
+
+CBoxReadPortAddr(i,raddrPredicationL,raddrPredicationH)
+::= <<
+
+output wire[§raddrPredicationH§-§raddrPredicationL§:0] w_rd_addr_predication§i§,
+
+>>
+
+
+CBoxReadPortAssign(i,raddrPredicationL,raddrPredicationH)
+::= <<
+assign w_rd_addr_predication§i§ = contextmemoryout[§raddrPredicationH§:§raddrPredicationL§];
+>>
+

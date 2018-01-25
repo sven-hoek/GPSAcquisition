@@ -1,0 +1,84 @@
+topLevelDummy(cacheIO, cacheOutputs, cacheConjunction, maxContextWidth, ccntwidth
+,port , outputwires,outputcollection)
+::= <<
+`include "cgra.vh"
+`include "AMIDAR_definitions.vh"
+
+module top_level_dummy(
+    (* dont_touch = "true" *) input wire[100:0] in,
+    (* dont_touch = "true" *) input wire CLK_I,
+    (* dont_touch = "true" *) output wire[32-1:0] out
+    );
+/*       
+    §cacheOutputs§
+ 
+    wire [7-1:0] DEST_TAG_O;
+    wire [4-1:0]	DEST_FU_O;
+    wire [2-1:0]DEST_PORT_O;
+    wire[32-1:0]   RESULT_O;
+    wire RESULT_VALID_O;
+    wire CONTEXT_ACK_O;
+    wire  OPERAND_ACK_O;
+    
+    assign out = §cacheConjunction§ OPERAND_ACK_O && DEST_TAG_O && DEST_FU_O && DEST_PORT_O && RESULT_O && RESULT_VALID_O;
+    
+    CGRA cgra(.clk_i(CLK_I),
+    .rst_i(in[0]),
+    .token_valid_i(in[65]),
+    .opcode_i(in[2-1:0]),
+    .dest_tag_i(in[8-1:1]),
+    .dest_fu_i(in[6-1:2]),
+    .dest_port_i(in[5-1:3]),
+    .operand_b_low_i(in[64-1:32]),
+    .operand_b_low_valid_i(in[32]),
+    .operand_a_low_i(in[32-1:0]),
+    .operand_a_low_valid_i(in[0]),
+    §cacheIO§
+    .result_tag_o(DEST_TAG_O),
+    .result_fu_o(DEST_FU_O),
+    .result_port_o(DEST_PORT_O),
+    .result_low_o(RESULT_O),
+    .result_low_valid_o(RESULT_VALID_O),
+    .result_ack_i(in[0]),
+    .operand_ack_o(OPERAND_ACK_O)
+    );
+*/
+
+// ==========================================================================================
+
+§outputwires§
+
+and(out,§outputcollection; separator=", "§);
+
+CGRA cgra(
+§port; separator=", "§
+);
+
+endmodule
+>>
+
+cacheIO(index)
+::= <<
+
+.cache_data_§index§_i(in[32-1:0]),
+.cache_valid_§index§_i(in[0]), 
+.cache_addr_§index§_o(CACHE_ADDR_§index§_O),
+.cache_offset_§index§_o(CACHE_OFFSET_§index§_O),
+.cache_data_§index§_o(CACHE_DATA_§index§_O),
+.cache_wr_§index§_o(CACHE_WR_§index§_O),
+.cache_valid_§index§_o(CACHE_VALID_§index§_O),
+>>
+
+cacheOutputs(index)
+::= <<
+wire[32-1:0] CACHE_ADDR_§index§_O;
+wire[32-1:0] CACHE_OFFSET_§index§_O;
+wire[32-1:0] CACHE_DATA_§index§_O;
+wire CACHE_WR_§index§_O;
+wire CACHE_VALID_§index§_O;
+>>
+
+cacheConjunction(index)
+::= <<
+CACHE_ADDR_§index§_O && CACHE_OFFSET_§index§_O && CACHE_DATA_§index§_O && CACHE_WR_§index§_O && CACHE_VALID_§index§_O &&
+>>

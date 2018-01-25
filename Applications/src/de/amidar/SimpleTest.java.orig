@@ -1,0 +1,155 @@
+package de.amidar;
+
+public class SimpleTest {
+
+<<<<<<< HEAD
+	public static void main(String [] args){ 
+////		int a = 1;
+////		
+////		SimpleTest t = new SimpleTest2();
+////	//	adder p = (adder)t;
+////		
+////		calc(t);
+////		
+////		t = new SimpleTest2();
+////		
+////		calc(t);
+//		int cnt = 0;
+//		
+////		int[] a = {1,2,3,4,5,6,7,8,9,0};
+//		
+//		for(int i = 0; i < 1000; i++) {
+//			cnt++;
+////			cnt+=a[i];
+////			a[i] = cnt;
+////			System.out.println("ADSF");
+//
+////			float arg = 6.31653546F;
+////
+////			float x = (float)StrictMath.rint(arg%2.776F);
+//
+//		}
+//		
+//		System.out.println(cnt);
+//		
+////		
+////		for(int i = 0; i< 10; i++){
+////			System.out.println(a[i]);
+////		}
+		
+		int a = -1;
+		while (a < 4) {
+			a=a+1;
+			for (int l = 0; l < 4; l++) {
+			}
+		}
+		System.out.println("a:"+a);
+		 
+	}
+
+}
+=======
+
+		
+		
+//		// TEST 1
+		int cnt = 0;
+		for(int i = 0; i < 10; i++) {
+			cnt++;
+			int b = 123123123;
+		}
+		System.out.println("cnt "+cnt);
+//		
+//		
+//		// TEST 2
+//		float a = 1.2f;
+//		float b = 1;
+//		for(int i = 0; i < 50; i++){
+//			b *= a;
+//			float c = a + b;
+//			c = a - b;
+//			c = a / b;
+//		}
+//		
+//		// TEST 3
+//		int  val = 0; 
+//		for(int i = 0; i < 10; i++){
+//			val += getSomeNumber(i);
+//		}
+//		
+//		
+//		// TEST 4
+//		int[] arr = new int [20];
+//		for(int i = 1; i < 20; i++){
+//			arr[i] = i + arr[i-1];
+//		}
+//		
+//		// TEST 5
+//		int a1 = 0, b1 = 1;
+//		for(int i = 0; i < 1000; i++){
+//			int sum = a1 + b1;
+//			a = b; 
+//			b = sum;
+//		}
+//		
+//		// TEST 6
+//		SimpleTest peter = new SimpleTest();
+//		int val1 = 0; 
+//		for(int i = 0; i < 50; i++){
+//			val1 += peter.getAnotherNumber(i);
+//		}
+//		
+//		// TEST 7
+//		int val2 = 0;
+//		for(int i = 0; i< 50; i++){
+//			val2 += 9999999;
+//		}
+//		
+//		// TEST 8
+//		for(int i = 0; i < 100; i++){
+//			SimpleTest asdf = new SimpleTest();
+//			asdf.increment += asdf.increment;
+//		}
+//		
+//		// TEST 9
+//		for(int i = 0; i < 100; i++){
+//			int[] asd = new int [100];
+//		}
+//		
+//		// TEST 10
+//		for(int i = 0; i < 100; i++){
+//			int[][] asd = new int[37][101];
+//		}
+//		
+//		// TEST 11
+//		float asdf = 1.2f;
+//		for(int i = 0; i < 100; i++){
+//			int p = (int)asdf;
+//			asdf = (float)p;
+//		}
+//		
+//		// TEST 12
+//		float[] asdff = new float[100];
+//		for(int i = 1; i < 100; i++){
+//			SimpleTest tommy = new SimpleTest();
+//			asdff[i] = asdff[i-1] + ((float)i)/getSomeNumber(tommy.increment);
+//		}
+//		 
+//		// TEST 13
+//		for(int i = 0; i < 100; i++){
+//			int[][][] asd = new int[37][7][4];
+//		}
+	}
+	
+	
+	public static int getSomeNumber(int a ){
+		return a * 34;
+	}
+	
+	public int getAnotherNumber(int a ){
+		return a * 34;
+	}
+	
+
+}
+>>>>>>> 3c2fea58e1a18dec3c35da38132698a23c6696b2

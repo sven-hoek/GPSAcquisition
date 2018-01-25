@@ -1,0 +1,102 @@
+cgraprivatestaticdata_h(
+	ccnt_width, lut_data_size, pe_log_id_offset, addr_offset_width, 
+	addr_id_width, param_size, static_param_count, max_indexed_count,
+	runtime_param_count
+)
+::= <<
+#ifndef CGRA_PRIVATE_STATIC_DATA_H
+#define CGRA_PRIVATE_STATIC_DATA_H
+
+#include <inttypes.h>	// uint32_t
+
+//
+// ===---- AXI constant definitions ----===
+//
+#define AXI_MAX_TRANSACTION_LENGTH 256 // the max length of a transaction
+#define AXI_TRANSACTION_BOUNDARY 4096 // crossing this address boundary is prohibited
+#define AXI_TRANSFER_SIZE 4 // size of a transfer in bytes
+
+//
+// ===---- General constant definitions ----===
+//
+#define CGRA_STATE_DATA_OFFSET §ccnt_width§ // basically the ccnt width 
+#define CGRA_CONST_LUT_DATA_SIZE §lut_data_size§ // size (in 32 bit steps) of any parameter send to the CGRA 
+#define CGRA_PE_LOG_ID_OFFSET §pe_log_id_offset§ // the ID offset to the first PE Log ID
+
+#define CGRA_AXI_OFFSET_WIDTH §addr_offset_width§ // AXI address modification bits (e.g. Context offset)
+#define CGRA_AXI_TARGET_ID_WIDTH §addr_id_width§ // The ID width needed to represent IDC address width, PE and other IDs
+#define CGRA_AXI_TARGET_WIDTH 2 // Width of the write operation send to the CGRA
+
+// As we need 4 bytes alligned addresses, we will have to shift the actual CGRA
+// address (basically the internal usage) two bits to the left.
+#define CGRA_AXI_SYSTEM_ADDR_OFFSET 2 
+
+//
+// ===---- Parameter related declarations and definitions ----===
+//
+
+// The size of a parameter in 32 bit increments.
+// If this is 2, we have a parameter size of 64 bits.
+#define CGRA_PARAMETER_SIZE §param_size§
+
+// Max(run time parameter count, host result count)
+#define CGRA_MAX_INDEXED_PARAMETER_COUNT §max_indexed_count§
+
+//
+// ===---- ID range related type definitions ----===
+//
+
+// Represents a CGRA internal ID range (for writing any parameter)
+// Range is including lower but excluding upper: [lower_id, upper_id)
+typedef struct
+{
+	size_t lower_id;
+	size_t upper_id;
+} CgraIdRange;
+
+// An array (with size info) of ID ranges.
+// Maps parameter indices of iXtronix to CGRA internal ID ranges.
+typedef struct 
+{
+	const CgraIdRange* ranges;
+	size_t size;
+} CgraIdRangeMap;
+
+//
+// ===---- Static parameter data ----===
+//
+
+// The actual values of the static parameters
+extern const uint32_t cgra_static_parameters[§static_param_count§ * CGRA_PARAMETER_SIZE];
+
+// The initial values of the runtime parameters
+extern const uint32_t cgra_runtime_parameters[§runtime_param_count§ * CGRA_PARAMETER_SIZE];
+
+//
+// ===---- General ID mapping and ID range struct declarations ----===
+//
+
+// Use a run time parameter ID (used during scheduling) to index this mapping
+// and get a range of CGRA internal IDs out of it.
+extern const CgraIdRangeMap cgra_runtime_parameter_id_map;
+
+// Use a host result parameter ID (used during scheduling) to index this mapping
+// and get a range of CGRA internal IDs out of it.
+extern const CgraIdRangeMap cgra_host_result_parameter_id_map;
+
+// Range of CGRA internal IDs which represent the integration step size.
+// This should be part of the run time parameter range
+extern const CgraIdRange cgra_integration_step_size_id_range;
+
+// Range of CGRA internal IDs which represent the static parameters.
+extern const CgraIdRange cgra_static_parameter_id_range;
+
+// Range of CGRA internal IDs which represent the run time parameters.
+extern const CgraIdRange cgra_runtime_parameter_id_range;
+
+// Range of CGRA internal IDs which represent the host results.
+extern const CgraIdRange cgra_host_result_id_range;
+
+#endif // CGRA_PRIVATE_STATIC_DATA_H
+
+>>

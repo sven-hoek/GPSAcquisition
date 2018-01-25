@@ -1,0 +1,44 @@
+{ 
+"time" : 
+{ "id": 21, "tag": "t", "starttime": 5 },
+"stepsize" : 
+{ "id": 22, "tag": "h", "val": 1e-3 },
+"toplevel_inputs" : [
+  { "id" :  0,  "tag" : "Control.u",          "saddr": 45, "prec" : {"min" : -10, "max" : 10, "res" : 3e-4}},
+  { "id" : 21,  "tag" : "Control.v",                       "prec" : {"min" : -10, "max" : 10, "res" : 3e-4}}
+],
+"toplevel_parameters" : [
+  { "id" :  1,  "tag" : "Control.pT1.T1",     "init" : 1, "prec" : {"min" :   0, "max" :  1, "res" : 1e-6}},
+  { "id" :  2,  "tag" : "Control.pT1.K",      "init" : 2, "prec" : {"min" :   0, "max" : 10, "res" : 1e-6}},
+  { "id" :  3,  "tag" : "Control.limit.k",    "init" : 3, "prec" : {"min" :   0, "max" : 10, "res" : 1e-6}},
+  { "id" :  4,  "tag" : "Control.p.Kp",       "init" : 4, "prec" : {"min" :   0, "max" :  1, "res" : 1e-6}}
+],
+"constants" : [
+  { "id" :  5,  "tag" : "Control.limit.uMin", "val"  : -1},
+  { "id" :  6,  "tag" : "Control.limit.uMax", "val"  : 1}
+],
+"states" : [
+  { "id" :  7,  "tag" : "Control.pT1.x",      "driv" : 11, "init" : 5}
+],
+"predecessors" : [
+  { "id" :  8,  "tag" : "p.pred(a)",          "driv" : 17}
+],
+"operators" : [
+  { "id" :  9,  "tag" : "pT1",                "op"   : "MUL",      "args" : [0, 2]},
+  { "id" : 10,  "tag" : "pT1",                "op"   : "SUB",      "args" : [9, 7]},
+  { "id" : 11,  "tag" : "pT1",                "op"   : "DIV",      "args" : [10, 1]},
+  { "id" : 12,  "tag" : "limit",              "op"   : "MUL",      "args" : [3, 7]},
+  { "id" : 13,  "tag" : "limit",              "op"   : "LT",       "args" : [12, 5]},
+  { "id" : 14,  "tag" : "limit",              "op"   : "IF",       "args" : [13, 5, 12]},
+  { "id" : 15,  "tag" : "limit",              "op"   : "GT",       "args" : [14, 6]},
+  { "id" : 16,  "tag" : "limit",              "op"   : "IF",       "args" : [15, 6, 14]},
+  { "id" : 17,  "tag" : "p",                  "op"   : "MUL",      "args" : [16, 4]},
+  { "id" : 18,  "tag" : "p",                  "op"   : "SUB",      "args" : [17, 8]},
+  { "id" : 19,  "tag" : "test.rom",           "op"   : "ROM_LOAD", "args" : [10, 17]}
+],
+"toplevel_outputs" : [
+  { "id" : 20,  "tag" : "Control.y",          "driv" : 17,    "raddr" : 20, "aaddr": 22, "laddr": 300, "prec" : {"min" : -10, "max" : 10, "res" : 3e-4}},
+  { "id" : 21,  "tag" : "Control.delta",      "driv" : 18,    "raddr" : 24,              "laddr": 400},
+  { "id" : 22,  "tag" : "test.rom.y",         "driv" : 19,                  "aaddr": 23}
+]
+}

@@ -1,0 +1,11 @@
+ParameterBuffer(bufSize, addrWidth, parameterExpectedCounterWidth)
+::= <<
+`ifndef INCLUDE_PARAMETER_BUFFER
+`define INCLUDE_PARAMETER_BUFFER
+ 
+  `define   PARAMETER_BUFFER_SIZE {bufSize}
+  `define   PARAMETER_BUFFER_ADDR_WIDTH {addrWidth}
+  `define   PARAMETER_BUFFER_EXPECTED_COUNTER_WIDTH {parameterExpectedCounterWidth}
+  
+`endif // INCLUDE_PARAMETER_BUFFER
+>>

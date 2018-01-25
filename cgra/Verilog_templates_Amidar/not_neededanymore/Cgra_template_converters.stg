@@ -1,0 +1,465 @@
+toplevel(date,maxContextWidth,cacheIO,ccntwidth,contextmemorysize,contextWidthCBox, peAddrWidth,statusIns,statusWireDeclaration,resultConnection,pes,nrOfPes,jointCacheValid,contextAddrWidth,wires_direct_out_Pe,wires_out_Pe,wires_status)
+::= <<
+
+/*
+Author: Dennis L. Wolf
+Date: §date§
+Version: 2.1 - converters for contexts, Fsm reduction and cleanup
+Version History: 	2.0 changed to String Templates
+			1.1 changed to header and `define
+			1.0 construct
+*/
+`include "definitions.vh" // still needed with full custom generation using ST?
+`include "AMIDAR_definitions.vh"
+
+`default_nettype wire
+
+module Cgra (
+                          input wire  				CLK_I,
+(* dont_touch = "true" *) input wire  				RST_N_I,
+(* dont_touch = "true" *) input wire  				EN_I,
+(* dont_touch = "true" *) input wire  				TOKEN_VALID,
+(* dont_touch = "true" *) input wire [`AMIDAR_OPCODE_WIDTH-1:0]	OPCODE_I,
+(* dont_touch = "true" *) input wire [`AMIDAR_TAG_WIDTH-1:0]	DEST_TAG_I,
+(* dont_touch = "true" *) input wire [`AMIDAR_FU_ID_WIDTH-1:0]	DEST_FU_I,
+(* dont_touch = "true" *) input wire [`AMIDAR_PORT_ID_WIDTH-1:0]DEST_PORT_I,
+(* dont_touch = "true" *) input wire [`DATA_WIDTH-1:0]		OPERAND_DATA_I,
+(* dont_touch = "true" *) input wire 				OPERAND_DATA_VALID_I,
+(* dont_touch = "true" *) input wire [`DATA_WIDTH-1:0]		OPERAND_ADDR_I,
+(* dont_touch = "true" *) input wire  				OPERAND_ADDR_VALID_I,
+§cacheIO§
+(* dont_touch = "true" *) input wire [§maxContextWidth§-1:0] 	CONTEXT_DATA_I,
+(* dont_touch = "true" *) input wire 				CONTEXT_DATA_VALID_I,
+(* dont_touch = "true" *) input wire [§ccntwidth§+1:0] 		DATA_CONTROLUNIT_I,
+(* dont_touch = "true" *) input wire 				WR_EN_CONTROLUNIT_I,
+(* dont_touch = "true" *) output wire				OPERAND_ACK_O,
+(* dont_touch = "true" *) output wire [`AMIDAR_TAG_WIDTH-1:0]	DEST_TAG_O,
+(* dont_touch = "true" *) output wire [`AMIDAR_FU_ID_WIDTH-1:0]	DEST_FU_O,
+(* dont_touch = "true" *) output wire [`AMIDAR_PORT_ID_WIDTH-1:0]DEST_PORT_O,
+(* dont_touch = "true" *) output reg  [`DATA_WIDTH-1:0]		RESULT_O,
+(* dont_touch = "true" *) output wire  				RESULT_VALID_O,
+(* dont_touch = "true" *) input  wire 				RESULT_ACK_I);
+
+
+reg  [`STATE_WIDTH-1:0] state,next_state;
+reg  			w_save_token;
+reg  [§ccntwidth§-1:0] 	r_counter_load_context;
+wire [§ccntwidth§-1:0] 	w_ccnt;
+
+
+
+// FSM - STATE TRANSITIONS 
+
+always@(*) begin
+case (state) // open switch - big
+ // IDLE STATE
+  `IDLE : begin
+    if(TOKEN_VALID == 1'b1) begin
+	case(OPCODE_I) 
+	`OP_RECEIVELOCALVAR:  
+		begin
+	      	 if(OPERAND_DATA_VALID_I==1'b1 && OPERAND_ADDR_VALID_I ==1'b1)
+	       	  next_state = `PREPARING_CONTEXT_RECEIVE;
+               	 else
+	          next_state = `IDLE;
+	     	  w_save_token = 1'b0;
+	     	 end
+
+	`OP_SENDLOCALVAR:
+		begin 
+	  	 if(OPERAND_ADDR_VALID_I ==1'b1) begin
+	      	  next_state = `PREPARING_CONTEXT_SEND;
+		 end
+	 	 else begin
+	  	  next_state = `IDLE;
+		 end
+	  	  w_save_token = 1'b1;
+		end
+		     
+	`OP_LOADPROGRAM: 
+		begin
+        	 if(OPERAND_DATA_VALID_I==1'b1 && OPERAND_ADDR_VALID_I ==1'b1)
+        	  next_state = `LOAD_PROGRAM;
+               	 else
+         	  next_state = `IDLE;
+        	  w_save_token = 1'b0;
+		end
+   
+	`OP_RUN: 	    
+		begin 
+	     	 if(OPERAND_ADDR_VALID_I==1'b1)
+	      	  next_state = `SETADDRESS;
+              	 else
+	       	  next_state = `IDLE;
+	     	  w_save_token = 1'b0;
+	    	end
+
+        
+	default: 
+		begin
+		  next_state = `IDLE;
+		  w_save_token = 1'b0;
+		end
+     endcase    
+    end 
+    else begin
+     next_state = `IDLE;
+     w_save_token = 1'b0;
+     end
+   end
+
+ // Preparing a write to the Context in order to send
+   `PREPARING_CONTEXT_RECEIVE: 
+		begin 
+		 next_state = `WRITING_CONTEXT_RECEIVE;
+		 w_save_token = 1'b0;
+		end // close write context state
+   
+   `LOAD_PROGRAM_FINISHED:    
+		begin 
+		 next_state = `IDLE;
+		 w_save_token = 1'b0;
+		end 
+         
+   `LOAD_PROGRAM: 
+		begin
+		 if(r_counter_load_context == OPERAND_DATA_I[§ccntwidth§-1:0]) begin
+		   next_state = `LOAD_PROGRAM_FINISHED;
+		  end
+		 else begin
+		   next_state = `LOAD_PROGRAM;
+		  end
+		 w_save_token = 1'b0;
+	     	end
+
+ // Writing the Context in order to receive
+   `WRITING_CONTEXT_RECEIVE : 
+		begin
+		 next_state = `WRITE_LOCAL_VAR;
+		  w_save_token = 1'b0;
+		end 
+
+// WRITE local variable to the regfile
+   `WRITE_LOCAL_VAR : 
+		begin
+        	 next_state = `IDLE;
+	         w_save_token = 1'b0;
+		end
+
+ // SETADDRESS STATE
+   `SETADDRESS : 
+		begin
+     		 next_state = `RUN;     
+     		 w_save_token = 1'b0;
+   		end 
+
+ // RUN STATE
+   `RUN : 
+		begin
+     		 if(w_ccnt == §contextmemorysize§-1) begin
+	           next_state = `IDLE;
+		  end
+     		 else begin
+		  next_state = `RUN;
+		end
+		 w_save_token = 1'b0;
+		end
+
+ // Preparing a write to the Context in order to send
+   `PREPARING_CONTEXT_SEND : 
+		begin
+     		 next_state = `WRITING_CONTEXT_SEND;
+     		 w_save_token = 1'b0;
+		end
+
+ // Writing the Context in order to send
+   `WRITING_CONTEXT_SEND :
+		begin
+     		 next_state = `SEND_LOCAL_VAR;
+     		 w_save_token = 1'b0;
+		end
+
+ // SENDING a local variable
+  `SEND_LOCAL_VAR : 
+		begin
+          	 if(RESULT_ACK_I) begin
+	   	   next_state = `IDLE;
+		  end
+	 	 else begin
+		   next_state = `SEND_LOCAL_VAR;
+		  end
+     		 w_save_token = 1'b0;
+		end
+
+// DEFAULT
+   default : 
+		begin
+     		 next_state = `IDLE;
+     		 w_save_token = 1'b0;
+   		end 
+
+  endcase 
+end // ends FSM Transitions
+
+reg [`AMIDAR_TAG_WIDTH-1:0]	tag_buffer;
+reg [`AMIDAR_FU_ID_WIDTH-1:0]	dest_fu_buffer;
+reg [`AMIDAR_PORT_ID_WIDTH-1:0]	des_port_buffer;
+
+assign DEST_TAG_O = tag_buffer;
+assign DEST_FU_O = dest_fu_buffer;
+assign DEST_PORT_O = des_port_buffer;
+
+
+always@(posedge CLK_I) begin
+// RST
+   if(!RST_N_I) begin
+     state <= `IDLE;
+     tag_buffer <= 0;
+     dest_fu_buffer <= 0;
+     des_port_buffer <= 0;
+     r_counter_load_context <= 0;
+   end
+
+// DISABLE
+  else if(~EN_I) begin
+     state <= state;
+     tag_buffer <=  tag_buffer;
+     dest_fu_buffer <=  dest_fu_buffer;
+     des_port_buffer <= des_port_buffer;
+     r_counter_load_context <= r_counter_load_context;
+   end
+
+// ENABLE
+  else begin
+    state<=next_state;
+    
+	// loading or increasing counter
+    if(state == `IDLE && next_state == `LOAD_PROGRAM) begin
+      r_counter_load_context <= OPERAND_ADDR_I[§ccntwidth§+§peAddrWidth§-1:§peAddrWidth§];
+     end
+    else begin
+      r_counter_load_context <= r_counter_load_context+1;
+     end
+
+	// 
+    if(w_save_token) begin
+     tag_buffer <= DEST_TAG_I;
+     dest_fu_buffer <= DEST_FU_I;
+     des_port_buffer <= DEST_PORT_I;
+    end
+     else begin
+      tag_buffer <=  tag_buffer;
+      dest_fu_buffer <=  dest_fu_buffer;
+      des_port_buffer <= des_port_buffer;
+     end
+   end
+end
+
+
+// CONTROL SIGNALS - OUTPUT OF FSM
+
+
+reg w_operand_acknowledge, w_valid_result;
+assign RESULT_VALID_O = w_valid_result;
+assign OPERAND_ACK = w_operand_acknowledge;
+
+reg w_load_enable_controlunit;
+reg w_enable_submodules;
+reg w_enable_controlunit;
+reg w_write_context;
+reg w_clean_context_127;
+wire joint_cache_valids;
+reg w_en_contexts;
+reg r_context_wr_addr_is_counter;
+reg w_is_send_context;
+
+and(joint_cache_valids §jointCacheValid§);
+
+always@(*) begin
+w_is_send_context = 1'b0;
+w_clean_context_127 = 1'b0;
+w_operand_acknowledge = 1'b0;
+w_enable_submodules = 1'b0;
+w_enable_controlunit = EN_I; // this might lead to problems
+w_valid_result =1'b0;
+w_load_enable_controlunit = 1'b0;
+w_write_context = 1'b0;
+r_context_wr_addr_is_counter = 1'b0;
+
+ case(state) 
+       		
+  `LOAD_PROGRAM: 
+		begin
+        	 w_write_context = 1'b1;
+	         r_context_wr_addr_is_counter = 1'b1;
+              	end
+              
+  `LOAD_PROGRAM_FINISHED: 
+		begin
+          	 w_operand_acknowledge = 1'b1;
+          	 r_context_wr_addr_is_counter = 1'b1;
+             	end          
+
+  `PREPARING_CONTEXT_RECEIVE: 
+		begin
+		 w_write_context = 1'b1;
+       		end
+
+  `WRITING_CONTEXT_RECEIVE: 
+		begin
+		 w_enable_submodules = 1'b0;
+        	end
+
+  `WRITE_LOCAL_VAR: 
+		begin
+                 w_operand_acknowledge = 1'b1;
+                 w_enable_submodules = 1'b1;
+		 w_clean_context_127 = 1'b1;
+		 w_write_context = 1'b1;
+                end
+
+  `SETADDRESS: 	
+		begin
+		 w_operand_acknowledge = 1'b1;
+		 w_load_enable_controlunit = 1'b1;
+		 w_write_context = 1'b1;
+		 w_clean_context_127 = 1'b1;
+        	end
+
+  `RUN: 	
+		begin
+		 w_enable_submodules = EN_I & joint_cache_valids;
+		 w_enable_controlunit = EN_I & joint_cache_valids;
+           	end
+
+  `PREPARING_CONTEXT_SEND: 
+		begin
+		 w_write_context = 1'b1;
+		 w_is_send_context = 1'b1;
+		end
+
+  `WRITING_CONTEXT_SEND: 	
+		begin
+		 w_valid_result =1'b1;
+                 w_enable_submodules = 1'b1;
+           	end
+
+
+  `SEND_LOCAL_VAR: 	
+		begin
+		 w_operand_acknowledge = RESULT_ACK_I;
+		 w_valid_result =1'b1;
+                 w_enable_submodules = 1'b1;
+           	end
+  endcase
+
+end
+
+// Liveout connections
+always@(*)begin
+ case(OPERAND_ADDR_I[§peAddrWidth§-1:0]) §resultConnection§
+ default: RESULT_O = 0;
+ endcase
+ end
+
+wire w_write_en_cbox = w_write_context & (!w_clean_context_127) & OPERAND_ADDR_I[§peAddrWidth§];  
+wire w_branch_selection, w_predication;
+
+
+ContextControlUnit  #(§ccntwidth§,§contextmemorysize§) 
+	controlunit(
+	.CLK_I(CLK_I),
+//	.RST_N_I(RST_N_I),
+	.EN_I(w_enable_controlunit),
+	.CBOX_I(w_branch_selection),
+	.DATA_I(DATA_CONTROLUNIT_I),
+	.ADDR_I(OPERAND_ADDR_I[§ccntwidth§-1:0]),
+	.WR_EN_I(WR_EN_CONTROLUNIT_I),
+	.LOAD_EN_I(w_load_enable_controlunit),
+	.CCNT_O(w_ccnt)
+	);
+
+   §wires_status§ 
+  
+CBox magical(
+	.CLK_I(CLK_I),
+	.RST_N_I(RST_N_I),
+	.EN_I(w_enable_submodules),
+	.CCNT_I(w_ccnt), §statusIns§
+	.CONTEXT_DATA_I(CONTEXT_DATA_I[§contextWidthCBox§-1:0]),
+	.CONTEXT_WR_ADDR_I(r_counter_load_context),
+	.CONTEXT_WR_EN_I(w_write_en_cbox),
+	.PREDICATION_O( w_predication),
+	.BRANCH_SELECTION_O(w_branch_selection)            
+        );
+
+     §wires_direct_out_Pe§
+     §wires_out_Pe§
+
+     §pes§
+
+endmodule
+  
+
+>>
+
+cacheIO(index)
+::= <<
+(* dont_touch = "true" *) input wire [`DATA_WIDTH_CACHE-1:0]	CACHE_DATA_§index§_I,
+(* dont_touch = "true" *) input wire 						CACHE_VALID_§index§_I, 
+(* dont_touch = "true" *) output wire [`CACHE_ADDR_WIDTH-1:0]	CACHE_ADDR_§index§_O,
+(* dont_touch = "true" *) output wire [`CACHE_ADDR_WIDTH-1:0]	CACHE_OFFSET_§index§_O,
+(* dont_touch = "true" *) output wire [`DATA_WIDTH_CACHE-1:0]	CACHE_DATA_§index§_O,
+(* dont_touch = "true" *) output wire	  					CACHE_WR_§index§_O,
+(* dont_touch = "true" *) output wire                          	CACHE_VALID_§index§_O,
+>>
+
+
+peModule(ID,outputwidth,controlflow, memoryAccess,inputs,contextwidth,multicycle,liveout,ccntwidth)
+::= <<
+
+wire w_write_en_context_§ID§;
+wire [§contextwidth§-1:0] w_context_data_in_§ID§;
+wire [§ccntwidth§-1:0] w_context_wr_addr_§ID§;
+
+PE_§ID§ pe_§ID§( 
+   .CLK_I(CLK_I),§if(multicycle)§
+   .RST_N_I(RST_N_I), §endif§
+   .EN_I(w_enable_submodules),
+   .CCNT_I(w_ccnt), §inputs§
+   .CONTEXT_DATA_I(w_context_data_in_§ID§),
+   .CONTEXT_WR_EN_I(w_write_en_context_§ID§),
+   .CONTEXT_WR_ADDR_I(w_context_wr_addr_§ID§),§if(memoryAccess)§
+   .CACHE_DATA_I(CACHE_DATA_§ID§_I),
+   .CACHE_ADDR_O(CACHE_ADDR_§ID§_O), 
+   .CACHE_WR_O(CACHE_WR_§ID§_O),
+   .CACHE_VALID_O(CACHE_VALID_§ID§_O),
+   .CACHE_OFFSET_O(CACHE_OFFSET_§ID§_O),
+    §endif§
+   .AMIDAR_I(OPERAND_DATA_I),
+   .PREDICATION_I(w_predication),
+   .DIRECT_O(w_direct_out_§ID§)§if(liveout || memoryAccess)§,
+   .DATA_O(w_pe_out_§ID§)§endif§ §if(controlflow)§,
+   .ALU_STATUS_O(w_status_§ID§)§endif§);
+
+   §if(memoryAccess)§
+   assign CACHE_DATA_§ID§_O = w_pe_out_§ID§;
+   §endif§
+
+
+Context_Converter_§ID§ converter_§ID§(
+  .OPERAND_ADDR_I(OPERAND_ADDR_I),
+  .CONTEXT_DATA_I(CONTEXT_DATA_I[§contextwidth§-1:0]),
+  .CLEAN_HIGHEST_SLOT_I(w_clean_context_127),
+  .WR_ADDR_IS_COUNTER(r_context_wr_addr_is_counter), 
+  .WRITE_CONTEXT_FSM_I(w_write_context),
+  .IS_SEND_CONTEXT_I(w_is_send_context),
+  .CCNT_I(w_ccnt),
+  .COUNTER_I(r_counter_load_context),
+  .WRITE_ADDR_O(w_context_wr_addr_§ID§),
+  .CONVERTED_WRITE_EN_O(w_write_en_context_§ID§),
+  .CONVERTED_CONTEXT_DATA_O(w_context_data_in_§ID§)
+);
+
+>>
+

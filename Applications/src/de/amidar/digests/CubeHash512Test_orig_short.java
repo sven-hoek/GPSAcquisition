@@ -1,0 +1,34 @@
+package de.amidar.digests;
+
+import fr.cryptohash.CubeHash512Digest;
+
+public class CubeHash512Test_orig_short {
+
+    public static void main(String[] args) {
+
+	byte[] data = {	
+	    (byte)17,  (byte)234, (byte)58, (byte)177,
+	    (byte)143, (byte)222, (byte)27, (byte)162, 
+	    (byte)155, (byte)39,  (byte)49, (byte)174,
+	    (byte)241, (byte)10,  (byte)43, (byte)99,
+	    (byte)17,  (byte)234, (byte)58, (byte)177,
+	    (byte)143, (byte)222, (byte)27, (byte)162, 
+	    (byte)155, (byte)39,  (byte)49, (byte)174,
+	    (byte)241, (byte)10,  (byte)43, (byte)99
+	};
+
+	CubeHash512Test_orig_short cubehash512test = new CubeHash512Test_orig_short();
+	cubehash512test.run(data);
+
+    }
+
+    public void run(byte[] data) {
+
+	CubeHash512Digest digest = new CubeHash512Digest();
+
+	digest.update(data, 0, 32);
+	digest.update(data, 0, 32);
+
+    }
+
+}

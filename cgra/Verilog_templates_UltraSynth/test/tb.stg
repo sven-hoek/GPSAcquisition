@@ -1,0 +1,909 @@
+tb(contextAddrWidth, idTabAddrWidth, peIDWidth, maxRFAddrWidth, maxContextWidth, peWrites, otherWrites, masterTestData, 
+	masterFileCompare, masterTestDelay, localVarsFile, seqFileName, peContextChecks, otherContextChecks, rfChecks,
+	ocmFifoSize, ocmMasterTestDelay, runUntil, contextMemSize, maxContextAddrWidth, ocmBound, logBound, logInc, ocmInc,
+	random, expParamCount)
+::= <<
+`timescale 1ns/1ps
+`include "axiinterface.vh"
+`include "ultrasynth.vh"
+`include "cgra.vh"
+
+// includes related to testing
+`include "TestFileParser.sv"
+`include "data_structures.sv"
+`include "AXI_slave_sim.sv"
+
+// NOTE:
+// all variables annotated with the comment "desired CGRA state"
+// are changeable freely to test different behaviour.
+
+module tb #
+(
+// parameters for running the testbench
+parameter integer C_S_AXI_ID_WIDTH	= 1,
+parameter integer C_S_AXI_DATA_WIDTH	= 32,
+parameter integer C_S_AXI_ADDR_WIDTH	= 32,
+parameter integer C_S_AXI_AWUSER_WIDTH	= 1,
+parameter integer C_S_AXI_ARUSER_WIDTH	= 1,
+parameter integer C_S_AXI_WUSER_WIDTH	= 1,
+parameter integer C_S_AXI_RUSER_WIDTH	= 1,
+parameter integer C_S_AXI_BUSER_WIDTH	= 1,
+parameter integer CGRA_CYCLE_TIME = 10,
+parameter integer AXI_CYCLE_TIME = 20,
+parameter integer CONTEXT_ADDR_WIDTH = §contextAddrWidth§,
+parameter integer MAX_CONTEXT_ADDR_WIDTH = §maxContextAddrWidth§,
+parameter integer IDTABLE_ADDR_WIDTH = §idTabAddrWidth§,
+parameter integer PE_ID_WIDTH = §peIDWidth§,
+parameter integer MAXRF_ADDR_WIDTH = §maxRFAddrWidth§,
+parameter integer contextMemorySize = §contextMemSize§,
+parameter integer runUntil = §runUntil§,
+// desired CGRA state
+parameter integer logDest = §ocmBound§,
+parameter integer logDestBound = §logBound§,
+parameter integer logDestInc = §logInc§,
+parameter integer ocmDest = 0,
+parameter integer ocmDestBound = §ocmBound§,
+parameter integer ocmDestInc = §ocmInc§,
+parameter integer expectedParameterCount = §expParamCount§,
+parameter integer intervalLength = 256
+)
+();
+
+// clk, rst
+reg S_AXI_ACLK, CGRA_CLK, EN_I, RST_I, S_AXI_ARESETN;
+assign RST_I = ~S_AXI_ARESETN;
+
+// write address channel
+wire S_AXI_AWID;
+wire [C_S_AXI_ADDR_WIDTH-1 : 0] S_AXI_AWADDR;
+reg [7 : 0] S_AXI_LEN; // handles both read and write length
+wire [8-1:0] S_AXI_AWLEN;
+wire [2 : 0] S_AXI_AWSIZE;
+wire [1 : 0] S_AXI_AWBURST;
+wire S_AXI_AWLOCK;
+wire [3 : 0] S_AXI_AWCACHE;
+wire [2 : 0] S_AXI_AWPROT;
+wire [3 : 0] S_AXI_AWQOS;
+wire [3 : 0] S_AXI_AWREGION;
+reg [C_S_AXI_AWUSER_WIDTH-1 : 0] S_AXI_AWUSER;
+wire  S_AXI_AWVALID;
+wire  S_AXI_AWREADY;
+// write data
+wire [C_S_AXI_DATA_WIDTH-1 : 0] S_AXI_WDATA;
+wire [(C_S_AXI_DATA_WIDTH/8)-1 : 0] S_AXI_WSTRB;
+wire S_AXI_WLAST;
+reg [C_S_AXI_WUSER_WIDTH-1 : 0] S_AXI_WUSER;
+wire  S_AXI_WVALID;
+wire  S_AXI_WREADY;
+// write response
+wire [C_S_AXI_ID_WIDTH-1 : 0] S_AXI_BID;
+wire [1 : 0] S_AXI_BRESP;
+wire [C_S_AXI_BUSER_WIDTH-1 : 0] S_AXI_BUSER;
+wire  S_AXI_BVALID;
+wire  S_AXI_BREADY;
+
+wire [8-1:0] M_AXI_AWLEN;
+wire [3-1:0] M_AXI_AWSIZE;
+wire [2-1:0] M_AXI_AWBURST;
+wire [C_S_AXI_ADDR_WIDTH-1:0] M_AXI_AWADDR;
+wire M_AXI_AWVALID;
+wire M_AXI_AWREADY;
+wire [`MASTER_DATA_WIDTH-1:0] M_AXI_WDATA;
+wire [`MASTER_DATA_WIDTH/8-1:0] M_AXI_WSTRB;
+wire M_AXI_WLAST;
+wire M_AXI_WVALID;
+wire M_AXI_WREADY;
+wire M_AXI_BREADY;
+wire M_AXI_BVALID;
+wire [2-1:0] M_AXI_BRESP;
+
+wire [8-1:0] M_OCM_AXI_AWLEN;
+wire [3-1:0] M_OCM_AXI_AWSIZE;
+wire [2-1:0] M_OCM_AXI_AWBURST;
+wire [C_S_AXI_ADDR_WIDTH-1:0] M_OCM_AXI_AWADDR;
+wire M_OCM_AXI_AWVALID;
+wire M_OCM_AXI_AWREADY;
+wire [`MASTER_DATA_WIDTH-1:0] M_OCM_AXI_WDATA;
+wire [`MASTER_DATA_WIDTH/8-1:0] M_OCM_AXI_WSTRB;
+wire M_OCM_AXI_WLAST;
+wire M_OCM_AXI_WVALID;
+wire M_OCM_AXI_WREADY;
+wire M_OCM_AXI_BREADY;
+wire M_OCM_AXI_BVALID;
+wire [2-1:0] M_OCM_AXI_BRESP;
+
+reg ERROR;
+reg SENSOR_DONE;
+reg SENSOR_SYNC_IN;
+reg [32-1:0] SENSOR_DATA;
+reg ACTOR_SYNC_OUT;
+
+reg start_write;
+reg start_read;
+wire master_ready;
+wire master_started;
+reg [32-1:0] addr;
+reg [32-1:0] data;
+reg [2-1:0] setupType;
+
+AXI_master_sim master
+(
+	.CLK_I(S_AXI_ACLK),
+	.RSTN_I(S_AXI_ARESETN),
+	.EN_I(EN_I),
+
+	.WRITE_I(start_write),
+	.READ_I(start_read),
+	.READY_O(master_ready),
+	.STARTED_O(master_started),
+	.SETUPTYPE_I(setupType),
+	.LEN_I(S_AXI_LEN),
+	.ADDR_I(addr),
+	.DATA_I(data),
+
+	.S_AXI_AWID(S_AXI_AWID),
+	.S_AXI_AWLEN(S_AXI_AWLEN),
+	.S_AXI_AWADDR(S_AXI_AWADDR),
+	.S_AXI_AWSIZE(S_AXI_AWSIZE),
+	.S_AXI_AWBURST(S_AXI_AWBURST),
+	.S_AXI_AWLOCK(S_AXI_AWLOCK),
+	.S_AXI_AWCACHE(S_AXI_AWCACHE),
+	.S_AXI_AWPROT(S_AXI_AWPROT),
+	.S_AXI_AWQOS(S_AXI_AWQOS),
+	.S_AXI_AWREGION(S_AXI_AWREGION),
+	.S_AXI_AWVALID(S_AXI_AWVALID),
+	.S_AXI_AWREADY(S_AXI_AWREADY),
+	.S_AXI_WDATA(S_AXI_WDATA),
+	.S_AXI_WSTRB(S_AXI_WSTRB),
+	.S_AXI_WLAST(S_AXI_WLAST),
+	.S_AXI_WVALID(S_AXI_WVALID),
+	.S_AXI_WREADY(S_AXI_WREADY),
+	.S_AXI_BREADY(S_AXI_BREADY)
+);
+
+logic masterLogTestDone;
+logic masterOcmTestDone;
+logic requestedLogMasterTest;
+logic requestedOcmMasterTest;
+
+AXI_slave_sim #
+(
+	.LOG_START_ADDR(logDest),
+	.LOG_ADDR_BOUNDARY(logDestBound),
+	.LOG_ADDR_INC(logDestInc),
+	.OCM_START_ADDR(ocmDest),
+	.OCM_ADDR_BOUNDARY(ocmDestBound),
+	.OCM_ADDR_INC(ocmDestInc)
+)
+slave 
+(
+	.AXI_ACLK_I(S_AXI_ACLK),
+	.RST_N_I(S_AXI_ARESETN),
+	.EN_I(EN_I),
+	.LOG_TEST_DONE_I(masterLogTestDone),
+	.LOG_TEST_RQ_I(requestedLogMasterTest),
+	.M_AXI_AWLEN_I(M_AXI_AWLEN),
+	.M_AXI_AWADDR_I(M_AXI_AWADDR),
+	.M_AXI_AWVALID_I(M_AXI_AWVALID),
+	.M_AXI_AWREADY_O(M_AXI_AWREADY),
+	.M_AXI_WDATA_I(M_AXI_WDATA),
+	.M_AXI_WLAST_I(M_AXI_WLAST),
+	.M_AXI_WVALID_I(M_AXI_WVALID),
+	.M_AXI_WREADY_O(M_AXI_WREADY),
+	.M_AXI_BREADY_I(M_AXI_BREADY),
+	.M_AXI_BVALID_O(M_AXI_BVALID),
+	.OCM_TEST_DONE_I(masterOcmTestDone),
+	.OCM_TEST_RQ_I(requestedOcmMasterTest),
+	.M_OCM_AXI_AWLEN_I(M_OCM_AXI_AWLEN),
+	.M_OCM_AXI_AWADDR_I(M_OCM_AXI_AWADDR),
+	.M_OCM_AXI_AWVALID_I(M_OCM_AXI_AWVALID),
+	.M_OCM_AXI_AWREADY_O(M_OCM_AXI_AWREADY),
+	.M_OCM_AXI_WDATA_I(M_OCM_AXI_WDATA),
+	.M_OCM_AXI_WLAST_I(M_OCM_AXI_WLAST),
+	.M_OCM_AXI_WVALID_I(M_OCM_AXI_WVALID),
+	.M_OCM_AXI_WREADY_O(M_OCM_AXI_WREADY),
+	.M_OCM_AXI_BREADY_I(M_OCM_AXI_BREADY),
+	.M_OCM_AXI_BVALID_O(M_OCM_AXI_BVALID)
+);
+
+axi_protocol_checker_write_32 slave_checker (
+  .pc_status(),
+  .pc_asserted(),
+  .system_resetn(S_AXI_ARESETN),
+  .aclk(S_AXI_ACLK),
+  .aresetn(S_AXI_ARESETN),
+  .pc_axi_awaddr(S_AXI_AWADDR),
+  .pc_axi_awlen(S_AXI_AWLEN),
+  .pc_axi_awsize(S_AXI_AWSIZE),
+  .pc_axi_awburst(S_AXI_AWBURST),
+  .pc_axi_awlock(1'b0),
+  .pc_axi_awcache(4'b0),
+  .pc_axi_awprot(3'b0),
+  .pc_axi_awqos(4'b0),
+  .pc_axi_awregion(4'b0),
+  .pc_axi_awvalid(S_AXI_AWVALID),
+  .pc_axi_awready(S_AXI_AWREADY),
+  .pc_axi_wlast(S_AXI_WLAST),
+  .pc_axi_wdata(S_AXI_WDATA),
+  .pc_axi_wstrb(S_AXI_WSTRB),
+  .pc_axi_wvalid(S_AXI_WVALID),
+  .pc_axi_wready(S_AXI_WREADY),
+  .pc_axi_bresp(S_AXI_BRESP),
+  .pc_axi_bvalid(S_AXI_BVALID),
+  .pc_axi_bready(S_AXI_BREADY)
+);
+
+axi_protocol_checker_write_64 log_master_checker (
+  .pc_status(),
+  .pc_asserted(),
+  .system_resetn(S_AXI_ARESETN),
+  .aclk(S_AXI_ACLK),
+  .aresetn(S_AXI_ARESETN),
+  .pc_axi_awaddr(M_AXI_AWADDR),
+  .pc_axi_awlen(M_AXI_AWLEN),
+  .pc_axi_awsize(M_AXI_AWSIZE),
+  .pc_axi_awburst(M_AXI_AWBURST),
+  .pc_axi_awlock(1'b0),
+  .pc_axi_awcache(4'b0),
+  .pc_axi_awprot(3'b0),
+  .pc_axi_awqos(4'b0),
+  .pc_axi_awregion(4'b0),
+  .pc_axi_awvalid(M_AXI_AWVALID),
+  .pc_axi_awready(M_AXI_AWREADY),
+  .pc_axi_wlast(M_AXI_WLAST),
+  .pc_axi_wdata(M_AXI_WDATA),
+  .pc_axi_wstrb(M_AXI_WSTRB),
+  .pc_axi_wvalid(M_AXI_WVALID),
+  .pc_axi_wready(M_AXI_WREADY),
+  .pc_axi_bresp(M_AXI_BRESP),
+  .pc_axi_bvalid(M_AXI_BVALID),
+  .pc_axi_bready(M_AXI_BREADY)
+);
+
+axi_protocol_checker_write_64 ocm_master_checker (
+  .pc_status(),
+  .pc_asserted(),
+  .system_resetn(S_AXI_ARESETN),
+  .aclk(S_AXI_ACLK),
+  .aresetn(S_AXI_ARESETN),
+  .pc_axi_awaddr(M_OCM_AXI_AWADDR),
+  .pc_axi_awlen(M_OCM_AXI_AWLEN),
+  .pc_axi_awsize(M_OCM_AXI_AWSIZE),
+  .pc_axi_awburst(M_OCM_AXI_AWBURST),
+  .pc_axi_awlock(1'b0),
+  .pc_axi_awcache(4'b0),
+  .pc_axi_awprot(3'b0),
+  .pc_axi_awqos(4'b0),
+  .pc_axi_awregion(4'b0),
+  .pc_axi_awvalid(M_OCM_AXI_AWVALID),
+  .pc_axi_awready(M_OCM_AXI_AWREADY),
+  .pc_axi_wlast(M_OCM_AXI_WLAST),
+  .pc_axi_wdata(M_OCM_AXI_WDATA),
+  .pc_axi_wstrb(M_OCM_AXI_WSTRB),
+  .pc_axi_wvalid(M_OCM_AXI_WVALID),
+  .pc_axi_wready(M_OCM_AXI_WREADY),
+  .pc_axi_bresp(M_OCM_AXI_BRESP),
+  .pc_axi_bvalid(M_OCM_AXI_BVALID),
+  .pc_axi_bready(M_OCM_AXI_BREADY)
+);
+
+Cgra_Ultrasynth cgra
+(
+	.AXI_ACLK_I(S_AXI_ACLK),
+	.EN_I(EN_I),
+	.CGRA_CLK_I(CGRA_CLK),
+	.RST_I(RST_I),
+	.S_AXI_AWADDR_I(S_AXI_AWADDR),
+	.S_AXI_AWLEN_I(S_AXI_AWLEN),
+	.S_AXI_AWSIZE_I(S_AXI_AWSIZE),
+	.S_AXI_AWBURST_I(S_AXI_AWBURST),
+	.S_AXI_AWVALID_I(S_AXI_AWVALID),
+	.S_AXI_AWREADY_O(S_AXI_AWREADY),
+	.S_AXI_WDATA_I(S_AXI_WDATA),
+	.S_AXI_WSTRB_I(S_AXI_WSTRB),
+	.S_AXI_WLAST_I(S_AXI_WLAST),
+	.S_AXI_WVALID_I(S_AXI_WVALID),
+	.S_AXI_WREADY_O(S_AXI_WREADY),
+	.S_AXI_BRESP_O(S_AXI_BRESP),
+	.S_AXI_BVALID_O(S_AXI_BVALID),
+	.S_AXI_BREADY_I(S_AXI_BREADY),
+	.M_LOG_AWLEN_O(M_AXI_AWLEN),
+	.M_LOG_AWSIZE_O(M_AXI_AWSIZE),
+	.M_LOG_AWBURST_O(M_AXI_AWBURST),
+	.M_LOG_AWADDR_O(M_AXI_AWADDR),
+	.M_LOG_AWVALID_O(M_AXI_AWVALID),
+	.M_LOG_AWREADY_I(M_AXI_AWREADY),
+	.M_LOG_WDATA_O(M_AXI_WDATA),
+	.M_LOG_WSTRB_O(M_AXI_WSTRB),
+	.M_LOG_WLAST_O(M_AXI_WLAST),
+	.M_LOG_WVALID_O(M_AXI_WVALID),
+	.M_LOG_WREADY_I(M_AXI_WREADY),
+	.M_LOG_BREADY_O(M_AXI_BREADY),
+	.M_LOG_BVALID_I(M_AXI_BVALID),
+	.M_LOG_BRESP_I(M_AXI_BRESP),
+	.M_OCM_AWLEN_O(M_OCM_AXI_AWLEN),
+	.M_OCM_AWSIZE_O(M_OCM_AXI_AWSIZE),
+	.M_OCM_AWBURST_O(M_OCM_AXI_AWBURST),
+	.M_OCM_AWADDR_O(M_OCM_AXI_AWADDR),
+	.M_OCM_AWVALID_O(M_OCM_AXI_AWVALID),
+	.M_OCM_AWREADY_I(M_OCM_AXI_AWREADY),
+	.M_OCM_WDATA_O(M_OCM_AXI_WDATA),
+	.M_OCM_WSTRB_O(M_OCM_AXI_WSTRB),
+	.M_OCM_WLAST_O(M_OCM_AXI_WLAST),
+	.M_OCM_WVALID_O(M_OCM_AXI_WVALID),
+	.M_OCM_WREADY_I(M_OCM_AXI_WREADY),
+	.M_OCM_BREADY_O(M_OCM_AXI_BREADY),
+	.M_OCM_BVALID_I(M_OCM_AXI_BVALID),
+	.M_OCM_BRESP_I(M_OCM_AXI_BRESP),
+	.SENSOR_DONE_I(SENSOR_DONE),
+	.SENSOR_SYNC_IN_O(SENSOR_SYNC_IN),
+	.SENSOR_READ_EN_O(),
+	.SENSOR_ADDR_O(),
+	.SENSOR_DATA_I(SENSOR_DATA),
+	.ACTOR_SYNC_OUT_O(ACTOR_SYNC_OUT),
+	.ACTOR_WR_ENABLE_O(),
+	.ACTOR_WR_ADDR_O(),
+	.ACTOR_DATA_O(),
+	.ERROR_O(ERROR)
+);
+
+integer nextFreeIDTableEntry = 0;
+
+// util task
+task setAddr;
+	input [`GENERAL_TARGET_SELECTION_WIDTH-1:0] target_selection; // operation
+	input [`TARGET_ID_WIDTH-1:0] target_id; // idc address
+	input [`ADDR_OFFSET_WIDTH-1:0] offset_addr; // internal offset
+	input integer len; // burst length
+	input [2-1:0] setup; // AXI -> address first, data first, addr/data at the same time
+begin
+	addr = {target_selection,target_id,offset_addr,{`ULTRASYNTH_SYSTEM_ADDR_OFFSET{1'b0}}};
+	S_AXI_LEN = len;
+	setupType = setup;
+end
+endtask : setAddr
+
+// util task
+task holdStart;
+	input integer setup;
+	input integer lenght;
+begin
+	wait(master_ready === 1'b1);
+	start_write = 1'b1;
+	@(posedge S_AXI_ACLK)
+	#1
+	wait(master_started === 1'b1);
+	start_write = 1'b0;
+
+	if (ADDR_FRIST == setup) begin 
+		@(posedge S_AXI_ACLK && S_AXI_AWVALID && S_AXI_AWREADY);
+		@(posedge S_AXI_ACLK && S_AXI_WREADY && S_AXI_WVALID);
+	end else if (DATA_FIRST == setup) begin 
+		if (0 == lenght)
+			@(posedge S_AXI_ACLK && S_AXI_AWVALID && S_AXI_AWREADY);
+	end
+end
+endtask : holdStart
+
+// write all parameters of the given list 
+task write_parameter;
+	input variableList list; // vars to write -> (id, value) pairs
+	input integer setup; // AXI setup type, when in doubt set this to 2 (aka ADDR_DATA)
+	var_to_write variable;
+begin
+	for (int i = 0; i < list.size(); i++) begin
+		variable = list[i];
+		setAddr(`GENERAL_TARGET_PARAMETER, variable.hybrid, variable.id, 0, setup);
+		data = variable.value;
+		holdStart(setup, 0);
+	end
+end
+endtask : write_parameter
+
+// start the execution of a schedule located at the context memory
+// address given in start_addr
+task start_exec;
+	input logic [CONTEXT_ADDR_WIDTH-1:0] start_addr; // context memory offset -> points to first entry of schedule to exec
+	input logic start_stop; // high for start, low for stop
+	input logic hybrid; // high for hybrid, low for not hybrid
+	input integer setup; // AXI setup type, when in doubt set this to 2 (aka ADDR_DATA)
+begin
+	setAddr(`GENERAL_TARGET_SINGLE_REG, `ID_CgraStateChange, 0, 0, setup);
+	data = {{32-CONTEXT_ADDR_WIDTH-2{1'b0}},hybrid,start_stop,start_addr};
+	holdStart(setup, 0);
+end
+endtask : start_exec
+
+// write all idc/id_table entries provided in list
+task id_table_burst;
+	input entryList list; // entries to write -> (pe number, registerfile offset) pairs
+	input integer setup; // AXI setup type, when in doubt set this to 2 (aka ADDR_DATA)
+	logic [PE_ID_WIDTH-1:0] pe_b;
+	logic [MAXRF_ADDR_WIDTH-1:0] offset_b;
+	integer i;
+begin
+	// setup the burst
+	setAddr(`GENERAL_TARGET_OTHER, `ID_IDC, nextFreeIDTableEntry, list.size()-1, setup);
+	
+	// send entries
+	for (i = 0; i < list.size(); i++) begin
+		pe_b = list[i].pe;
+		offset_b = list[i].offset;
+		data = {pe_b,offset_b};
+
+		if (0 == i)
+			holdStart(setup, list.size()-1);
+		else begin
+			@(posedge S_AXI_ACLK);
+			while (~S_AXI_WREADY)
+				@(posedge S_AXI_ACLK);
+		end
+
+		++nextFreeIDTableEntry;
+	end
+	start_write = 1'b0;
+end
+endtask : id_table_burst
+
+// write all data of a given file to the CGRA entity with the corresponding ID
+task write_context;
+	input integer id; // CGRA entity ID
+	input integer op; // the operation associated with writing the entity
+	input integer file; // read mode opened file
+	input integer transfersPerEntry; // transfers needed to fill the context width of an entry
+	input integer remainingTransferCount; // pre-calculated number of transfers needed to write the given entries
+	input integer contextAddrOffset; // specifies the starting offset for writing the entries
+	input integer setup; // determines if data/address/both is send first
+	logic [§maxContextWidth§-1:0] from_file;
+	integer i;
+	integer j;
+	integer burstLength;
+begin
+	if (remainingTransferCount > 256)
+		burstLength = 256 - (256 % transfersPerEntry);
+	else
+		burstLength = remainingTransferCount - (remainingTransferCount % transfersPerEntry);
+	setAddr(op, id, contextAddrOffset, burstLength - 1, setup);
+
+	i = 0;
+	j = 0;
+	while (i < burstLength) begin
+		from_file = 0;
+		$fscanf(file, "%b", from_file);
+		while (j < transfersPerEntry) begin
+			j = j + 1;
+			data = from_file[((j*32)-1)-:32];
+
+			if (0 == i && j == 1)
+				holdStart(setup, burstLength);
+			else begin
+				@(posedge S_AXI_ACLK);
+				while (~S_AXI_WREADY)
+					@(posedge S_AXI_ACLK);
+			end
+
+			i = i + 1;
+		end
+		j = 0;
+		contextAddrOffset = contextAddrOffset + 1;
+	end
+
+	remainingTransferCount = remainingTransferCount - burstLength;
+	if (remainingTransferCount > 0)
+		write_context(id, op, file, transfersPerEntry, remainingTransferCount, contextAddrOffset, setup);
+end
+endtask : write_context
+
+// write anything which is just one value (e.g. log destination address)
+task write_reg;
+	input integer id; // the target entity
+	input integer setup; // AXI setup type, when in doubt set this to 2 (aka ADDR_DATA)
+	input integer data_to_send; // the actual payload (e.g. the value of the log destination address)
+begin 
+	setAddr(`GENERAL_TARGET_SINGLE_REG, id, 0, 0, setup);
+	data = data_to_send;
+	holdStart(setup, 0);
+end
+endtask : write_reg
+
+// clocks
+always
+begin
+	#(AXI_CYCLE_TIME/2) S_AXI_ACLK = ~S_AXI_ACLK;
+end
+
+always
+begin
+	#(CGRA_CYCLE_TIME/2) CGRA_CLK = ~CGRA_CLK;
+end
+
+// random disable test
+always @(posedge CGRA_CLK) begin 
+	if ($urandom_range(100,1) >= 1000) // deactivated
+		EN_I <= 1'b0;
+	else
+		EN_I <= 1'b1;
+end
+
+// test sequence parsing, all defined in TestFileParser.sv
+IDTableEntryParser idTableEntryParser;
+TestSequenceParser testSequenceParser;
+entryList entriesToWrite;
+variableList varsToWrite;
+testList setupSequence;
+
+// file descriptors for initial block
+int contextFile;
+int ocmInFile;
+
+// signals used for test bench control
+logic wroteToIDC;
+logic wroteParameters;
+logic wasStarted;
+logic [`DATA_WIDTH-1:0] vec;
+int nextToCheck;
+int loopVar; // seems stupid but was the only way to get it to work...
+
+initial begin
+	// enable all
+	EN_I = 1'b1;
+	SENSOR_DONE = 1'b0;
+
+	// master idle addr
+	addr = 32'b0; 
+
+	// clock and rst
+	S_AXI_ACLK = 1'b0;
+	CGRA_CLK = 1'b0;
+	S_AXI_ARESETN  = 1'b0;
+
+	// initialisation delays
+	#100 
+	S_AXI_ARESETN = 1'b1;
+	#(16*AXI_CYCLE_TIME) // delay to skip the "WREADY is LOW for no reason" problem. 
+
+	§if(random)§
+	wroteToIDC = 1'b0;
+	wroteParameters = 1'b0;
+	wasStarted = 1'b0;
+	masterLogTestDone = 1'b0;
+	masterOcmTestDone = 1'b0;
+	requestedLogMasterTest = 1'b0;
+	requestedOcmMasterTest = 1'b0;
+	nextToCheck = 0;
+
+	// memory setup
+	§masterTestData§
+	ocmInFile = $fopen("ocmInFile.dat","w");
+	for (int i = 0; i < runUntil/2; ++i) begin
+		vec = $urandom_range(64'hffffffffffffffff,0);
+		$fwrite(ocmInFile,"%b\n", vec);
+		//cgra.log.ocm_data[i] = vec;
+	end
+	$fclose(ocmInFile);
+
+	// take care of the test sequence
+	testSequenceParser = new("§seqFileName§");
+	testSequenceParser.parse();
+	setupSequence = testSequenceParser.setupSequence();
+	for (int i = 0; i < setupSequence.size(); i++) begin
+		case (setupSequence[i].operation)
+			"t_pe":
+				case (setupSequence[i].id)
+					§peWrites§
+					default : $error("Not a valid PE ID: %0d", setupSequence[i].id);
+				endcase
+			"t_other":
+				case (setupSequence[i].id)
+					`ID_IDC: begin 
+						idTableEntryParser = new("§localVarsFile§");
+						idTableEntryParser.parse();
+						entriesToWrite = idTableEntryParser.newEntries();
+						varsToWrite = idTableEntryParser.varsToWrite();
+						id_table_burst(entriesToWrite, setupSequence[i].setupType);
+						wroteToIDC = 1'b1;
+					end
+					§otherWrites§
+					default : $error("Not a valid 'other' ID %0d, with name '%s'", setupSequence[i].id, setupSequence[i].moduleName);
+				endcase
+			"t_param": begin 
+				if (wroteToIDC) begin
+					write_parameter(varsToWrite, setupSequence[i].setupType);
+					wroteToIDC = 1'b0;
+					wroteParameters = 1'b1;
+				end else 
+					$error("Tried to write parameters without writing IDC entries.");
+			end
+			"t_single": begin
+				case (setupSequence[i].id)
+					`ID_CgraStateChange: begin
+						// State remains its own test directive, we do nothing here and ignore any requests
+					end
+					`ID_LogDest: begin 
+						write_reg(`ID_LogDest, setupSequence[i].setupType, logDest);
+					end
+					`ID_LogDestBound: begin 
+						write_reg(`ID_LogDestBound, setupSequence[i].setupType, logDestBound);
+					end
+					`ID_LogDestInc: begin 
+						write_reg(`ID_LogDestInc, setupSequence[i].setupType, logDestInc);
+					end
+					`ID_OCMDest: begin 
+						write_reg(`ID_OCMDest, setupSequence[i].setupType, ocmDest);
+					end
+					`ID_OCMDestBound: begin 
+						write_reg(`ID_OCMDestBound, setupSequence[i].setupType, ocmDestBound);
+					end
+					`ID_OCMDestInc: begin 
+						write_reg(`ID_OCMDestInc, setupSequence[i].setupType, ocmDestInc);
+					end
+					`ID_IntervalLength: begin 
+						write_reg(`ID_IntervalLength, setupSequence[i].setupType, intervalLength);
+					end
+					`ID_ExpectedParameterCount: begin
+						write_reg(`ID_ExpectedParameterCount, setupSequence[i].setupType, expectedParameterCount);
+					end
+					default : $error("Not a valid 'single_reg' ID %0d, with name '%s'", setupSequence[i].id, setupSequence[i].moduleName);
+				endcase
+			end
+			"t_state": begin
+				wasStarted = setupSequence[i].id == 1;
+				start_exec(setupSequence[i].anything, setupSequence[i].id, setupSequence[i].hybrid, setupSequence[i].setupType);
+				if (setupSequence[i].id == 1) begin
+					if (AXI_CYCLE_TIME <= CGRA_CYCLE_TIME) begin
+						#(160*CGRA_CYCLE_TIME) SENSOR_DONE = 1'b1;
+					end else begin
+						#(40*AXI_CYCLE_TIME) SENSOR_DONE = 1'b1;
+					end
+					wait(cgra.syncUnit.trigger_run === 1'b1);
+					SENSOR_DONE = 1'b0;
+				end
+			end
+			"t_master": begin
+				if (~wasStarted) begin 
+					$error("A master test needs a started execution run! Skiping the requested test.");
+					continue;
+				end
+
+				if (setupSequence[i].moduleName == "log")
+					requestedLogMasterTest = 1'b1;
+				else if (setupSequence[i].moduleName == "ocm") begin
+					ocmInFile = $fopen("ocmInFile.dat","r");
+					requestedOcmMasterTest = 1'b1;
+					for (loopVar = 0; loopVar < runUntil/2; ++loopVar) begin
+						$fscanf(ocmInFile, "%b", vec);
+						cgra.log.ocm_test_data = vec;
+						wait(cgra.w_ccnt == loopVar + 2);
+					end
+				end else
+					$error("Not a valid target for testing a master: \"%s\"", setupSequence[i].moduleName);
+			end
+			"wait": begin
+				if (AXI_CYCLE_TIME <= CGRA_CYCLE_TIME) begin
+					for (loopVar = 0; loopVar < 4*setupSequence[i].anything; ++loopVar)
+						@(posedge CGRA_CLK);
+				end else begin
+					for (loopVar = 0; loopVar < setupSequence[i].anything; ++loopVar)
+						@(posedge S_AXI_ACLK);
+				end
+				masterLogTestDone = 1'b1;
+				masterOcmTestDone = 1'b1;
+				#AXI_CYCLE_TIME
+				masterLogTestDone = 1'b0;
+				masterOcmTestDone = 1'b0;
+				#AXI_CYCLE_TIME ;// wait for log files to be closed!
+			end
+			"check": begin 
+				checkWrites(i);
+				nextToCheck = i + 1;
+			end
+			default : $error("Not a valid operation: %s", setupSequence[i].operation);
+		endcase
+	end
+
+	#(4*AXI_CYCLE_TIME)
+	EN_I = 1'b0;
+	§endif§ // if(random)
+
+	$finish;
+end
+
+§if(random)§
+function void checkWrites(input int indexDone);
+	automatic int i;
+	for (i = nextToCheck; (i < indexDone && i < setupSequence.size()); ++i) begin
+		automatic int j;
+		automatic int peID = 0;
+		automatic int peWr = 0;
+		automatic int offset = 0;
+		automatic int offsetWr = 0;
+		automatic int correct = 0;
+		automatic int foundValue = 0;
+		automatic logic [§peIDWidth§+§maxRFAddrWidth§-1:0] idTableEntry;
+
+		case (setupSequence[i].operation)
+		"t_pe": begin 
+			case (setupSequence[i].id)
+				§peContextChecks§
+				default : $error("Not a valid PE ID: %0d", setupSequence[i].id);
+			endcase
+		end
+		"t_other": begin 
+			case (setupSequence[i].id)
+				`ID_IDC: begin 
+					for (j = 0; j < entriesToWrite.size(); ++j) begin
+						idTableEntry = cgra.axi_interface.idContext[varsToWrite[j].id];
+						peWr = idTableEntry[§peIDWidth§+§maxRFAddrWidth§-1:§maxRFAddrWidth§];
+						offsetWr = idTableEntry[§maxRFAddrWidth§-1:0];
+						if (peWr !== entriesToWrite[j].pe || offsetWr !== entriesToWrite[j].offset) begin 
+							$error("Wrong id_table entry written to ID %0d", varsToWrite[j].id);
+							$display("Expected PE %0d but found %0d", entriesToWrite[j].pe, peWr);
+							$display("Expected offset %0d but found %0d", entriesToWrite[j].offset, offsetWr);
+						end
+					end
+				end
+				§otherContextChecks§
+				default : $error("Not a valid 'other' ID %0d, with name '%s'", setupSequence[i].id, setupSequence[i].moduleName);
+			endcase
+		end
+		"t_param": begin 
+			for (j = 0; j < varsToWrite.size(); ++j) begin
+				idTableEntry = cgra.axi_interface.idContext[varsToWrite[j].id];
+				peID = idTableEntry[§peIDWidth§+§maxRFAddrWidth§-1:§maxRFAddrWidth§];
+				offset = idTableEntry[§maxRFAddrWidth§-1:0];
+				case (peID)
+					§rfChecks§ 
+					default : $error("Not a valid PE ID");
+				endcase
+				if (!correct) begin 
+					$error("Wrong variable written to PE%0d offset %0d", peID, offset);
+					$display("Value is: %0d, Value should be: %0d", foundValue, varsToWrite[j].value);
+				end
+			end
+		end
+		"t_single": begin
+			case (setupSequence[i].id)
+				`ID_CgraStateChange: begin 
+					// We check nothing as we do nothing
+				end
+				`ID_LogDest: begin 
+					if (cgra.log.awaddr_lower !== logDest)
+						$error("Wrong log destination address found: expected %h, got %h", logDest, cgra.log.awaddr_lower);	
+				end
+				`ID_LogDestBound: begin 
+					if (cgra.log.awaddr_upper !== logDestBound)
+						$error("Wrong log destination address boundary found: expected %h, got %h", logDestBound, cgra.log.awaddr_upper);	
+				end
+				`ID_LogDestInc: begin 
+					if (cgra.log.awaddr_inc !== logDestInc)
+						$error("Wrong log destination address increment found: expected %h, got %h", logDestInc, cgra.log.awaddr_inc);	
+				end
+				`ID_OCMDest: begin 
+					if (cgra.log.ocm_awaddr_lower !== ocmDest)
+						$error("Wrong ocm destination address found: expected %h, got %h", ocmDest, cgra.log.ocm_awaddr_lower);	
+				end
+				`ID_OCMDestBound: begin 
+					if (cgra.log.ocm_awaddr_upper !== ocmDestBound)
+						$error("Wrong ocm destination address boundary found: expected %h, got %h", ocmDestBound, cgra.log.ocm_awaddr_upper);	
+				end
+				`ID_OCMDestInc: begin 
+					if (cgra.log.ocm_awaddr_inc !== ocmDestInc)
+						$error("Wrong ocm destination address increment found: expected %h, got %h", ocmDestInc, cgra.log.ocm_awaddr_inc);	
+				end
+				`ID_IntervalLength: begin 
+					if (cgra.syncUnit.interval_length !== intervalLength)
+						$error("Wrong interval length found: expected %h, got %h", intervalLength, cgra.syncUnit.interval_length);	
+				end
+				`ID_ExpectedParameterCount: begin
+					if (cgra.parameterBuffer.expected_hybrid_count !== expectedParameterCount)
+						$error("Wrong expectec parameter count found: expected %h, got %h", expectedParameterCount, cgra.parameterBuffer.expected_hybrid_count);	
+				end
+				default : $error("Not a valid 'single_reg' ID %0d, with name '%s'", setupSequence[i].id, setupSequence[i].moduleName);
+			endcase
+		end
+		"t_state": begin 
+			foundValue = cgra.syncUnit.run;
+			offsetWr = cgra.syncUnit.start_word;
+			if (setupSequence[i].id === 1) begin 
+				if (setupSequence[i].id !== foundValue) begin 
+					$error("Wrong state");
+					$display("Expected state 'run' but found %0d", foundValue);
+				end
+				if (setupSequence[i].hybrid !== cgra.syncUnit.hybrid) begin 
+					$error("Wrong hybrid state");
+					$display("Expected hybrid state %0d but found %0d", setupSequence[i].hybrid, cgra.syncUnit.hybrid);
+				end
+				if (setupSequence[i].anything !== offsetWr) begin 
+					$error("Wrong start address");
+					$display("Expected address %0d but found %0d", setupSequence[i].anything, offsetWr);
+				end
+			end else begin 
+				if (setupSequence[i].id !== foundValue) begin 
+					$error("Wrong state");
+					$display("Expected state 'stop' but found %0d", setupSequence[i].id, foundValue);
+				end
+			end	
+		end
+		"t_master": begin 
+			if (setupSequence[i].moduleName == "log")
+				checkMasterOutput("logMasterOutExpected.dat", slave.logMasterOutList);
+			else if (setupSequence[i].moduleName == "ocm")
+				checkMasterOutput("ocmInFile.dat", slave.ocmMasterOut);
+			else
+				$error("Not a valid target for checking a master test: \"%s\"", setupSequence[i].moduleName);
+		end 
+		"wait": begin end
+		"check": begin end
+		default : begin $error("Not a valid operation: %s", setupSequence[i].operation); end
+		endcase
+	end
+endfunction : checkWrites 
+
+function void checkMasterOutput(input string fileIn, input MasterOutputList outputList);
+	automatic int line = 0;
+	automatic int in = $fopen(fileIn,"r");
+	automatic logic [`DATA_WIDTH-1:0] from_in = 0;
+	automatic logic [`DATA_WIDTH-1:0] from_out = 0;
+
+	do begin 
+		if (from_in !== from_out) begin 
+			$error("Found unexpected value during master check!");
+			$display("Expected %h but found %h, @inputline: %0d", from_in, from_out, line);
+		end
+
+		$fscanf(in, "%b", from_in);
+		from_out = outputList[line];
+		
+		++line;
+	end while(!$feof(in));
+
+endfunction : checkMasterOutput
+§endif§ // if(random)
+
+endmodule
+
+>>
+
+contextWrite(idDef, op, transfersPerEntry, transferCount, contextAddrOffset)
+::= <<
+`ID_§idDef§: begin 
+	contextFile = $fopen("Context_§idDef§.dat","r");
+	write_context(`ID_§idDef§, `§op§, contextFile, §transfersPerEntry§, §transferCount§, §contextAddrOffset§, setupSequence[i].setupType);
+	$fclose(contextFile);
+end
+
+>>
+
+contextCheck(idDef, instancePath, contextWidth)
+::= <<
+`ID_§idDef§: begin 
+	automatic logic [§contextWidth§-1:0] from_file_§idDef§;
+	offset = 0;
+	contextFile = $fopen("Context_§idDef§.dat","r");
+	$fscanf(contextFile, "%b", from_file_§idDef§);
+	while (!$feof(contextFile)) begin
+		if (from_file_§idDef§ !== cgra.§instancePath§[offset]) begin
+			if (setupSequence[i].operation == "t_pe" && wroteParameters && offset == contextMemorySize - 1) begin
+				if (cgra.§instancePath§[offset] !== 0)
+					$error("Wrong Context entry found in §idDef§, highest slot should have been 0");
+			end else begin 
+				$error("Wrong Context entry found in §idDef§");
+				$display("Expected %h but found %h, @index: %0d", from_file_§idDef§, cgra.§instancePath§[offset], offset);
+			end
+		end
+		$fscanf(contextFile, "%b", from_file_§idDef§);
+		++offset;
+	end
+	$fclose(contextFile);
+end
+
+>>
+
+rfCheck(peID)
+::= <<
+§peID§: begin 
+	foundValue = cgra.pe_§peID§.regfile_§peID§.memory[offset];
+	correct = foundValue === varsToWrite[j].value ? 1 : 0;
+end
+
+>>

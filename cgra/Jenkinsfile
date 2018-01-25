@@ -1,0 +1,14 @@
+if (env.BRANCH_NAME.equals("master")) {
+	node {
+		checkout scm
+		configFileProvider([configFile(fileId: 'emailconfig', variable: 'emailconfigfile')]) {
+			emailconfig = load(emailconfigfile)
+			println("config: $emailconfig")
+			emailext body:  emailconfig["body"], subject: emailconfig["subject"], to: emailconfig["to"].join(", ")
+		}
+	}
+} else {
+	println("Not master -> no email")
+}
+
+

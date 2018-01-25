@@ -1,0 +1,206 @@
+slaveSim(fileDecl, fileClose, fileWrites, fileOpen)
+::= <<
+`ifndef INCLUDE_AXI_SLAVE_SIM_SV
+`define INCLUDE_AXI_SLAVE_SIM_SV
+
+`include "axiinterface.vh"
+`include "ultrasynth.vh"
+`include "cgra.vh"
+
+typedef logic[`DATA_WIDTH-1:0] MasterOutputList[$];
+
+module AXI_slave_sim #
+(	
+parameter integer C_DATA_WIDTH = `MASTER_DATA_WIDTH,
+parameter integer C_ADDR_WIDTH = `SYSTEM_ADDR_WIDTH,
+parameter integer LOG_START_ADDR = -1,
+parameter integer LOG_ADDR_BOUNDARY = -1,
+parameter integer LOG_ADDR_INC = -1,
+parameter integer OCM_START_ADDR = -1,
+parameter integer OCM_ADDR_BOUNDARY = -1,
+parameter integer OCM_ADDR_INC = -1
+)
+(
+input wire AXI_ACLK_I,
+input wire RST_N_I,
+input wire EN_I,
+input wire LOG_TEST_DONE_I,
+input wire LOG_TEST_RQ_I,
+input wire [8-1:0] M_AXI_AWLEN_I,
+input wire [C_ADDR_WIDTH-1:0] M_AXI_AWADDR_I,
+input wire M_AXI_AWVALID_I,
+output wire M_AXI_AWREADY_O,
+input wire [C_DATA_WIDTH-1:0] M_AXI_WDATA_I,
+input wire M_AXI_WLAST_I,
+input wire M_AXI_WVALID_I,
+output wire M_AXI_WREADY_O,
+input wire M_AXI_BREADY_I,
+output wire M_AXI_BVALID_O,
+input wire OCM_TEST_DONE_I,
+input wire OCM_TEST_RQ_I,
+input wire [8-1:0] M_OCM_AXI_AWLEN_I,
+input wire [C_ADDR_WIDTH-1:0] M_OCM_AXI_AWADDR_I,
+input wire M_OCM_AXI_AWVALID_I,
+output wire M_OCM_AXI_AWREADY_O,
+input wire [C_DATA_WIDTH-1:0] M_OCM_AXI_WDATA_I,
+input wire M_OCM_AXI_WLAST_I,
+input wire M_OCM_AXI_WVALID_I,
+output wire M_OCM_AXI_WREADY_O,
+input wire M_OCM_AXI_BREADY_I,
+output wire M_OCM_AXI_BVALID_O
+);
+
+// LOG SLAVE START
+MasterOutputList logMasterOutList;
+integer logMasterOut;
+wire [`DATA_WIDTH-1:0] log_out;
+reg [32-1:0] testCoutner;
+reg [32-1:0] usedAddress;
+reg [8-1:0] counter;
+reg [8-1:0] length;
+reg testStarted;
+reg test_rq;
+
+assign log_out = M_AXI_WDATA_I[`DATA_WIDTH-1:0];
+assign M_AXI_AWREADY_O = 1'b1;
+assign M_AXI_WREADY_O = 1'b1;
+
+always @(posedge AXI_ACLK_I) begin
+	if (~RST_N_I) begin
+		counter <= 0;
+		length <= 0;
+		usedAddress <= 0;
+	end else if (test_rq) begin
+		if (M_AXI_AWVALID_I) begin
+			usedAddress <= M_AXI_AWADDR_I;
+			length <= M_AXI_AWLEN_I;
+			if (testCoutner == 0 && M_AXI_AWADDR_I !== LOG_START_ADDR && ~testStarted)
+				$error("Expected initial log address to be %h, but found %h", LOG_START_ADDR, M_AXI_AWADDR_I);
+			if (M_AXI_AWADDR_I >= LOG_ADDR_BOUNDARY)
+				$error("Log address was greater than its boundary %h, found %h", LOG_ADDR_BOUNDARY, M_AXI_AWADDR_I);
+			if (usedAddress + LOG_ADDR_INC !== M_AXI_AWADDR_I && testCoutner !== 0 && ~testStarted)
+				$error("Log address was not incremented to the expected value %h, found %h", usedAddress + LOG_ADDR_INC, M_AXI_AWADDR_I);
+		end
+		if (M_AXI_WVALID_I) begin
+			if (counter == length) begin
+				counter <= 0;
+			end else begin
+				counter <= counter + 1;
+			end
+		end
+	end
+end
+
+always @(posedge AXI_ACLK_I) begin
+	if (~RST_N_I) begin
+		testStarted <= 1'b0;
+		testCoutner <= 0;
+	end else if (test_rq) begin
+		if (LOG_TEST_DONE_I) begin
+			$fclose(logMasterOut);
+			testCoutner <= testCoutner + 1;
+			testStarted <= 1'b0;
+		end else if (M_AXI_WVALID_I) begin
+			if (~testStarted) begin
+				/*if (testCoutner !== M_AXI_WDATA_I[32-1:0]);
+					$error("Got an invalid tag: %h, expected: %h", M_AXI_WDATA_I[32-1:0], testCoutner);*/
+				testStarted <= 1'b1;
+			end else begin
+				logMasterOutList.push_back(log_out);
+				$fwrite(logMasterOut, "%b\n", log_out);
+			end
+		end
+	end
+end
+
+always @(posedge AXI_ACLK_I) begin
+	if (~RST_N_I)
+		test_rq <= 1'b0;
+	else if (LOG_TEST_RQ_I && ~test_rq)
+		test_rq <= 1'b1;
+end
+
+initial begin
+	logMasterOut = $fopen("logMasterOut.dat", "w");
+end
+// LOG SLAVE END
+
+// OCM SLAVE START
+MasterOutputList ocmMasterOut;
+integer ocm_outFile;
+reg [`DATA_WIDTH-1:0] ocm_log_out;
+reg [`SYSTEM_ADDR_WIDTH-1:0] ocm_used_addr;
+reg [8-1:0] ocm_counter;
+reg [32-1:0] ocm_test_counter;
+reg [8-1:0] ocm_length;
+reg ocm_test_rq;
+reg ocm_testStarted;
+
+assign ocm_log_out = M_OCM_AXI_WDATA_I[`DATA_WIDTH-1:0];
+assign M_OCM_AXI_AWREADY_O = 1'b1;
+assign M_OCM_AXI_WREADY_O = 1'b1;
+
+always @(posedge AXI_ACLK_I) begin
+	if (~RST_N_I) begin
+		ocm_used_addr <= 0;
+		ocm_counter <= 0;
+		ocm_length <= 0;
+	end else if (ocm_test_rq) begin
+		if (M_OCM_AXI_AWVALID_I) begin
+			ocm_used_addr <= M_OCM_AXI_AWADDR_I;
+			ocm_length <= M_OCM_AXI_AWLEN_I;
+			if (ocm_test_counter == 0 && M_OCM_AXI_AWADDR_I !== OCM_START_ADDR && ~ocm_testStarted)
+				$error("Expected initial OCM address to be %0d, but found %0d", OCM_START_ADDR, M_OCM_AXI_AWADDR_I);
+			if (M_OCM_AXI_AWADDR_I >= OCM_ADDR_BOUNDARY)
+				$error("OCM address was greater than its boundary %0d, found %0d", OCM_ADDR_BOUNDARY, M_OCM_AXI_AWADDR_I);
+			if (ocm_used_addr + OCM_ADDR_INC !== M_OCM_AXI_AWADDR_I && ocm_test_counter !== 0 && ~ocm_testStarted)
+				$error("OCM address was not incremented to the expected value %0d, found %0d", ocm_used_addr + OCM_ADDR_INC, M_OCM_AXI_AWADDR_I);
+		end
+		if (M_OCM_AXI_WVALID_I) begin
+			if (ocm_counter == ocm_length) begin
+				ocm_counter <= 0;
+			end else begin
+				ocm_counter <= ocm_counter + 1;
+			end
+		end
+	end
+end
+
+always @(posedge AXI_ACLK_I) begin
+	if (~RST_N_I) begin
+		ocm_test_counter <= 0;
+		ocm_testStarted <= 1'b0;
+	end else if (ocm_test_rq) begin
+		if (OCM_TEST_DONE_I) begin
+			$fclose(ocm_outFile);
+			ocm_test_counter <= ocm_test_counter + 1;
+			ocm_testStarted <= 1'b0;
+		end else if (M_OCM_AXI_WVALID_I) begin
+			if (~ocm_testStarted) begin 
+				if (M_OCM_AXI_WDATA_I[0] !== 1'b0)
+					$error("Expected an error message of %0b, got %0b", 0, M_OCM_AXI_WDATA_I[0]);
+				ocm_testStarted <= 1'b1;
+			end else begin 
+				ocmMasterOut.push_back(ocm_log_out);
+				$fwrite(ocm_outFile, "%b\n", ocm_log_out);
+			end
+		end
+	end
+end
+
+always @(posedge AXI_ACLK_I) begin
+	if (~RST_N_I)
+		ocm_test_rq <= 1'b0;
+	else if (OCM_TEST_RQ_I && ~ocm_test_rq)
+		ocm_test_rq <= 1'b1;
+end
+
+initial begin
+	ocm_outFile = $fopen("ocmOutFile.dat", "w");
+end
+// OCM SLAVE END
+
+endmodule
+
+`endif // INCLUDE_AXI_SLAVE_SIM_SV 
+>>

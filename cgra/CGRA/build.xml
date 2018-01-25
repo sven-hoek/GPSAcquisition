@@ -1,0 +1,34 @@
+<project name="CGRA" default="compile" basedir=".">
+  <description>
+    CGRA ANT build file
+  </description>
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="build" location="bin"/>
+  <presetdef name="javac">
+    <javac includeantruntime="false" />
+  </presetdef>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac 	
+			srcdir="${src}" 
+			destdir="${build}" 
+			classpath="lib/json-io-4.1.9.jar:lib/json-simple-1.1.1.jar:lib/ST-4.0.8.jar"
+    />
+  </target>
+
+  <target name="clean"
+        description="clean up">
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+  </target>
+</project>

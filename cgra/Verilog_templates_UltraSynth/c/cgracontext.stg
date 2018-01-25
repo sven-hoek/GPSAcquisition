@@ -1,0 +1,16 @@
+cgracontext(context_array_def)
+::= <<
+#include "cgracontext.h"
+
+§context_array_def§
+
+>>
+
+context_array_def(name, size, context)
+::= <<
+const uint32_t c_§name§[§size§] = 
+{
+	§context§
+};
+
+>>

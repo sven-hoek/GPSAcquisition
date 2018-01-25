@@ -1,0 +1,224 @@
+PE(date,declaration,interconnect_inputs,cache,rom,cond_dma,cond_wr,contextwidth,wr_en,rdmuxH,rdmuxL,rddoH,rddoL,regaddrwidthWrite,regaddrwidthRead,pipelined, rdCacheH,rdCacheL,wrH,wrL,muxwidth,muxAH,muxAL,muxBH,muxBL,muxRegwidth,muxRegH,muxRegL, opcodewidth,opH,opL,muxA,muxB,aluInst,regfileInst,
+inputwidtha,inputwidthb,outputwidth,contextsize,liveout, stallcapable,
+livein,pathToContext,cases,cBoxSelWidth,cBoxSelL,cBoxSelH,initPath) ::= <<
+/*
+Author: Dennis L. Wolf
+Date: §date§
+Version: 3.0 new ALU strucutre, interleaved operations with reset, pipiline and bypass of RF available and second RF to alu
+Version History: 2.0 (Changed to String Template Interface)
+		 1.2 Code Review and Cleanup
+		 1.1 debugged and tested
+		 1.0 Concept
+*/
+
+`include "cgra.vh" // import definitions of parameters and types
+
+`default_nettype wire
+
+§declaration§
+
+// Wires instanciation
+wire [§outputwidth§-1:0] w_reg_to_operand_mux;§if(inputwidtha)§
+reg  [§inputwidtha§-1:0] w_alu_in_A;§endif§§if(inputwidthb)§
+reg  [§inputwidthb§-1:0] w_alu_in_B; §endif§
+wire [§outputwidth§-1:0] w_alu_Out;
+
+§if(liveout)§
+assign LIVE_O = w_alu_in_A[§inputwidtha§-1:0];
+§endif§
+§if(cache)§
+assign CACHE_DATA_O = w_alu_in_A[§inputwidtha§-1:0];
+§endif§
+
+
+// Context memory - holds configurations of the PE
+ (* ram_style = "block" *) reg [§contextwidth§-1:0] contextmemory [§contextsize§-1:0];
+reg [§contextwidth§-1:0] contextmemoryout;
+
+// Context decoding
+
+§if(cache)§
+// Marker whether a memory accessing operation is predicated
+wire w_conditional_dma;
+assign w_conditional_dma = contextmemoryout[§cond_dma§];
+§endif§
+
+// Marker whether a register write is predicated
+wire w_conditional_write;
+assign w_conditional_write = contextmemoryout[§cond_wr§];
+
+// Write enable for the register file
+wire w_write_enable;
+assign w_write_enable = contextmemoryout[§wr_en§];
+
+§if(regaddrwidthWrite)§
+// Address to load data from the register file that is routed to the multiplexer that picks the operand of the ALU
+wire [§regaddrwidthRead§-1:0] w_rf_addr_operand_mux;
+assign w_rf_addr_operand_mux = contextmemoryout[§rdmuxH§:§rdmuxL§];
+
+// Address to load data from the register file that is routed directly to interconnect
+wire [§regaddrwidthRead§-1:0] w_directout_addr;
+assign w_directout_addr = contextmemoryout[§rddoH§:§rddoL§];
+
+§if(cache || rom)§
+// Address to load data from the register file that is routed to the cache
+// TODO: can cache address context bits be reused for rom address?
+wire [§regaddrwidthRead§-1:0] w_mem_addr = contextmemoryout[§rdCacheH§:§rdCacheL§];
+wire [§outputwidth§-1:0] w_mem;
+§if(cache)§
+assign CACHE_ADDR_O = w_mem;
+§endif§
+§if(rom)§
+assign ROM_ADDR_O = w_mem;
+§endif§
+§endif§
+
+
+// Write address to the register file
+wire [§regaddrwidthWrite§-1:0] w_write_addr;
+assign w_write_addr = contextmemoryout[§wrH§:§wrL§];
+§endif§
+
+ §if(interconnect_inputs)§
+// Driver to pick operand A from the interconnect or the register file
+§if(inputwidtha)§
+wire[§muxwidth§-1:0] w_muxA;
+assign w_muxA = contextmemoryout[§muxAH§:§muxAL§];
+§endif§
+§if(inputwidthb)§
+// Driver to pick operand B from the interconnect or the register file
+wire[§muxwidth§-1:0] w_muxB;
+assign w_muxB = contextmemoryout[§muxBH§:§muxBL§];
+§endif§
+§endif§
+
+// Driver to determine the input of the multiplexer - ALU out | Live In ( | Cache | ROM)
+wire [§muxRegwidth§-1:0] w_MuxR;
+assign w_MuxR = contextmemoryout[§muxRegH§:§muxRegL§];
+
+§if(cBoxSelWidth)§
+wire [§cBoxSelWidth§-1:0] w_predication_select;
+assign w_predication_select = contextmemoryout[§cBoxSelH§:§cBoxSelL§];
+§endif§
+
+
+§if(opcodewidth)§
+// Opcode - Determines the operation to be carried out by the ALU
+wire [§opcodewidth§-1:0] w_opcode;
+assign w_opcode = contextmemoryout[§opH§:§opL§];
+§endif§
+
+§if(interconnect_inputs)§
+// Both multiplexors to which connects the Data input of the registerfile
+§if(pipelined)§
+always@(posedge CLK_I)begin
+§else§
+always@(*)begin
+§endif§§if(inputwidtha)§
+(* full_case *)
+ case(w_muxA)
+§muxA§
+ endcase
+§endif§
+§if(inputwidthb)§
+(* full_case *)
+ case(w_muxB)
+§muxB§
+ endcase
+§endif§
+end
+§else§
+§if(pipelined)§
+always@(posedge CLK_I)begin
+§else§
+always@(*)begin
+§endif§§if(inputwidtha)§
+   w_alu_in_A §if(pipelined)§<§endif§= w_reg_to_operand_mux;§endif§§if(inputwidthb)§
+   w_alu_in_B §if(pipelined)§<§endif§= w_reg_to_operand_mux;§endif§
+end
+§endif§
+
+// Multiplexor in front of registerfile
+reg [§outputwidth§-1:0] w_reg_in;
+
+
+// contextmanagment
+always@(posedge CLK_I) begin
+	if(LV_CONTEXT_WR_EN_I) begin
+   contextmemory[CCNT_I] <= LV_DATA_I; 
+ end §if(stallcapable)§ if(EN_I) begin §endif§
+   contextmemoryout <= contextmemory[CCNT_I];
+	§if(stallcapable)§	end §endif§
+end
+always@(posedge CLK_I) begin
+  if(CONTEXT_WR_EN_I) begin
+    contextmemory[CONTEXT_WR_ADDR_I] <= CONTEXT_DATA_I;
+  end 
+end
+
+always@(*) begin
+§if(rom || cache || livein)§
+(* full_case *)
+ case(w_MuxR)
+   0	: w_reg_in = w_alu_Out;
+  §if(livein)§
+   1	: w_reg_in = LIVE_I;
+  §endif§
+  §if(cache)§
+   §if(livein)§2§else§1§endif§    : w_reg_in = CACHE_DATA_I; 
+  §endif§
+  §if(rom)§
+   §if(livein && cache)§3§else§§if(livein || cache)§2§else§1§endif§§endif§    : w_reg_in = ROM_DATA_I; 
+  §endif§
+  endcase
+§else§
+  w_reg_in = w_alu_Out;
+§endif§
+end
+
+
+
+§if(cBoxSelWidth)§
+reg predication_w;
+ always@(*)
+ case(w_predication_select)
+§cases§
+ endcase
+
+§else§
+wire predication_w;
+assign predication_w = PREDICATION_I;
+§endif§
+
+wire  w_write_enable_regfile;  
+assign w_write_enable_regfile = (w_conditional_write) ? (predication_w && w_write_enable) : w_write_enable;
+
+// INSTANCES:
+
+§aluInst§
+
+wire[§outputwidth§-1:0] w_direct_o;
+assign DIRECT_O = w_direct_o;
+§if(cache)§
+assign CACHE_OFFSET_O = w_alu_in_B;
+§endif§
+§if(rom)§
+assign ROM_OFFSET_O = w_alu_in_B;
+§endif§
+
+§regfileInst§
+
+§if(initPath)§
+initial begin
+             $readmemb("§initPath§", contextmemory);
+end
+§endif§
+
+endmodule
+>>
+
+Case(case) ::= <<
+
+ §case§: predication_w = PREDICATION_I[§case§];
+
+>>

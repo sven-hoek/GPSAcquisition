@@ -1,0 +1,246 @@
+ocmBuffer(cgraContextSize, cgraContextAddrWidth, bufferContextWidth, outputContextSize, outputContextWidth,
+		outputContextAddr_width, resultBufferSize, resultNufferWidth, resultBufferAddrWidth, resultBufferWrites,
+		maxContextAddrWidth, peDirectOut)
+::= <<
+`include "axiinterface.vh"
+`include "ultrasynth.vh"
+`include "cgra.vh"
+
+module OCMBuffer #
+(
+	parameter integer CGRA_CONTEXT_SIZE = §cgraContextSize§,
+	parameter integer CGRA_CONTEXT_ADDR_WIDTH = §cgraContextAddrWidth§,
+	parameter integer BUFFER_CONTEXT_WIDTH = §bufferContextWidth§,
+	parameter integer OCM_OUTPUT_CONTEXT_SIZE = §outputContextSize§,
+	parameter integer OCM_OUTPUT_CONTEXT_WIDTH = §outputContextWidth§,
+	parameter integer OCM_OUTPUT_CONTEXT_ADDR_WIDTH = §outputContextAddr_width§,
+	parameter integer OCM_DATA_BUFFER_SIZE = §resultBufferSize§,
+	parameter integer OCM_DATA_BUFFER_WIDTH = §resultNufferWidth§,
+	parameter integer OCM_DATA_BUFFER_ADDR_WIDTH = §resultBufferAddrWidth§
+)
+(
+	input wire EN_I,
+	input wire CGRA_CLK_I,
+	input wire AXI_ACLK_I,
+	input wire RST_N_I,
+	//
+	// CGRA state related ports:
+	//
+	input wire SYNC_IN_I,
+	input wire [CGRA_CONTEXT_ADDR_WIDTH-1:0] CCNT_I,
+	input wire [`ERROR_WIDTH-1:0] ERROR_I,
+	//
+	// State related ports:
+	//
+	output wire OCM_SEND_DONE_O,
+	//
+	// Context/Config related ports:
+	//
+	input wire DEST_WREN_I,
+	input wire DEST_BOUND_WREN_I,
+	input wire DEST_INC_WREN_I,
+	input wire BUFFER_CONTEXT_WREN_I,
+	input wire OUTPUT_CONTEXT_WREN_I,
+	input wire [§maxContextAddrWidth§-1:0] CONTEXT_ADDR_I,
+	input wire [`SLAVE_DATA_WIDTH-1:0] DATA_I,
+	//
+	// Data gathering related ports:
+	//
+	§peDirectOut§
+	// OCM Master
+	output wire [8-1:0] OCM_AWLEN_O,
+	output wire [3-1:0] OCM_AWSIZE_O,
+	output wire [2-1:0] OCM_AWBURST_O,
+	output wire [`SYSTEM_ADDR_WIDTH-1:0] OCM_AWADDR_O,
+	output wire OCM_AWVALID_O,
+	input wire  OCM_AWREADY_I,
+	output wire [`MASTER_DATA_WIDTH-1:0] OCM_WDATA_O,
+	output wire [(`MASTER_DATA_WIDTH/8)-1:0] OCM_WSTRB_O,
+	output wire OCM_WLAST_O,
+	output wire OCM_WVALID_O,
+	input wire OCM_WREADY_I,
+	output wire OCM_BREADY_O,
+	input wire OCM_BVALID_I,
+	input wire [2-1:0] OCM_BRESP_I
+);
+
+// Output Context declaration
+(* ram_style = "block" *) reg [OCM_OUTPUT_CONTEXT_WIDTH-1:0] ocm_output_context [OCM_OUTPUT_CONTEXT_SIZE-1:0];
+reg [OCM_OUTPUT_CONTEXT_ADDR_WIDTH-1:0] stored_output_ccnt;
+reg [OCM_OUTPUT_CONTEXT_ADDR_WIDTH-1:0] output_ccnt;
+
+// Output Context output signals
+reg [CGRA_CONTEXT_ADDR_WIDTH-1:0] last_ccnt;
+reg [OCM_OUTPUT_CONTEXT_WIDTH-1:0] ocm_output_context_out;
+
+wire [8-1:0] output_c_out_transaction_length;
+wire [OCM_DATA_BUFFER_ADDR_WIDTH-1:0] output_c_out_read_addr;
+wire output_c_out_awvalid;
+wire output_c_out_transaction_set_done;
+
+assign output_c_out_transaction_length = ocm_output_context_out[8-1:0];
+assign output_c_out_read_addr = ocm_output_context_out[OCM_DATA_BUFFER_ADDR_WIDTH-1:0];
+assign output_c_out_awvalid = ocm_output_context_out[OCM_OUTPUT_CONTEXT_WIDTH-2];
+assign output_c_out_transaction_set_done = ocm_output_context_out[OCM_OUTPUT_CONTEXT_WIDTH-1];
+
+// AXI control signals
+reg new_transaction_set;
+wire start_transaction;
+
+// AXI state signals:
+wire more_data_requested;
+wire data_transfer_completed;
+wire waiting_for_data_transfer;
+wire waiting_for_addr_transfer;
+
+// Buffer Context declaration
+(* ram_style = "block" *) reg [BUFFER_CONTEXT_WIDTH-1:0] buffer_context [CGRA_CONTEXT_SIZE-1:0];
+reg [BUFFER_CONTEXT_WIDTH-1:0] buffer_context_out;
+
+// Buffer Context output signals
+wire [BUFFER_CONTEXT_WIDTH-3:0] buffer_c_out_pe_id;
+wire buffer_c_out_wren;
+
+// We currently ignore that the input context has a complete signal (highest bit),
+// this will cause a synth warning!
+assign buffer_c_out_pe_id = buffer_context_out[BUFFER_CONTEXT_WIDTH-3:0];
+assign buffer_c_out_wren = buffer_context_out[BUFFER_CONTEXT_WIDTH-2];
+
+// Result gathering buffer
+(* ram_style = "block" *) reg [OCM_DATA_BUFFER_WIDTH-1:0] ocm_data [OCM_DATA_BUFFER_SIZE-1:0];
+reg [OCM_DATA_BUFFER_WIDTH-1:0] ocm_data_out;
+reg [OCM_DATA_BUFFER_ADDR_WIDTH-1:0] ocm_data_write_counter;
+
+// Signals the result buffer that its output register should be updated
+wire buffer_read_en;
+
+// Status signal
+reg ocm_transactions_done;
+assign OCM_SEND_DONE_O = ocm_transactions_done;
+
+// Result data handling
+always @(posedge CGRA_CLK_I) begin
+	if (~RST_N_I) begin
+		ocm_data_write_counter <= 0;
+		ocm_data_out <= 0;
+	end else if (EN_I) begin
+		if (SYNC_IN_I)
+			ocm_data_write_counter <= 0;
+		else if (buffer_c_out_wren) begin
+			ocm_data_write_counter <= ocm_data_write_counter + 1;
+			case (buffer_c_out_pe_id)
+				§resultBufferWrites§
+			endcase
+		end
+
+		if (buffer_read_en) begin
+			ocm_data_out <= ocm_data[output_c_out_read_addr];
+		end
+	end
+end
+
+// Random stuff
+always @(posedge CGRA_CLK_I) begin
+	if (~RST_N_I) begin
+		last_ccnt <= 0;
+		new_transaction_set <= 1'b0;
+		stored_output_ccnt <= {OCM_OUTPUT_CONTEXT_ADDR_WIDTH{1'b1}};
+	end else if (EN_I) begin
+		if (data_transfer_completed)
+			new_transaction_set <= 1'b0;
+		else if (/*output_c_out_awvalid && */stored_output_ccnt == 0)
+			new_transaction_set <= 1'b1;
+
+		if (ocm_output_context_out[CGRA_CONTEXT_ADDR_WIDTH-1:0] == last_ccnt && ~output_c_out_awvalid && 
+			~waiting_for_data_transfer && ~waiting_for_addr_transfer)
+		begin
+			stored_output_ccnt <= 0;
+		end else
+			stored_output_ccnt <= output_ccnt;
+
+		last_ccnt <= CCNT_I;
+	end
+end
+
+// Output context handling
+always @(posedge CGRA_CLK_I) begin
+	if (EN_I) begin
+		if (OUTPUT_CONTEXT_WREN_I)
+			ocm_output_context[CONTEXT_ADDR_I] <= DATA_I[OCM_OUTPUT_CONTEXT_WIDTH-1:0];
+
+		ocm_output_context_out <= ocm_output_context[output_ccnt];
+	end
+end
+
+// Buffer context handling
+always @(posedge CGRA_CLK_I) begin
+	if (EN_I) begin
+		if (BUFFER_CONTEXT_WREN_I)
+			buffer_context[CONTEXT_ADDR_I] <= DATA_I[BUFFER_CONTEXT_WIDTH-1:0];
+
+		buffer_context_out <= buffer_context[CCNT_I];
+		ocm_transactions_done <= output_c_out_transaction_set_done;
+	end
+end
+
+// start a transaction only there is a corresponding context entry and the last transaction is done
+assign start_transaction = output_c_out_awvalid && ~waiting_for_data_transfer && EN_I;
+
+// This is triggered the first time when the tag data is send. (new transaction set)
+// Or alternatively for every awvalid (with corresponding ready), 
+// which also signals a valid log read address. (not a new transaction set)
+// "wvalid_was_deasserted" forces a read in the first enable cycle after being disabled.
+assign buffer_read_en = more_data_requested;
+
+// output_ccnt generation
+always @(*) begin
+	if (buffer_read_en || start_transaction || output_c_out_transaction_set_done)
+		// take the next log entry only when done with the current one
+		// start_transaction forces an address out of the output context (as early as possible)
+		output_ccnt = stored_output_ccnt + 1;
+	else 
+		output_ccnt = stored_output_ccnt;
+end
+
+ResultMaster #
+(
+	.NEW_TRANSACTION_SET_DATA_WIDTH(`ERROR_WIDTH)
+)
+axi_module
+(
+	.CGRA_CLK_I(CGRA_CLK_I),
+	.AXI_ACLK_I(AXI_ACLK_I),
+	.RST_N_I(RST_N_I),
+	.EN_I(EN_I),
+	.DEST_WREN_I(DEST_WREN_I),
+	.DEST_BOUND_WREN_I(DEST_BOUND_WREN_I),
+	.DEST_INC_WREN_I(DEST_INC_WREN_I),
+	.DEST_DATA_I(DATA_I),
+	.START_TRANSACTION_I(start_transaction),
+	.START_IS_NEW_TRANSACTION_SET_I(new_transaction_set),
+	.INCREMENT_TARGET_ADDR_I(output_c_out_transaction_set_done),
+	.START_TRANSACTION_LENGTH_I(output_c_out_transaction_length),
+	.DATA_TO_SEND_I(ocm_data_out),
+	.NEW_TRANSACTION_SET_DATA_I(ERROR_I),
+	.MORE_DATA_REQUEST_O(more_data_requested),
+	.DATA_TRANSFER_COMPLETED_O(data_transfer_completed),
+	.WAITING_FOR_DATA_TRANSFER_O(waiting_for_data_transfer),
+	.WAITING_FOR_ADDR_TRANSFER_O(waiting_for_addr_transfer),
+	.AXI_AWLEN_O(OCM_AWLEN_O),
+	.AXI_AWSIZE_O(OCM_AWSIZE_O),
+	.AXI_AWBURST_O(OCM_AWBURST_O),
+	.AXI_AWADDR_O(OCM_AWADDR_O),
+	.AXI_AWVALID_O(OCM_AWVALID_O),
+	.AXI_AWREADY_I(OCM_AWREADY_I),
+	.AXI_WDATA_O(OCM_WDATA_O),
+	.AXI_WSTRB_O(OCM_WSTRB_O),
+	.AXI_WLAST_O(OCM_WLAST_O),
+	.AXI_WVALID_O(OCM_WVALID_O),
+	.AXI_WREADY_I(OCM_WREADY_I),
+	.AXI_BREADY_O(OCM_BREADY_O),
+	.AXI_BVALID_I(OCM_BVALID_I),
+	.AXI_BRESP_I(OCM_BRESP_I)
+);
+
+endmodule
+>>

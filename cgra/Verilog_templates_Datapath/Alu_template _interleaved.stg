@@ -1,0 +1,35 @@
+Alu(date, declaration, bib, statusDriver, resultDriver, cacheDriver, romDriver)
+::= <<
+
+/*
+Author:  Dennis L. Wolf, Andreas Engel
+Date:    §date§
+Version: 1.5 Module interfaces directly derived from operator implementation
+History: 1.4 Interleaved operations, valid to operators, alu out driven by valid_out from operators
+         1.3 Changed to String Template Interface and ultrasynth
+         1.2 Code Review and Cleanup
+         1.1 debugged and simulated
+         1.0 layout & concept
+*/
+// `timescale 1 ns / 1 ps
+
+`include "cgra.vh" // import definitions of parameters and types
+
+`default_nettype wire
+
+§declaration§
+
+§bib§
+
+// Cache driver
+§cacheDriver§
+// ROM driver
+§romDriver§
+// Controlflow status driver
+§statusDriver§
+// Arithmetic result driver
+§resultDriver§
+
+endmodule
+
+>>

@@ -1,0 +1,759 @@
+<<<<<<< HEAD
+toplevel(date,maxContextWidth,ccntwidth,contextmemorysize,contextWidthCBox,portlist, peAddrWidth,statusIns,statusWireDeclaration,resultConnection,pes,nrOfPes,jointCacheValid,contextAddrWidth,wires_direct_out_Pe,wires_out_Pe,wires_status,viaWidth,nrOfCBoxOutputs,evaluationblocks,maxMemCols, constPointerWidth,locationInformationPointerWidth, kernelTableAddrWidth, maxMuxWidth, rfAddrWidth, locInfoMemWidth,initPath)
+=======
+toplevel(date,maxContextWidth,ccntwidth,contextmemorysize,contextWidthCBox,portlist, peAddrWidth,statusIns,statusWireDeclaration,resultConnection,pes,nrOfPes,jointCacheValid,contextAddrWidth,wires_direct_out_Pe,wires_out_Pe,wires_status,viaWidth,nrOfCBoxOutputs,evaluationblocks,branchselection)
+>>>>>>> f20ec5aeab03faa8426cab6e9a6f9c13bec466ad
+::= <<
+
+/*
+Author: Dennis L. Wolf
+Date: §date§
+Version: 3.1 refactored - removed chip enable and minimized control signals
+Version History: 	3.0 - generator target dependent
+			2.1 converters for contexts, Fsm reduction and cleanup
+			2.0 changed to String Templates
+			1.1 changed to header and define
+			1.0 construct
+*/
+
+`include "cgra.vh" 
+`default_nettype wire
+
+module CGRA_Amidar (
+§portlist§);
+
+parameter   STATE_WIDTH = 5;
+
+  parameter   IDLE   = 0;
+  parameter   PREPARING_CONTEXT_LV_RECEIVE   = 1;
+  parameter   LOADING_CONTEXT_LV_RECEIVE = 2;
+  parameter   WRITING_LV_RECEIVE  = 3;
+  parameter   PREPARING_CONTEXT_LV_SEND   = 4;
+  parameter   LOADING_CONTEXT_LV_SEND = 5;
+  parameter   SENDING_LV_SEND = 6;
+  parameter   SETADDRESS  = 7;
+  parameter   RUN  = 8;
+  parameter   BOOT_INITIAL = 9;
+  parameter   IDLE_CLEAN   = 10;
+
+  parameter   LOAD_MEMORY_WORD = 11;
+  parameter   LOAD_MEMORY_LINE = 12;
+
+  parameter   PREPARE_CONST = 13;
+  parameter   LOAD_CONST = 14;
+  parameter   WRITE_CONST = 15;
+  parameter   INIT = 16;
+  parameter   INIT2 = 17;
+
+  parameter   OP_INIT = 0;
+  parameter   OP_RECEIVELOCALVAR   = 1;
+  parameter   OP_SENDLOCALVAR  = 2;
+  parameter   OP_RUN = 3;
+  parameter   OP_LOADMEMORY = 4;
+
+  parameter AMIDAR_TAG_SIZE = 7;
+  parameter AMIDAR_OPCODE_SIZE = 7;
+  parameter AMIDAR_FU_SIZE = 7;
+  parameter AMIDAR_PORT_SIZE = 7;
+
+  parameter LOCATION_INFORMATION = 0;
+  parameter CONSTANT_MEMORY = 1;
+  parameter KERNEL_TABLE = 2;
+  parameter CONTEXT_CONTROL_UNIT = 3;
+  parameter C_BOX = 4;
+
+  parameter PE = 256;
+
+
+reg [31:0] result_low;
+
+reg save_result;
+
+//reg  [STATE_WIDTH-1:0] state,next_state;
+reg [STATE_WIDTH-1:0] state, next_state;
+reg  w_save_token;
+wire [§ccntwidth§-1:0] 	w_ccnt;
+
+wire [31:0] w_context_write_address;
+wire [15:0] w_context_write_column;
+wire [15:0] w_context_write_instance_ID;
+
+reg [31:0] w_context_write_address_reg;
+reg [15:0] w_context_write_instance_ID_reg;
+
+assign w_context_write_address = operand_a_low_i;
+assign w_context_write_column = operand_a_high_i[15:0];
+assign w_context_write_instance_ID = operand_a_high_i[31:16];
+
+always@(posedge clk_i) begin
+	w_context_write_address_reg <= w_context_write_address;
+	w_context_write_instance_ID_reg <= w_context_write_instance_ID;
+end
+
+//reg [31:0] memoryLineReg [MAX_MEM_COLS-1:0];
+reg [32*§maxMemCols§-1:0] memoryLine;
+reg writeMemoryWord;
+reg writeMemoryLine;
+reg memoryLineFull;
+
+genvar col;
+generate 
+  for(col = 0; col < §maxMemCols§; col = col +1) begin
+  	always@(posedge clk_i) begin
+  	  if(writeMemoryWord && (col == w_context_write_column))
+  		memoryLine[32*(col+1) -1: 32*col] <= operand_b_low_i;
+  	  else
+  	  	memoryLine[32*(col+1) -1: 32*col] <= memoryLine[32*(col+1) -1: 32*col];
+  	end
+  end
+endgenerate
+
+
+
+wire [§constPointerWidth§-1:0] nr_of_constants;
+wire [§constPointerWidth§-1:0] constants_pointer;
+wire [§locationInformationPointerWidth§-1:0] locationInformation_pointer;
+wire [§ccntwidth§-1:0] context_pointer;
+
+reg [§constPointerWidth§-1:0] nr_of_constants_reg;
+reg [§constPointerWidth§-1:0] loaded_constants_reg;
+reg [§constPointerWidth§-1:0] constants_pointer_reg;
+reg [§locationInformationPointerWidth§-1:0] locationInformation_pointer_reg;
+reg [§ccntwidth§-1:0] context_pointer_reg;
+
+kernelTableCGRA #(
+§if(initPath)§
+	.USE_INIT_PATH(1),
+	.INIT_PATH("§initPath§/cgraKernel.dat"),
+§endif§
+	.ADDR_WIDTH(§kernelTableAddrWidth§),
+	.CONST_POINTER_WIDTH(§constPointerWidth§),
+	.LOCATION_INFORMATION_POINTER_WIDTH(§locationInformationPointerWidth§),
+	.CONTEXT_POINTER_WIDTH(§ccntwidth§)
+) kernelTable (
+	.clk_i(clk_i),
+	.addr_i(operand_a_low_i),
+	.nr_of_constants_o(nr_of_constants),
+	.constants_pointer_o(constants_pointer),
+	.locationInformation_pointer_o(locationInformation_pointer),
+	.context_pointer_o(context_pointer),
+	
+	.memory_write_addr_i(w_context_write_address_reg),
+	.memory_line_i(memoryLine),
+	.write_memory_en_i(w_context_write_instance_ID_reg == KERNEL_TABLE && writeMemoryLine)
+);
+
+wire [§nrOfPes§-1:0] peSelection;
+wire [§maxMuxWidth§-1:0] muxSelection;
+wire [§viaWidth§-1:0] liveOutSelection;
+wire [§rfAddrWidth§-1:0] registerfileAddress;
+
+locationInformationMemory #(
+§if(initPath)§
+	.USE_INIT_PATH(1),
+	.INIT_PATH("§initPath§/locationInformation.dat"),
+§endif§
+	.ADDR_WIDTH(§locationInformationPointerWidth§),
+	.RF_ADDR_WIDTH(§rfAddrWidth§),
+	.NR_OF_PES(§nrOfPes§),
+	.VIA_WIDTH(§viaWidth§),
+	.MUX_WIDTH(§maxMuxWidth§),
+	.MEM_WIDTH(§locInfoMemWidth§)
+) locInfoMem(
+	.clk_i(clk_i),
+	.addr_i(locationInformation_pointer_reg),
+	.pe_selection_o(peSelection),
+	.registerfile_addr_o(registerfileAddress),
+	.live_out_selection_o(liveOutSelection),
+	.mux_selection_o(muxSelection),
+		// write Port
+	.memory_write_addr_i(w_context_write_address_reg),
+	.memory_line_i(memoryLine),
+	.write_memory_en_i(w_context_write_instance_ID_reg == LOCATION_INFORMATION && writeMemoryLine)
+);
+
+wire [31:0] constant;
+
+constantMemory #(
+§if(initPath)§
+	.USE_INIT_PATH(1),
+	.INIT_PATH("§initPath§/constMemory.dat"),
+§endif§
+	.ADDR_WIDTH(§constPointerWidth§)
+) constMem(
+	.clk_i(clk_i),
+	.addr_i(constants_pointer_reg),
+	.constant_o(constant),
+	// write Port
+	.memory_write_addr_i(w_context_write_address_reg),
+	.memory_line_i(memoryLine),
+	.write_memory_en_i(w_context_write_instance_ID_reg == CONSTANT_MEMORY && writeMemoryLine)
+);
+
+
+reg load_pointers;
+reg inc_const_pointer;
+reg inc_locInfo_pointer;
+reg inc_loaded_constants;
+
+always@(posedge clk_i) begin
+	if(load_pointers) begin
+		constants_pointer_reg <= constants_pointer;
+		locationInformation_pointer_reg <= locationInformation_pointer;
+		loaded_constants_reg <= 0;
+		nr_of_constants_reg <= nr_of_constants;
+		context_pointer_reg <= context_pointer;
+	end else begin
+		if(inc_const_pointer)
+			constants_pointer_reg <= constants_pointer_reg + 1;
+		else
+			constants_pointer_reg <= constants_pointer_reg;
+		
+		if(inc_locInfo_pointer)
+			locationInformation_pointer_reg <= locationInformation_pointer_reg + 1;
+		else
+			locationInformation_pointer_reg <= locationInformation_pointer_reg;
+
+		if(inc_loaded_constants)
+			loaded_constants_reg <= loaded_constants_reg + 1;
+		else
+			loaded_constants_reg <= loaded_constants_reg;
+	end
+end
+
+reg use_operand_as_live_in;
+
+
+// FSM - STATE TRANSITIONS 
+
+always@(*) begin
+case (state) // open switch - big
+
+
+// Boot state, after state
+BOOT_INITIAL: begin
+ next_state = IDLE;
+end
+
+// Idle state after sending local vaiables - clean needs to be done
+IDLE_CLEAN: begin
+ next_state = IDLE;
+end
+
+ // IDLE STATE
+  IDLE : begin
+    if(token_valid_i == 1'b1) begin
+	case(opcode_i) 
+	OP_INIT:
+	  begin 
+	     	if(operand_a_low_valid_i==1'b1) begin
+	      	  next_state = INIT;
+		end
+          else begin
+	       	  next_state = IDLE;
+					end
+	    	end
+	OP_RECEIVELOCALVAR:  
+		begin
+	      	 if(operand_b_low_valid_i==1'b1) begin
+	       	  next_state = PREPARING_CONTEXT_LV_RECEIVE;
+						end
+               	 else begin
+						next_state = IDLE;
+						end
+	     	 end
+
+	OP_SENDLOCALVAR:
+		begin 
+	  	// if(operand_a_low_valid_i ==1'b1) begin
+						next_state = PREPARING_CONTEXT_LV_SEND;
+		// end
+	 	// else begin
+		//	  next_state = IDLE;
+		// end
+		end
+		     
+	OP_RUN: 	    
+		begin 
+	     	// if(operand_a_low_valid_i==1'b1) begin
+	      	  next_state = SETADDRESS;
+	//			end
+       //   else begin
+	  //     	  next_state = IDLE;
+	//				end
+	    	end
+
+        OP_LOADMEMORY:
+		begin
+			if(operand_b_low_valid_i==1'b1 && operand_a_low_valid_i ==1'b1  && operand_a_high_valid_i ==1'b1) begin
+		       		next_state = LOAD_MEMORY_WORD;
+			end
+	        	else begin
+				next_state = IDLE;
+			end
+		end
+	default: 
+		begin
+   	  next_state = IDLE;
+		end
+     endcase    
+    end 
+    else begin
+  	 next_state = IDLE;
+     end
+   end
+
+
+ // Preparing a write to the Context in order to send
+   PREPARING_CONTEXT_LV_RECEIVE: 
+		begin 
+		 next_state = LOADING_CONTEXT_LV_RECEIVE;
+		end // close write context state
+
+
+
+ // Writing the Context in order to receive
+   LOADING_CONTEXT_LV_RECEIVE : 
+		begin
+		 next_state = WRITING_LV_RECEIVE;
+		end 
+
+// WRITE local variable to the regfile
+   WRITING_LV_RECEIVE : 
+		begin
+        	 next_state = IDLE;
+		end
+
+ // SETADDRESS STATE
+   SETADDRESS : 
+		begin
+     		 next_state = RUN;    
+   		end 
+
+ // RUN STATE
+   RUN : 
+		begin
+     		 if(w_ccnt == §contextmemorysize§-1) begin
+	           next_state = IDLE;
+		  end
+     		 else begin
+  		next_state = RUN;  
+		end
+		end
+
+ // Preparing a write to the Context in order to send
+   PREPARING_CONTEXT_LV_SEND : 
+		begin
+     		 next_state = LOADING_CONTEXT_LV_SEND;
+		end
+
+ // Writing the Context in order to send
+   LOADING_CONTEXT_LV_SEND :
+		begin
+		  next_state = SENDING_LV_SEND;
+		end
+
+// SENDING a local variable
+  SENDING_LV_SEND : 
+		begin
+      if(result_ack_i) begin
+	   	   next_state = IDLE_CLEAN;
+		  end
+	 	 else begin
+		   next_state = SENDING_LV_SEND;
+		  end
+		end
+	LOAD_MEMORY_WORD:
+		begin
+		if(!memoryLineFull)
+			next_state = IDLE;
+		else
+			next_state = LOAD_MEMORY_LINE;
+		
+		end
+	LOAD_MEMORY_LINE:
+		begin
+			next_state = IDLE;
+		end
+	INIT:
+		begin
+			if(0 == nr_of_constants)
+				next_state = IDLE;
+			else
+				next_state = INIT2;
+		end
+	INIT2:
+				next_state = PREPARE_CONST;
+	PREPARE_CONST: 
+		begin
+			next_state = LOAD_CONST;
+		end
+	LOAD_CONST: 
+		begin
+			next_state = WRITE_CONST;
+		end
+	WRITE_CONST: 
+		begin
+			if(loaded_constants_reg == nr_of_constants_reg)
+				next_state = IDLE;
+			else
+				next_state = PREPARE_CONST;
+		end
+ // DEFAULT
+  default : 
+		begin
+     		 next_state = IDLE;
+   		end 
+
+  endcase 
+end // ends FSM Transitions
+
+reg [7-1:0]	r_tag_buffer;
+reg [4-1:0]	r_destination_fu_buffer;
+reg [2-1:0]	r_des_port_buffer;
+
+assign result_tag_o = r_tag_buffer;
+assign result_fu_o = r_destination_fu_buffer;
+assign result_port_o = r_des_port_buffer;
+
+
+always@(posedge clk_i) begin
+// RST
+   if(rst_i) begin
+		 state <= BOOT_INITIAL;
+   end
+
+  else begin
+    state <= next_state;
+
+    if(w_save_token) begin
+     r_tag_buffer <= dest_tag_i;
+     r_destination_fu_buffer <= dest_fu_i;
+     r_des_port_buffer <= dest_port_i;
+    end
+     else begin
+      r_tag_buffer <=  r_tag_buffer;
+      r_destination_fu_buffer <=  r_destination_fu_buffer;
+      r_des_port_buffer <= r_des_port_buffer;
+     end
+   end
+end
+
+
+
+
+
+§if(jointCacheValid)§
+wire joint_cache_valids;
+and(joint_cache_valids §jointCacheValid§);
+§endif§
+
+// CONTROL SIGNALS - OUTPUT OF FSM
+
+reg w_operand_acknowledge, w_valid_result;
+assign result_low_valid_o = w_valid_result;
+assign operand_ack_o = w_operand_acknowledge;
+
+reg w_load_enable_controlunit;
+reg w_write_context;
+reg w_clean_highest_context_slot;
+reg w_is_send_context;
+reg [§ccntwidth§-1:0] ccu_addr_overwrite;
+reg boot;
+
+always@(*) begin
+w_is_send_context = 1'b0;
+w_clean_highest_context_slot = 1'b0;
+w_operand_acknowledge = 1'b0;
+w_valid_result = 1'b0;
+w_load_enable_controlunit = 1'b0;
+w_write_context = 1'b0;
+ccu_addr_overwrite = {§ccntwidth§{1'b0}};
+w_save_token = 1'b0;
+
+writeMemoryWord = 1'b0;
+writeMemoryLine = 1'b0;
+memoryLineFull = 1'b0;
+
+load_pointers = 1'b0;
+inc_const_pointer = 1'b0;
+inc_locInfo_pointer = 1'b0;
+inc_loaded_constants = 1'b0;
+
+use_operand_as_live_in = 1'b1;
+
+boot = 1'b0;
+
+save_result = 1'b0;
+
+ case(state)
+	BOOT_INITIAL: 
+   begin
+		boot = 1'b1;
+		w_load_enable_controlunit = 1'b1;
+    ccu_addr_overwrite = {§ccntwidth§{1'b1}};
+   end
+ 
+	IDLE: 
+   begin
+		
+   end
+
+  IDLE_CLEAN:
+	 begin
+      w_clean_highest_context_slot = 1'b1;
+			w_write_context = 1'b1;
+	 end
+
+  PREPARING_CONTEXT_LV_RECEIVE: 
+		begin
+			w_write_context = 1'b1;
+		end
+
+  LOADING_CONTEXT_LV_RECEIVE: 
+		begin
+			inc_locInfo_pointer = 1'b1;
+		end
+
+  WRITING_LV_RECEIVE: 
+		begin
+			w_clean_highest_context_slot = 1'b1;
+			w_operand_acknowledge = 1'b1;
+			w_write_context = 1'b1;
+		end
+
+  SETADDRESS: 	
+		begin
+			w_operand_acknowledge = 1'b1;
+			w_load_enable_controlunit = 1'b1;
+		end
+
+  RUN: 	
+		begin
+		end
+
+  PREPARING_CONTEXT_LV_SEND: 
+		begin
+			w_write_context = 1'b1;
+			w_is_send_context = 1'b1;
+ 			w_save_token = 1'b1;
+		end
+
+  LOADING_CONTEXT_LV_SEND: 	
+		begin
+			inc_locInfo_pointer = 1'b1;
+		  w_operand_acknowledge = 1'b1;
+		save_result = 1'b1;
+		end
+
+  SENDING_LV_SEND: 	
+		begin
+			w_valid_result = 1'b1;
+
+		end
+  LOAD_MEMORY_WORD:
+  		begin
+		w_operand_acknowledge = 1'b1;
+  		  writeMemoryWord = 1'b1;
+  		  if(w_context_write_column == 0) 
+  		  	memoryLineFull = 1'b1;
+  		end
+  LOAD_MEMORY_LINE:
+  		begin
+  			writeMemoryLine = 1'b1;
+  		end
+  PREPARE_CONST: 
+		begin
+			use_operand_as_live_in = 1'b0;
+			w_write_context = 1'b1;
+		end
+
+  LOAD_CONST: 
+		begin
+			use_operand_as_live_in = 1'b0;
+			inc_const_pointer = 1'b1;
+			inc_locInfo_pointer = 1'b1;
+			inc_loaded_constants = 1'b1;
+		end
+
+  WRITE_CONST: 
+		begin
+			use_operand_as_live_in = 1'b0;
+			w_clean_highest_context_slot = 1'b1;
+			//w_operand_acknowledge = 1'b1;
+			w_write_context = 1'b1;
+		end
+  INIT:
+		begin
+			use_operand_as_live_in = 1'b0;
+			load_pointers = 1'b1;
+			w_operand_acknowledge = 1'b1;
+		end
+  INIT2:
+		begin
+			use_operand_as_live_in = 1'b0;
+			//load_pointers = 1'b1;
+			//w_operand_acknowledge = 1'b1;
+		end
+  endcase
+end
+
+wire [§nrOfCBoxOutputs§-1:0] w_predication;
+wire w_reset_alu;
+<<<<<<< HEAD
+wire [§ccntwidth§-1:0]  w_ccu_addr_in;
+assign w_ccu_addr_in = boot? ccu_addr_overwrite : context_pointer_reg;
+=======
+wire w_ccu_addr_in;§if(branchselection)§
+wire w_branch_selection;§endif§
+assign w_ccu_addr_in = OPERAND_ADDR_I[§ccntwidth§-1:0] && ccu_addr_overwrite;
+>>>>>>> f20ec5aeab03faa8426cab6e9a6f9c13bec466ad
+
+// Module instanciation
+
+ContextControlUnit  #(§ccntwidth§,§contextmemorysize§) 
+	controlunit(
+<<<<<<< HEAD
+	.CLK_I(clk_i),§if(jointCacheValid)§
+	.EN_I(joint_cache_valids),§endif§
+	.BRANCH_SELECTION_I(w_branch_selection),
+	.CONTEXT_DATA_I(memoryLine), 
+	.CONTEXT_WR_ADDR_I(w_context_write_address_reg),
+	.CONTEXT_WR_EN_I(w_context_write_instance_ID_reg == CONTEXT_CONTROL_UNIT && writeMemoryLine),
+=======
+	.CLK_I(CLK_I),§if(jointCacheValid)§
+	.EN_I(joint_cache_valids),§endif§ §if(branchselection)§
+	.BRANCH_SELECTION_I(w_branch_selection),§endif§
+	.CONTEXT_DATA_I(OPERAND_ADDR_I), // luke i am your father
+	.CONTEXT_WR_ADDR_I(OPERAND_ADDR_I),// luke i am your father
+	.CONTEXT_WR_EN_I(OPERAND_ADDR_I[0]),// luke i am your father
+>>>>>>> f20ec5aeab03faa8426cab6e9a6f9c13bec466ad
+	.ADDR_I(w_ccu_addr_in),
+	.LOAD_EN_I(w_load_enable_controlunit),
+	.CCNT_O(w_ccnt),
+  .RST_ALU_O(w_reset_alu)
+	);
+
+   §wires_status§ 
+
+reg [§evaluationblocks§:0] cboxContextWriteEn;
+
+genvar cbox;
+generate
+  for(cbox = 0; cbox <=§evaluationblocks§; cbox = cbox +1) begin
+	always@(*) begin
+		cboxContextWriteEn[cbox] = (w_context_write_instance_ID_reg == (C_BOX + cbox));
+	end
+  end
+endgenerate
+
+  
+CBoxWrapper cBoxWrapper(
+	.CLK_I(clk_i),
+	§if(jointCacheValid)§
+	.EN_I(joint_cache_valids),
+	§endif§
+	.CCNT_I(w_ccnt), §statusIns§
+<<<<<<< HEAD
+	.CONTEXT_DATA_I(memoryLine),
+	.CONTEXT_WR_ADDR_I(w_context_write_address_reg),
+	.CONTEXT_WR_EN_I(cboxContextWriteEn),
+	.PREDICATION_O( w_predication),
+	.BRANCH_SELECTION_O(w_branch_selection)            
+=======
+	.CONTEXT_DATA_I(OPERAND_ADDR_I),// luke i am your father
+	.CONTEXT_WR_ADDR_I(OPERAND_ADDR_I),// luke i am your father
+	.CONTEXT_WR_EN_I(OPERAND_ADDR_I[1:0]),// luke i am your father
+	.PREDICATION_O( w_predication)§if(branchselection)§,
+	.BRANCH_SELECTION_O(w_branch_selection)§endif§
+>>>>>>> f20ec5aeab03faa8426cab6e9a6f9c13bec466ad
+        );
+
+reg [31:0] liveIn;
+
+always@(posedge clk_i) begin
+  if(use_operand_as_live_in)
+	liveIn <= operand_b_low_i;
+  else
+	liveIn <= constant;
+end
+
+
+     §wires_direct_out_Pe§
+     §wires_out_Pe§
+
+
+
+     §pes§
+
+//reg [§viaWidth§-1:0] stabalizer;
+
+//always@(posedge clk_i)begin
+//stabalizer <= operand_a_low_i[§viaWidth§-1:0];
+//end
+
+
+
+// Liveout connections
+always@(*)begin  
+ case(liveOutSelection) // stabalizer[§viaWidth§-1:0]
+ §resultConnection§ 
+default: result_low = 0;
+ endcase
+ end
+
+always@(posedge clk_i)begin
+   if(save_result)
+	result_low_o <= result_low;
+   else
+	result_low_o <= result_low_o;
+end
+
+endmodule
+
+>>
+
+peModule(ID,outputwidth,controlflow, memoryAccess,inputs,contextwidth,multicycle,liveout,ccntwidth,stallable)
+::= <<
+
+wire w_write_context_for_lv_§ID§;
+wire [§contextwidth§-1:0] w_context_data_lv_§ID§;
+
+
+PE_§ID§ pe_§ID§( 
+   .CLK_I(clk_i),§if(multicycle)§
+   .RST_I(w_reset_alu), §endif§ §if(stallable)§
+   .EN_I(joint_cache_valids),§endif§
+   .CCNT_I(w_ccnt), §inputs§
+   .LV_CONTEXT_WR_EN_I(w_write_context_for_lv_§ID§),
+   .LV_DATA_I(w_context_data_lv_§ID§),
+   .CONTEXT_DATA_I(memoryLine),
+   .CONTEXT_WR_EN_I(w_context_write_instance_ID_reg == (PE+§ID§) && writeMemoryLine),
+   .CONTEXT_WR_ADDR_I(w_context_write_address_reg),§if(memoryAccess)§
+   .CACHE_DATA_I(CACHE_DATA_§ID§_I),
+   .CACHE_ADDR_O(CACHE_ADDR_§ID§_O), 
+   .CACHE_WR_O(CACHE_WR_§ID§_O),
+   .CACHE_VALID_O(CACHE_VALID_§ID§_O),
+   .CACHE_OFFSET_O(CACHE_OFFSET_§ID§_O),
+    §endif§
+   .LIVE_I(liveIn),
+   .PREDICATION_I(w_predication),
+   .DIRECT_O(w_direct_out_§ID§)§if(liveout)§,
+   .LIVEOUT_O(w_pe_out_§ID§)§endif§
+    §if(memoryAccess)§,
+   .CACHE_DATA_O(CACHE_DATA_§ID§_O)§endif§ §if(controlflow)§,
+   .ALU_STATUS_O(w_status_§ID§)§endif§);
+
+Context_Converter_§ID§ converter_§ID§(
+  .ADDR_I(registerfileAddress),
+  .SELECTION_I(peSelection[§ID§]),
+  .MUX_I(muxSelection),
+  .CLEAN_HIGHEST_SLOT_I(w_clean_highest_context_slot),
+  .WRITE_CONTEXT_FSM_I(w_write_context),
+  .IS_SEND_CONTEXT_I(w_is_send_context),
+  .CONVERTED_WRITE_EN_O(w_write_context_for_lv_§ID§),
+  .CONVERTED_CONTEXT_DATA_O(w_context_data_lv_§ID§)
+);
+>>
+
+

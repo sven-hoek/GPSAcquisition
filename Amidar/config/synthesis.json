@@ -1,0 +1,19 @@
+{
+	"SYNTHLOG" 				: true,
+	"UNROLL" 				: 4,
+	"MAX_UNROLL_LENGTH" 	: 3000,
+	"CSE"					: true,
+	"CONSTANT_FOLDING"		: true,	
+	"INLINE"				: true,
+	"ALIASING_SPECULATION"	: "PESSIMISTIC_CHECK",
+	"COHERENCE_PROTOCOL"	: "DRAGON",
+	"PREFETCHING"			: "UNROLL",
+	
+	"BLACKLIST"			: [
+		{"java/lang/String.equals(Ljava/lang/Object;)Z":75},
+		{"de/amidar/testbench/mandelbrot/MandelbrotPicture.calculateLineCGRA_4(IIIIIIII[I[II)I":127}
+		{"de/amidar/testbench/mandelbrot/MandelbrotPicture.updateMandelbrotImageCGRA_4FixPointA(FFIIFFII[I[I)V":67}
+		
+		
+	]
+}

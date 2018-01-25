@@ -1,0 +1,12 @@
+ {
+	"name" : "CGRA1_pe",
+	"PEs" : 
+	{
+		"0" : "PE_all_int_ops_no_mem_rf_size_one.json"
+	},
+	"Context_memory_size" :2,
+	"Interconnect" : "Interconnect_1pe_mesh.json",
+	"CBox_slots" : 2,
+	"Pipelined" : false,
+	"Branch_selection_mode" : "default"
+}

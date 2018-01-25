@@ -1,0 +1,23 @@
+{
+	"cgra" : "config/ultrasynth/CGRA_1.json",
+	"runCounterWidth" : 1,
+	"cycleCounterWidth" : 1,
+	"parameterBufferSize" : 1,
+	"parameterBufferExpectedParameterCount" : 0,
+	"constBufferSize" : 1,
+	"IDTableSize" : 2,
+	"actorCount" : 1,
+	"sensorCount" : 1,
+	"ocmDataWidth" : 1,
+	"ocmBufferSize" : 1,
+	"globalLogContextSize" : 1,
+	"ocmOutputContextSize" : 256,
+	"constBufferPEs" :
+	{
+		"pe0" : true
+	},
+	"logs" : 
+	{
+		"logSize0" : 1
+	}
+}

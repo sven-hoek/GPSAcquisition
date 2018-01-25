@@ -1,0 +1,464 @@
+testbench_topmodule(date,app,connectors,dutInstanciation,initiallizeSignals,dataBusWidth,maxContextWidth,nrOfPEs,writeContextSet,modelname,writeLocalVariable,triggerRun,retrieveLocalVariables,stimuli,intialContexts,debugPath,regfiledumps,regfilevariables,cboxslots,maxCycles,aluDump,nrContexts)
+::= <<
+
+`timescale 1ns / 1ps 
+ 
+////////////////////////////////////////////////////////////////////////////////// 
+//  
+// Company: TU Darmstadt  
+// Date: §date§
+// Author: Dennis Wolf
+// 
+// This is an automated generated testbench for the application §app§
+// using an §nrOfPEs§ composition called "§modelname§".
+// 
+////////////////////////////////////////////////////////////////////////////////// 
+ 
+ 
+`include "cgra.vh" 
+ 
+`define NULL 0
+
+module testbench_cgra(); 
+ 
+§connectors§
+
+§dutInstanciation§
+ 
+
+
+reg helper = 1'b0;
+integer output_file;
+integer debug_regentries;
+integer debug_system_alu_focused;
+reg debug =1'b0;
+reg count_valid;
+
+always begin 
+	 #10 CLK_I = !CLK_I; 
+end 
+
+integer cyclecounter;
+integer runcounter;
+
+always@(posedge CLK_I)begin
+ if(helper)
+	$fwrite(output_file,"cycle %0d current state: %0d\n",cyclecounter,dut.state);
+	if(dut.state == `RUN || dut.state == `SETADDRESS) begin
+	cyclecounter = cyclecounter+1;
+    end
+end
+
+integer m§regfilevariables§;
+
+
+always@(posedge CLK_I) begin
+
+if(cyclecounter > §maxCycles§) begin
+	$fclose(output_file);
+	$fclose(debug_regentries);
+	$fclose(debug_system_alu_focused);
+    $display("exceeded max cycles");
+$finish;
+end
+
+
+#2;
+if(dut.state == `RUN || dut.state == `SETADDRESS) begin
+
+$fwrite(debug_regentries,"--------- cycle: %0d(Run %0d)----------\n",cyclecounter,runcounter);
+
+for(m = 0; m<§cboxslots§;m = m +1) begin
+ $fwrite(debug_regentries,"%0d\n", dut.magical.memory[m]);
+end
+ $fwrite(debug_regentries,"---\n");
+
+§regfiledumps§
+
+$fwrite(debug_regentries,"\n \n \n");
+
+
+
+$fwrite(debug_system_alu_focused,"--------- cycle: %0d(Run %0d)----------\n",cyclecounter,runcounter);
+$fwrite(debug_system_alu_focused,"ccu : %0d\n",dut.controlunit.CCNT_O);
+
+§aluDump§
+
+
+
+
+/*
+
+$fwrite(debug_system_alu_focused,"------- PE 1\n");
+$fwrite(debug_system_alu_focused,"Context : %0d\n", dut.pe_1.contextmemoryout);
+$fwrite(debug_system_alu_focused,"loading entry : %0d\n", dut.pe_1.w_mux_addr);
+$fwrite(debug_system_alu_focused,"A : %0d\n", dut.pe_1.w_alu_in_A);
+$fwrite(debug_system_alu_focused,"B : %0d\n", dut.pe_1.w_alu_in_B);
+$fwrite(debug_system_alu_focused,"op - %0d\n", dut.pe_1.w_opcode);
+$fwrite(debug_system_alu_focused,"R : %0d ", dut.pe_1.w_alu_Out);
+if(dut.pe_1.regfile_1.WR_PORT_EN_I) begin
+	$fwrite(debug_system_alu_focused,"( -> %0d)",dut.pe_1.w_write_addr);
+end
+$fwrite(debug_system_alu_focused,"\n");
+
+if(dut.pe_1.ALU_STATUS_O) begin
+	$fwrite(debug_system_alu_focused,"S : true \n\n");
+end
+else begin
+	$fwrite(debug_system_alu_focused,"S : false \n\n");
+end
+
+$fwrite(debug_system_alu_focused,"------- PE 2\n");
+$fwrite(debug_system_alu_focused,"Context : %0d\n", dut.pe_2.contextmemoryout);
+$fwrite(debug_system_alu_focused,"loading entry : %0d\n", dut.pe_2.w_mux_addr);
+$fwrite(debug_system_alu_focused,"A : %0d\n", dut.pe_2.w_alu_in_A);
+$fwrite(debug_system_alu_focused,"B : %0d\n", dut.pe_2.w_alu_in_B);
+$fwrite(debug_system_alu_focused,"op - %0d\n", dut.pe_2.w_opcode);
+$fwrite(debug_system_alu_focused,"R : %0d ", dut.pe_2.w_alu_Out);
+if(dut.pe_2.regfile_2.WR_PORT_EN_I) begin
+	$fwrite(debug_system_alu_focused,"( -> %0d)",dut.pe_2.w_write_addr);
+end
+$fwrite(debug_system_alu_focused,"\n\n");
+
+$fwrite(debug_system_alu_focused,"------- PE 3\n");
+$fwrite(debug_system_alu_focused,"Context : %0d\n", dut.pe_3.contextmemoryout);
+$fwrite(debug_system_alu_focused,"loading entry : %0d\n", dut.pe_3.w_mux_addr);
+$fwrite(debug_system_alu_focused,"A : %0d\n", dut.pe_3.w_alu_in_A);
+$fwrite(debug_system_alu_focused,"B : %0d\n", dut.pe_3.w_alu_in_B);
+$fwrite(debug_system_alu_focused,"op - %0d\n", dut.pe_3.w_opcode);
+$fwrite(debug_system_alu_focused,"R : %0d ", dut.pe_3.w_alu_Out);
+if(dut.pe_3.regfile_3.WR_PORT_EN_I) begin
+	$fwrite(debug_system_alu_focused,"( -> %0d)",dut.pe_3.w_write_addr);
+end
+$fwrite(debug_system_alu_focused,"\n");
+$fwrite(debug_system_alu_focused,"\n");
+
+
+$fwrite(debug_system_alu_focused,"------- CBOX \n");
+$fwrite(debug_system_alu_focused,"Context : %0d\n ",dut.magical.contextmemoryout);
+$fwrite(debug_system_alu_focused,"Predication out: %0d\n", dut.magical.PREDICATION_O);
+$fwrite(debug_system_alu_focused,"Branchselection out: %0d\n", dut.magical.BRANCH_SELECTION_O);
+
+*/
+
+$fwrite(debug_system_alu_focused,"\n\n\n");
+
+
+end
+
+end
+
+// Task to write a set of contexts into the dedicated context memory
+task writeContextSet;
+
+input integer module_id; // 
+
+logic [32-§nrOfPEs§-3:0] address;
+
+integer data_file;
+integer scan_line;
+logic [§maxContextWidth§-1:0] captured_data;
+//reg [32-1:0] data;
+
+begin
+
+if(module_id < §nrOfPEs§) begin
+$display("writing to : ");
+$display($sformatf("Context_PE%0d",module_id));
+data_file = $fopen($sformatf("Context_PE%0d.dat",module_id),"r");
+end
+
+if(module_id == §nrOfPEs§) begin
+$display("Writing Context CCU");
+data_file = $fopen("Context_CBOX.dat","r");
+end
+
+if(module_id == §nrOfPEs§+1) begin
+$display("Writing Context CBOX");
+data_file = $fopen("Context_CCU.dat","r");
+end
+
+if(module_id > §nrOfPEs§+1) begin
+$display("The ID %0d does not exist",module_id);
+$finish;
+end
+
+
+if (data_file == `NULL) begin
+    $display("Error: File could not be found");
+	$fclose(output_file);
+	$fclose(debug_regentries);
+	$fclose(debug_system_alu_focused);
+	$display("nullpointer while reading a file in load context");
+    $finish;
+  end
+
+address = 0;
+
+repeat(§nrContexts§) begin
+scan_line = $fscanf(data_file, "%b\n", captured_data); 
+OPCODE_I = `OP_LOADPROGRAM;
+TOKEN_VALID_I = 1'b1;
+
+// also sets the start entry to 0 -> would stand above the one hot encoding of the module to be written on
+OPERAND_ADDR_VALID_I = 1'b1; 
+OPERAND_DATA_VALID_I = 1'b1; 
+OPERAND_DATA2_VALID_I = 1'b1; 
+OPERAND_ADDR_I = 1<<module_id;  
+OPERAND_ADDR_I = OPERAND_ADDR_I | (address<<(§nrOfPEs§+2));
+
+CONTEXT_DATA_VALID_I = 1'b1;
+CONTEXT_DATA_I = captured_data;
+// one should implement a real behaviour
+
+
+//$display("this is se däta : %0b    %d",captured_data, address);
+CONTEXT_DATA_I = captured_data;
+
+
+
+@OPERAND_ACK_O;
+@(posedge CLK_I);
+
+TOKEN_VALID_I = 1'b0;
+
+OPERAND_DATA_VALID_I = 1'b0; 
+OPERAND_DATA_I = 0; 
+OPERAND_DATA2_VALID_I = 1'b0; 
+OPERAND_ADDR_VALID_I = 1'b0; 
+OPERAND_ADDR_I = 0; 
+CONTEXT_DATA_VALID_I = 1'b0;
+CONTEXT_DATA_I = 0;
+
+address = address +1;
+@(posedge CLK_I);
+
+end
+
+#20;
+
+$fclose(data_file);
+$fclose(scan_line);
+
+end
+endtask
+
+
+
+
+
+task writeLocalVariable;
+
+input [32-1:0] address;
+input [32-1:0] data;
+
+begin
+
+OPCODE_I = `OP_RECEIVELOCALVAR;
+TOKEN_VALID_I = 1'b1;
+
+OPERAND_DATA_VALID_I = 1'b1; 
+OPERAND_DATA_I = data; 
+
+OPERAND_ADDR_VALID_I = 1'b1; 
+OPERAND_ADDR_I = address;
+
+$display("Writing local Variable %d",data);
+
+#20;
+
+// wait for op to finish
+@OPERAND_ACK_O;
+@(posedge CLK_I);
+
+TOKEN_VALID_I = 1'b0;
+OPERAND_DATA_VALID_I = 1'b0; 
+OPERAND_DATA_I = 0; 
+
+OPERAND_ADDR_VALID_I = 1'b0; 
+OPERAND_ADDR_I = 0;  
+
+#20;
+
+end
+endtask
+
+
+// task to start a run
+task triggerRun;
+input [32-1:0] startCCNT;
+
+begin
+
+OPCODE_I = `OP_RUN;
+TOKEN_VALID_I = 1'b1;
+count_valid = 1'b1;
+
+OPERAND_ADDR_VALID_I = 1'b1; 
+OPERAND_ADDR_I = startCCNT;
+cyclecounter = 0;
+runcounter = runcounter +1;
+$display("Triggering a run with startcount %0d",startCCNT);
+#20; 
+
+// wait for op to finish
+//@(posedge CLK_I);
+@(dut.state == `RUN);
+
+TOKEN_VALID_I = 1'b0;
+OPERAND_DATA_VALID_I = 1'b0; 
+OPERAND_DATA_I = 0; 
+
+OPERAND_ADDR_VALID_I = 1'b0; 
+OPERAND_ADDR_I = 0; 
+count_valid = 1'b0;
+
+end
+endtask
+
+
+// task to get a local variable from the CGRA
+task retrieveLocalVariable;
+input [32-1:0] address;
+input [32-1:0] result;
+
+begin
+
+OPCODE_I = `OP_SENDLOCALVAR;
+TOKEN_VALID_I = 1'b1;
+
+OPERAND_ADDR_VALID_I = 1'b1; 
+OPERAND_ADDR_I = address;
+
+#20; 
+$display("Returning local Variable %0d - expecting value of %d",address,result);
+// wait for op to finish
+@RESULT_VALID_O;
+
+RESULT_ACK_I =1'b1;
+@(posedge CLK_I);
+
+if(result != RESULT_O) begin
+$display("The resulting lv is incorrect. result: %d", RESULT_O);
+$display("Cosimulation has failed");
+// $finish;
+end
+
+#10;
+
+$display("local variable : %0d",RESULT_O);
+
+RESULT_ACK_I =1'b0;
+
+TOKEN_VALID_I = 1'b0;
+OPERAND_DATA_VALID_I = 1'b0; 
+OPERAND_DATA_I = 0; 
+
+OPERAND_ADDR_VALID_I = 1'b0; 
+OPERAND_ADDR_I = 0; 
+
+end
+endtask
+
+ 
+initial begin 
+
+output_file = $fopen("testbench_output","w");
+debug_regentries = $fopen("§debugPath§/debug_registerfiles_hdl","w");
+debug_system_alu_focused= $fopen("§debugPath§/debug_ALU_hdl","w");
+helper = 1'b1;
+runcounter = 0;
+count_valid = 1'b0;
+ 
+§initiallizeSignals§
+
+#20; 
+
+EN_I = 1'b1; 
+RST_I = 1'b0; 
+
+/*// configure the pes
+§writeContextSet§
+
+// writing localvariables
+§writeLocalVariable§
+
+debug = 1'b1;
+cyclecounter = 0;
+// trigger the run
+§triggerRun§
+
+// retrieve local variable 
+§retrieveLocalVariables§*/
+
+
+§intialContexts§
+
+§stimuli§
+
+#100; 
+$fclose(output_file);
+$fclose(debug_regentries);
+$fclose(debug_system_alu_focused);
+
+$display("Simulation has finished"); 
+
+$finish;
+ 
+end 
+ 
+endmodule 
+ 
+>>
+
+
+
+
+
+
+init_context(pathToContext,name)
+::= <<
+$readmemb("§pathToContext§", dut.§name§.contextmemory);
+>>
+
+
+
+
+
+regDump(id,regfilesize,regfilevariable)
+::= <<
+
+for(§regfilevariable§ = 0; §regfilevariable§<§regfilesize§;§regfilevariable§ = §regfilevariable§ +1) begin
+ $fwrite(debug_regentries,"%0d\n",dut.pe_§id§.regfile_§id§.memory[§regfilevariable§]);
+end
+ $fwrite(debug_regentries,"---\n");
+
+>>
+
+
+
+aluDump(id,controlflow)
+::= <<
+
+$fwrite(debug_system_alu_focused,"------- PE §id§\n");
+$fwrite(debug_system_alu_focused,"Context : %0d\n", dut.pe_§id§.contextmemoryout);
+$fwrite(debug_system_alu_focused,"loading entry : %0d\n", dut.pe_§id§.w_mux_addr);
+$fwrite(debug_system_alu_focused,"A : %0d\n", dut.pe_§id§.w_alu_in_A);
+$fwrite(debug_system_alu_focused,"B : %0d\n", dut.pe_§id§.w_alu_in_B);
+$fwrite(debug_system_alu_focused,"op - %0d\n", dut.pe_§id§.w_opcode);
+$fwrite(debug_system_alu_focused,"R : %0d ", dut.pe_§id§.w_alu_Out);
+if(dut.pe_§id§.regfile_§id§.WR_PORT_EN_I) begin
+	$fwrite(debug_system_alu_focused,"( -> %0d)",dut.pe_§id§.w_write_addr);
+end
+$fwrite(debug_system_alu_focused,"\n");
+
+§if(controlflow)§
+if(dut.pe_§id§.ALU_STATUS_O) begin
+	$fwrite(debug_system_alu_focused,"S : true \n\n");
+end
+else begin
+	$fwrite(debug_system_alu_focused,"S : false \n\n");
+end
+§endif§
+$fwrite(debug_system_alu_focused,"\n");
+>>

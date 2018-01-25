@@ -1,0 +1,256 @@
+logBuffer(globalLogAddrWidth, globalLogSize, logIDWidth, logMaxAddrWidth, globalLogContextWidth, 
+	contextSize, ocmContextWidth, peIDWidth, ocmDataWidth, ocmBufferSize, ocmBufferAddrWidth, runCounterWidth, 
+	ccntWidth, contextEnablePorts, maxLogContextAddrWidth, peDirectOut, wiresLogPEenable, 
+	logDataOutWires, dataToSendAssignment, logs, wstrb, wsize, test, ocmDataWrites, globalLogContextAddrWidth, maxAddrWidth)
+::= <<
+`include "axiinterface.vh"
+`include "ultrasynth.vh"
+`include "cgra.vh"
+
+module LogBuffer #
+(
+	parameter integer LOG_GLOBAL_CONTEXT_SIZE = §globalLogSize§,
+	parameter integer LOG_GLOBAL_CONTEXT_WIDTH = §globalLogContextWidth§,
+	parameter integer LOG_GLOBAL_CONTEXT_ADDR_WIDTH = §globalLogContextAddrWidth§,
+	parameter integer LOG_ID_WIDTH = §logIDWidth§, // determined by the PE ID width 
+	parameter integer MAX_LOG_ADDR_WIDTH = §logMaxAddrWidth§ // the maximum width needed to fully address every log data BRAM in the logPE modules
+)
+(
+	input wire EN_I,
+	input wire CGRA_CLK_I,
+	input wire AXI_ACLK_I,
+	input wire RST_N_I,
+	//
+	// CGRA state related ports:
+	//
+	input wire SYNC_IN_I,
+	input wire [§ccntWidth§-1:0] CCNT_I,
+	input wire [§runCounterWidth§-1:0] RUN_COUNTER_I,
+	//
+	// State related ports:
+	//
+	output wire LOG_SEND_DONE_O,
+	//
+	// Context/Config related ports:
+	//
+	§contextEnablePorts§	
+	input wire IS_LOG_CONTEXT_I,
+	input wire GLOBAL_LOG_CONTEXT_WREN_I,
+	input wire DEST_WREN_I,
+	input wire DEST_BOUND_WREN_I,
+	input wire DEST_INC_WREN_I,
+	input wire [§maxAddrWidth§-1:0] CONTEXT_ADDR_I,
+	input wire [`SLAVE_DATA_WIDTH-1:0] DATA_I,
+	//
+	// Data gathering related ports:
+	//
+	§peDirectOut§
+	//
+	// IO related ports:
+	//
+	output wire [8-1:0] LOG_AWLEN_O,
+	output wire [3-1:0] LOG_AWSIZE_O,
+	output wire [2-1:0] LOG_AWBURST_O,
+	output wire [`SYSTEM_ADDR_WIDTH-1:0] LOG_AWADDR_O,
+	output wire LOG_AWVALID_O,
+	input wire  LOG_AWREADY_I,
+	output wire [`MASTER_DATA_WIDTH-1:0] LOG_WDATA_O,
+	output wire [(`MASTER_DATA_WIDTH/8)-1:0] LOG_WSTRB_O,
+	output wire LOG_WLAST_O,
+	output wire LOG_WVALID_O,
+	input wire LOG_WREADY_I,
+	output wire LOG_BREADY_O,
+	input wire LOG_BVALID_I,
+	input wire [2-1:0] LOG_BRESP_I
+);
+
+// Context declaration
+(* ram_style = "block" *) reg [LOG_GLOBAL_CONTEXT_WIDTH-1:0] log_output_context [LOG_GLOBAL_CONTEXT_SIZE-1:0];
+
+// LogPE enable wires
+§wiresLogPEenable§
+
+// Further declarations
+§logDataOutWires§
+
+// Local cunters
+reg [LOG_GLOBAL_CONTEXT_ADDR_WIDTH-1:0] log_ccnt;
+reg [LOG_GLOBAL_CONTEXT_ADDR_WIDTH-1:0] stored_log_ccnt;
+
+// Log data access control
+wire log_read_en;
+reg [`DATA_WIDTH-1:0] log_data;
+
+// AXI control signals
+reg new_transaction_set;
+wire start_transaction;
+
+// AXI state signals:
+wire more_data_requested;
+wire data_transfer_completed;
+wire waiting_for_data_transfer;
+wire waiting_for_addr_transfer;
+
+// Special AXI data
+reg [§runCounterWidth§-1:0] run_counter_to_send;
+
+// Global log context related wires and outputs
+reg [LOG_ID_WIDTH-1:0] log_id;
+reg [§ccntWidth§-1:0] last_ccnt;
+reg [LOG_GLOBAL_CONTEXT_WIDTH-1:0] context_out;
+
+wire [8-1:0] c_out_transaction_length;
+wire [LOG_ID_WIDTH-1:0] c_out_log_id;
+wire [MAX_LOG_ADDR_WIDTH-1:0] c_out_log_read_addr;
+wire c_out_transaction_set_done;
+wire c_out_awvalid;
+
+assign c_out_transaction_length = context_out[8-1:0];
+assign c_out_log_read_addr = context_out[MAX_LOG_ADDR_WIDTH-1:0];
+assign c_out_log_id = context_out[LOG_ID_WIDTH+MAX_LOG_ADDR_WIDTH-1:MAX_LOG_ADDR_WIDTH];
+assign c_out_awvalid = context_out[LOG_GLOBAL_CONTEXT_WIDTH-2];
+assign c_out_transaction_set_done = context_out[LOG_GLOBAL_CONTEXT_WIDTH-1];
+
+assign LOG_SEND_DONE_O = c_out_transaction_set_done;
+
+// --- log data output assignment
+always @(*) begin
+	case (log_id)
+	§dataToSendAssignment§	
+	default: log_data = {`DATA_WIDTH{1'b1}};
+	endcase
+end
+
+// --- context handling
+always @(posedge CGRA_CLK_I) begin
+	if (EN_I) begin
+		if (GLOBAL_LOG_CONTEXT_WREN_I)
+			log_output_context[CONTEXT_ADDR_I] <= DATA_I[LOG_GLOBAL_CONTEXT_WIDTH-1:0];
+
+		context_out <= log_output_context[log_ccnt];
+	end
+end
+
+// --- logic which found no other place to stay
+always @(posedge CGRA_CLK_I) begin
+	if (~RST_N_I) begin
+		last_ccnt <= 0;
+		log_id <= 0;
+		new_transaction_set <= 1'b0;
+		stored_log_ccnt <= {LOG_GLOBAL_CONTEXT_ADDR_WIDTH{1'b1}};
+	end else if (EN_I) begin
+		if (data_transfer_completed)
+			new_transaction_set <= 1'b0;
+		else if (/*c_out_awvalid && */stored_log_ccnt == 0)
+			new_transaction_set <= 1'b1;
+
+		if (SYNC_IN_I)
+			run_counter_to_send <= RUN_COUNTER_I;
+
+		if (log_read_en)
+			log_id <= c_out_log_id;
+
+		if (context_out[§ccntWidth§-1:0] == last_ccnt && ~c_out_awvalid && 
+			~waiting_for_data_transfer && ~waiting_for_addr_transfer)
+		begin
+			stored_log_ccnt <= 0;
+		end else
+			stored_log_ccnt <= log_ccnt;
+
+		last_ccnt <= CCNT_I;
+	end
+end
+
+// start a transaction only there is a corresponding context entry and the last transaction is done
+assign start_transaction = c_out_awvalid && ~waiting_for_data_transfer && EN_I;
+
+// This is triggered the first time when the tag data is send. (new transaction set)
+// Or alternatively for every awvalid (with corresponding ready), 
+// which also signals a valid log read address. (not a new transaction set)
+// "wvalid_was_deasserted" forces a read in the first enable cycle after being disabled.
+assign log_read_en = more_data_requested;
+
+// --- log_ccnt
+always @(*) begin
+	if (log_read_en || start_transaction || c_out_transaction_set_done)
+		// take the next log entry only when done with the current one
+		// start_transaction forces a log id/address out of the global log context (as early as possible)
+		log_ccnt = stored_log_ccnt + 1;
+	else 
+		log_ccnt = stored_log_ccnt;
+end
+
+// --- all LogPE module instances
+§logs§
+
+ResultMaster #
+(
+	.NEW_TRANSACTION_SET_DATA_WIDTH(§runCounterWidth§)
+)
+axi_module
+(
+	.CGRA_CLK_I(CGRA_CLK_I),
+	.AXI_ACLK_I(AXI_ACLK_I),
+	.RST_N_I(RST_N_I),
+	.EN_I(EN_I),
+	.DEST_WREN_I(DEST_WREN_I),
+	.DEST_BOUND_WREN_I(DEST_BOUND_WREN_I),
+	.DEST_INC_WREN_I(DEST_INC_WREN_I),
+	.DEST_DATA_I(DATA_I),
+	.START_TRANSACTION_I(start_transaction),
+	.START_IS_NEW_TRANSACTION_SET_I(new_transaction_set),
+	.INCREMENT_TARGET_ADDR_I(c_out_transaction_set_done),
+	.START_TRANSACTION_LENGTH_I(c_out_transaction_length),
+	.DATA_TO_SEND_I(log_data),
+	.NEW_TRANSACTION_SET_DATA_I(run_counter_to_send),
+	.MORE_DATA_REQUEST_O(more_data_requested),
+	.DATA_TRANSFER_COMPLETED_O(data_transfer_completed),
+	.WAITING_FOR_DATA_TRANSFER_O(waiting_for_data_transfer),
+	.WAITING_FOR_ADDR_TRANSFER_O(waiting_for_addr_transfer),
+	.AXI_AWLEN_O(LOG_AWLEN_O),
+	.AXI_AWSIZE_O(LOG_AWSIZE_O),
+	.AXI_AWBURST_O(LOG_AWBURST_O),
+	.AXI_AWADDR_O(LOG_AWADDR_O),
+	.AXI_AWVALID_O(LOG_AWVALID_O),
+	.AXI_AWREADY_I(LOG_AWREADY_I),
+	.AXI_WDATA_O(LOG_WDATA_O),
+	.AXI_WSTRB_O(LOG_WSTRB_O),
+	.AXI_WLAST_O(LOG_WLAST_O),
+	.AXI_WVALID_O(LOG_WVALID_O),
+	.AXI_WREADY_I(LOG_WREADY_I),
+	.AXI_BREADY_O(LOG_BREADY_O),
+	.AXI_BVALID_I(LOG_BVALID_I),
+	.AXI_BRESP_I(LOG_BRESP_I)
+);
+
+endmodule
+>>
+
+logPE(id, contextSize, contextAddrWidth, contextWidth, logSize, logAddrWidth)
+::= <<
+LogPE #
+(
+	.CONTEXT_SIZE(§contextSize§),
+	.CONTEXT_ADDR_WIDTH(§contextAddrWidth§),
+	.CONTEXT_WIDTH(§contextWidth§),
+	.LOG_SIZE(§logSize§),
+	.LOG_ADDR_WIDTH(§logAddrWidth§)
+)
+logPE§id§
+(
+	.EN_I(EN_I),
+	.CGRA_CLK_I(CGRA_CLK_I),
+	.RST_N_I(RST_N_I),
+	.SYNC_IN_I(SYNC_IN_I),
+	.LOG_TRANSACTIONS_DONE_I(c_out_transaction_set_done),
+	.CCNT_I(CCNT_I),
+	.CONTEXT_WREN_I(enable_logContext_pe§id§),
+	.CONTEXT_ADDR_I(CONTEXT_ADDR_I[§contextAddrWidth§-1:0]),
+	.CONTEXT_DATA_I(DATA_I[§contextWidth§-1:0]),
+	.LOG_DATA_I(DIRECT_OUT_PE§id§_I),
+	.LOG_READ_ADDR_I(c_out_log_read_addr[§logAddrWidth§-1:0]),
+	.LOG_READ_EN_I(log_read_en),
+	.LOG_DATA_O(log_out§id§)
+);
+
+>>
